@@ -1814,8 +1814,14 @@ used. No location, price, rating, review, certification, or area-served property
 - `npx tsc --noEmit` — 0 errors.
 - `npx eslint src/ --max-warnings 0` — 0 warnings.
 - `npm run build` — pass; `/services` statically prerendered.
-- Runtime and responsive checks are performed after the implementation commit, in accordance with
-  the branch workflow. Their final result is recorded in the follow-up context commit.
+- Production runtime — `/services` and optimizer requests for all five new images return HTTP 200.
+- Chrome checks at 320, 375, 430, 768, 1024, 1440, and 1920 px find no horizontal overflow,
+  exactly one H1, five H2s, nineteen H3s, nine service articles, and nine JSON-LD `Service`
+  entries. The canonical and resolved title are correct, every schema anchor exists, and the
+  public brand, legal name, confirmed phone, and retained email remain present and unchanged.
+- Lazy-load traversal at 390 px loads all seven page images with nonzero intrinsic widths and no
+  runtime exceptions. Hero, feature-grid, and plumbing-row screenshots were visually inspected at
+  320 and 1440 px.
 
 Known limitation: the site-wide footer still links to missing service-detail and privacy routes, and
 other unrelated pages still use remote Unsplash images (one existing project URL returns 404).
