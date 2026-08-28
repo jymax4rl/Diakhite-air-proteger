@@ -130,7 +130,7 @@ export default function ProcessCarousel({
               onClick={() => scrollToStep(index)}
             >
               <span
-                className={`h-1.5 rounded-full transition-[width,background-color] duration-[250ms] motion-reduce:transition-none ${
+                className={`h-1.5 rounded-full transition-all duration-200 motion-reduce:transition-none ${
                   isActive ? "w-5 bg-brand-500" : "w-1.5 bg-white/20"
                 }`}
                 aria-hidden="true"
