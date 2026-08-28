@@ -5,15 +5,15 @@
 
 | Field | Value |
 | --- | --- |
-| Commit documented | `WORKTREE` |
-| Commit subject | CVC and plumbing `/services` redesign |
-| Commit date | 2026-08-28 |
+| Commit documented | `bd6c1bc366dac0eda8078d5b93c2c7220314a28e` (`bd6c1bc`) |
+| Commit subject | `feat: add Hydraulique to CVC services offering` |
+| Commit date | 2026-08-28 19:42:12 +0000 |
 | Branch | `cursor/cvc-plumbing-services-95cc` |
-| Working tree at time of writing | CVC/plumbing services source and five new local image assets are the implementation change; context files are this synchronized documentation change |
-| Documentation status | Context reflects the source tree immediately before its own documentation commit |
-| Verified at this SHA | Verification is recorded in section 13.5 after the implementation commit |
+| Working tree at time of writing | Source tree clean; context files are the documentation change |
+| Documentation status | Context reflects source commit `bd6c1bc`, immediately before this documentation commit |
+| Verified at this SHA | `next typegen`, `tsc --noEmit`, ESLint, production build, HTTP, image optimizer, responsive browser, metadata, schema, anchor, and navigation checks pass |
 
-> This context reflects the CVC/plumbing services source tree immediately before its own documentation commit. Later source changes require re-verifying the affected sections.
+> This context reflects source commit `bd6c1bc` immediately before its own documentation commit. Later source changes require re-verifying the affected sections.
 
 ---
 
@@ -27,7 +27,7 @@
 - **Do NOT "simplify" `SiteShell.tsx` away, and do NOT move menu state into `Navbar`.** It exists for two hard technical reasons (section 8.1). Collapsing it re-breaks the mobile menu.
 - **Do NOT convert `MobileMenu.tsx`'s inline styles to Tailwind classes** as a drive-by cleanup. It is deliberate (section 8.2). It is acknowledged technical debt, but changing it requires re-verifying the stacking-context fix.
 - **All image paths must go through `src/data/images.ts`.** Never inline a URL or `/images/...` path in a component.
-- `/services` is a complete static CVC and plumbing editorial page. `/contact` has a polished semantic form foundation and contact-details panel; online submission is deliberately disabled because there is no transport. `/mentions-legales` publishes verified company facts. `/a-propos`, `/realisations`, and `/blog` share a polished `ComingSoon` state. There is no CMS or detail routes.
+- `/services` is a complete static editorial page with exactly five ordered disciplines: Chauffage, Ventilation, Climatisation, Hydraulique, then Plomberie & sanitaire. `/contact` has a polished semantic form foundation and contact-details panel; online submission is deliberately disabled because there is no transport. `/mentions-legales` publishes verified company facts. `/a-propos`, `/realisations`, and `/blog` share a polished `ComingSoon` state. There is no CMS or detail routes.
 - `src/data/site.ts` is the source of truth for the brand, production URL, contact details, registered office, and legal identifiers. The phone is user-confirmed; the email remains an existing, unverified contact value.
 - 13 internal `<Link>` instances point at **9 routes that do not exist** (section 9.6). This is known. Do not treat a 404 as a new bug you introduced.
 
@@ -268,7 +268,7 @@ Environment notes:
     │   ├── services/
     │   │   ├── ServicesHero.tsx          SERVER. Hero, breadcrumb, H1 and primary CTAs.
     │   │   ├── ExpertiseIntro.tsx        SERVER. Light editorial introduction.
-    │   │   ├── ServicesEditorialGrid.tsx SERVER. Nine-service CVC/plumbing editorial layout.
+    │   │   ├── ServicesEditorialGrid.tsx SERVER. Five-service asymmetric editorial layout.
     │   │   ├── WhyChooseUs.tsx           SERVER. Supportable trust themes.
     │   │   ├── ServicesProcess.tsx       SERVER. Five-step ordered process.
     │   │   └── ServicesCTA.tsx           SERVER. Contact CTA using repository facts.
@@ -285,7 +285,7 @@ Environment notes:
     │
     ├── data/
     │   ├── images.ts             Centralised image registry. THE single source of image paths.
-    │   ├── service-page.ts       Nine CVC/plumbing topics + trust and process contracts.
+    │   ├── service-page.ts       Five ordered service areas + trust and process contracts.
     │   ├── site.ts               Brand/contact/legal facts + production URL and Organization ID.
     │   ├── services.ts           `Service` interface + 4 services. Hrefs are all broken.
     │   └── projects.ts           `Project` interface + 4 projects. Hrefs are all broken.
@@ -1228,6 +1228,7 @@ export const images = {
     airConditioning: "/images/services/unites-climatisation-batiment.jpg",
     heating: "/images/services/chauffage-radiateur-batiment.jpg",
     professional: "/images/services/ventilation-professionnelle-bureaux.jpg",
+    hydraulicNetwork: "/images/services/reseaux-hydrauliques-cvc-batiment.jpg",
     plumbingNetwork: "/images/services/reseau-plomberie-batiment.jpg",
     plumbingFittings: "/images/services/reseau-plomberie-raccords.jpg",
     technicalIntervention: "/images/services/intervention-technique-equipement.jpg",
@@ -1257,7 +1258,7 @@ export const images = {
 export type ImageKey = typeof images;
 ```
 
-Shape: `{ hero: { ventilation }, services: { residential, commercial, industrial, maintenance }, servicePage: { hero, airConditioning, heating, professional, plumbingNetwork, plumbingFittings, technicalIntervention }, about: { main }, projects: { project01..project04 }, logo: { main } }` — a two-level `category → name → path` map, `as const` so every value is a string literal type.
+Shape: `{ hero: { ventilation }, services: { residential, commercial, industrial, maintenance }, servicePage: { hero, airConditioning, heating, professional, hydraulicNetwork, plumbingNetwork, plumbingFittings, technicalIntervention }, about: { main }, projects: { project01..project04 }, logo: { main } }` — a two-level `category → name → path` map, `as const` so every value is a string literal type.
 
 **THE RULE: all image paths must flow through this file. No scattered paths.**
 
@@ -1721,19 +1722,20 @@ npx next typegen && npx tsc --noEmit    # the correct CI invocation
 
 ---
 
-## 13. `/services` CVC and plumbing editorial page (`WORKTREE`)
+## 13. `/services` five-discipline editorial page (source commit `bd6c1bc`)
 
 ### 13.1 Composition and semantics
 
 `src/app/services/page.tsx` remains a Server Component and renders a plain `<div>` because
 `SiteShell` already owns the document `<main>`. Its section order is:
 
-1. `ServicesHero` — local CVC-equipment LCP image, accessible breadcrumb, the route's single
-   `<h1>`, and links to `/contact` and `#services`.
-2. `ExpertiseIntro` — coordinated heating, cooling, air and water editorial context.
-3. `ServicesEditorialGrid` — the stable `id="services"` target and nine service `<article>`s.
-   Two photographic feature panels, four alternating image/text rows, and three compact technical
-   cards avoid a repeated-card catalogue.
+1. `ServicesHero` — local CVC-equipment LCP image, accessible breadcrumb, the route's single H1
+   naming all five disciplines, and links to `/contact` and `#services`.
+2. `ExpertiseIntro` — coordinated thermal, air, hydraulic-fluid, water, and lifecycle context.
+3. `ServicesEditorialGrid` — the stable `id="services"` target and exactly five ordered service
+   articles. Chauffage and Ventilation form a two-panel photographic introduction; Climatisation
+   uses an image/text split; Hydraulique gets a distinctive full-width dark 8/4 asymmetric feature;
+   Plomberie & sanitaire closes with a reversed image/text split.
 4. `WhyChooseUs` — three neutral, supportable approach themes and `/a-propos` link.
 5. `ServicesProcess` — ordered five-step sequence: need analysis, solution study, implementation,
    commissioning, then follow-up and maintenance.
@@ -1741,6 +1743,8 @@ npx next typegen && npx tsc --noEmit    # the correct CI invocation
    user-confirmed; the existing email remains unverified.
 
 Every section is named with `aria-labelledby`; service names are `<h3>` under section `<h2>`s.
+Hydraulique links contextually to `#chauffage` and `#plomberie-sanitaire`; all five schema URLs use
+the same visible article IDs.
 All new components are Server Components. `Navbar`, `SiteShell`, `MobileMenu`, `Footer`, global
 tokens, and unrelated routes were not changed.
 
@@ -1749,19 +1753,24 @@ tokens, and unrelated routes were not changed.
 `src/data/service-page.ts` owns all substantial page copy:
 
 - `ServicePageItem` has `id`, `title`, `eyebrow`, `summary`, `details`, optional image/alt, and
-  a `treatment` discriminator (`feature | split | compact`).
-- `servicePageItems` exposes nine visible topics: air conditioning, heating, ventilation and
-  indoor-air quality, general plumbing, sanitary installations, maintenance and troubleshooting,
-  installation renovation, controls, and technical-network coordination.
+  a `treatment` discriminator (`feature | split | spotlight`).
+- `servicePageItems` is the canonical taxonomy and ordering: `Chauffage`, `Ventilation`,
+  `Climatisation`, `Hydraulique`, `Plomberie & sanitaire`.
+- Hydraulique describes technical fluid distribution/circulation supporting heating and CVC.
+  Plomberie & sanitaire separately describes building water supply, evacuation, and sanitary
+  connections. This boundary avoids presenting domestic water networks as hydronic CVC.
 - `trustThemes` and `serviceProcess` keep the approach and five process steps out of UI files.
-- Copy deliberately makes no certification, regulatory-compliance, service-area, rating,
-  guarantee, equipment-brand, tenure, project-count, response-time, or satisfaction claim.
+- Copy deliberately makes no claim about specific hydraulic circuits, pumps, balancing,
+  pressurization, calculations, capacities, materials, equipment brands, certification,
+  regulatory compliance, service area, response time, guarantee, rating, or award.
 
 ### 13.3 Local image strategy
 
-`images.servicePage` in `src/data/images.ts` is the only source of the page's image paths. Seven
-distinct progressive JPEGs are active under `public/images/services/`. The five CVC/plumbing
-assets added by this redesign were preserved from the earlier failed run and visually checked:
+`images.servicePage` in `src/data/images.ts` is the only source of the page's image paths. The page
+actively uses six distinct progressive JPEGs: one hero plus one for each discipline. Additional
+older service-page registry images remain available but are not rendered by this taxonomy.
+The active keys are `hero`, `heating`, `professional`, `airConditioning`, `hydraulicNetwork`, and
+`plumbingFittings`; `plumbingNetwork` and `technicalIntervention` are retained but inactive here.
 
 | Registry key | Local file | Source photo |
 | --- | --- | --- |
@@ -1769,6 +1778,7 @@ assets added by this redesign were preserved from the earlier failed run and vis
 | `airConditioning` | `unites-climatisation-batiment.jpg` (2000×1333) | exterior air-conditioning units |
 | `heating` | `chauffage-radiateur-batiment.jpg` (2000×2667) | architectural radiator |
 | `professional` | `ventilation-professionnelle-bureaux.jpg` (1800×1202) | contemporary office interior |
+| `hydraulicNetwork` | `reseaux-hydrauliques-cvc-batiment.jpg` (1536×1024) | original generated hydronic mechanical room |
 | `plumbingNetwork` | `reseau-plomberie-batiment.jpg` (2000×1500) | exposed technical pipework |
 | `plumbingFittings` | `reseau-plomberie-raccords.jpg` (2000×3000) | plumbing fittings |
 | `technicalIntervention` | `intervention-technique-equipement.jpg` (1800×1202) | equipment intervention |
@@ -1780,20 +1790,28 @@ New-asset SHA-256 values, in table order for the five added files:
 `6faf7dda7b1f98bf97e78cb01e70839e834a33d825f036d5a520db01e3b330bf`, and
 `6f3821fb70ddb195685096cb798754dced4bb68aba7f1d0f03d77a6852f1335d`.
 
+The Hydraulique image was generated with Cursor on 2026-08-28 from a prompt requesting a realistic,
+clean building mechanical room dominated by orderly hydronic HVAC pipes, with no people, domestic
+fixtures, factory production line, text, logo, rust, grime, or leak. The generated 1536×1024 RGB
+PNG was visually inspected, then converted with Sharp/mozjpeg to a 360,534-byte progressive
+1536×1024 JPEG at quality 88 and 4:4:4 chroma. Its MIME is `image/jpeg`; SHA-256 is
+`918d99242d64456fe40302d9648a2c518e235c3990c552b94e6ee3e69adf04b9`, unique among the local
+service JPEGs. The filename and French alt describe the visible insulated technical pipe network.
+
 Meaningful images use `next/image`, `fill`, aspect-ratio parents, responsive `sizes`, `object-cover`,
 and French replacement alt text. Only the hero uses Next 16's `preload`; below-fold images retain
-native lazy loading. Renovation, controls, and network-coordination entries intentionally have no
-image because the available photographs do not prove those exact subjects.
+native lazy loading. The Hydraulique image uses a 4:3 mobile crop, 16:9 tablet crop, and an
+image-dominant 8/4 desktop grid with a dedicated `sizes` string; it is not relabeled from another
+discipline.
 
 ### 13.4 Route metadata and structured data
 
 The route exports static metadata:
 
-- Resolved title: `Services CVC et plomberie | Diakhite Air Proteger` (the route
+- Resolved title: `Services CVC, hydraulique et plomberie | Diakhite Air Proteger` (the route
   title relies on the root template, so the brand is not duplicated).
-- Description names installation, renovation, maintenance, heating, cooling, ventilation, and
-  plumbing without
-  geographic stuffing.
+- Description names the five confirmed disciplines and broad installation, renovation, and
+  maintenance lifecycle without geographic stuffing.
 - Absolute canonical and Open Graph URL:
   `https://diakhite-air-proteger.vercel.app/services`.
 - `index, follow`, `fr_FR` Open Graph website fields, Twitter `summary_large_image`, and the
@@ -1802,7 +1820,7 @@ The route exports static metadata:
 One native `<script type="application/ld+json">` contains an `@graph` with:
 
 - `BreadcrumbList` for Accueil → Services.
-- `ItemList` of nine visible `Service` entries whose URLs point to the corresponding in-page
+- `ItemList` of five visible `Service` entries whose URLs point to the corresponding in-page
   article IDs. Each provider references the global Organization by `@id`, avoiding a duplicate.
 
 The JSON is serialized with `JSON.stringify(...).replace(/</g, "\\u003c")`; `next/script` is not
@@ -1814,14 +1832,18 @@ used. No location, price, rating, review, certification, or area-served property
 - `npx tsc --noEmit` — 0 errors.
 - `npx eslint src/ --max-warnings 0` — 0 warnings.
 - `npm run build` — pass; `/services` statically prerendered.
-- Production runtime — `/services` and optimizer requests for all five new images return HTTP 200.
-- Chrome checks at 320, 375, 430, 768, 1024, 1440, and 1920 px find no horizontal overflow,
-  exactly one H1, five H2s, nineteen H3s, nine service articles, and nine JSON-LD `Service`
-  entries. The canonical and resolved title are correct, every schema anchor exists, and the
-  public brand, legal name, confirmed phone, and retained email remain present and unchanged.
-- Lazy-load traversal at 390 px loads all seven page images with nonzero intrinsic widths and no
-  runtime exceptions. Hero, feature-grid, and plumbing-row screenshots were visually inspected at
-  320 and 1440 px.
+- Production runtime — `/services`, all linked existing route destinations, and the Hydraulique
+  image optimizer return HTTP 200.
+- Chrome checks at 320, 375, 390, 430, 768, 1024, 1440, and 1920 px find no horizontal overflow;
+  exactly one H1, five H2s, thirteen service/approach/process H3s; the exact five-category visual
+  and schema order; one global Organization; five `Service` entries referencing its existing
+  `@id`; valid in-page anchors; and a complete Hydraulique image with nonzero natural width.
+- The canonical, description, Open Graph/Twitter title architecture, public brand, legal name,
+  confirmed phone, and retained email remain correct. No browser runtime exception was captured.
+- Hero and Hydraulique screenshots were visually inspected at 320, 768, and 1440 px. The
+  Hydraulique composition is stacked image-first on mobile/tablet and asymmetric image-dominant on
+  desktop. The mobile menu still opens/closes as a fixed overlay at 390 px; desktop navigation
+  replaces it at 1024 px.
 
 Known limitation: the site-wide footer still links to missing service-detail and privacy routes, and
 other unrelated pages still use remote Unsplash images (one existing project URL returns 404).
