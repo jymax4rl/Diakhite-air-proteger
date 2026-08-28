@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%" stop-color="#0a1020"/>
+      <stop offset="100%" stop-color="#070c18"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="60%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#1a2d4f" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#040810" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect width="1200" height="800" fill="url(#glow)"/>
+  <!-- Industrial building silhouette -->
+  <rect x="200" y="350" width="800" height="350" fill="#0d1529"/>
+  <rect x="280" y="280" width="180" height="420" fill="#111d36"/>
+  <rect x="520" y="300" width="220" height="400" fill="#0d1529"/>
+  <rect x="800" y="320" width="160" height="380" fill="#111d36"/>
+  <!-- Chimneys/vents -->
+  <rect x="320" y="180" width="40" height="100" fill="#0a1020" stroke="#1a2d4f" stroke-width="2"/>
+  <rect x="580" y="200" width="40" height="100" fill="#0a1020" stroke="#1a2d4f" stroke-width="2"/>
+  <rect x="840" y="220" width="40" height="100" fill="#0a1020" stroke="#1a2d4f" stroke-width="2"/>
+  <!-- Windows lit up (blue) -->
+  <rect x="300" y="320" width="40" height="40" rx="2" fill="#1a2d4f" stroke="#2563eb" stroke-width="1" opacity="0.7"/>
+  <rect x="360" y="320" width="40" height="40" rx="2" fill="#1a2d4f" stroke="#2563eb" stroke-width="1" opacity="0.5"/>
+  <rect x="545" y="340" width="50" height="50" rx="2" fill="#1a2d4f" stroke="#2563eb" stroke-width="1" opacity="0.6"/>
+  <rect x="615" y="340" width="50" height="50" rx="2" fill="#1a2d4f" stroke="#2563eb" stroke-width="1" opacity="0.4"/>
+  <rect x="820" y="360" width="40" height="40" rx="2" fill="#1a2d4f" stroke="#2563eb" stroke-width="1" opacity="0.5"/>
+  <!-- Sky gradient hint -->
+  <rect x="0" y="0" width="1200" height="350" fill="none" opacity="0"/>
+</svg>
