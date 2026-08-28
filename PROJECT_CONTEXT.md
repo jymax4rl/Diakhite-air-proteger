@@ -5,15 +5,15 @@
 
 | Field | Value |
 | --- | --- |
-| Commit documented | `a39dd7072ce593d421d5d97c71012723d58510cc` (`a39dd70`) |
-| Commit subject | `content: rename public brand to Diakhite Air Proteger` |
-| Commit date | 2026-08-28 17:52:02 +0000 |
+| Commit documented | `d5c2aa57f67a936dc2107e4da94e6e625e4965dd` (`d5c2aa5`) |
+| Commit subject | `feat: replace homepage hero with professional HVAC ductwork` |
+| Commit date | 2026-08-28 19:12:31 +0000 |
 | Branch | `main` |
-| Working tree at time of writing | clean (no uncommitted changes) |
-| Documentation status | Context reflects source commit `a39dd70`, immediately before this documentation commit |
-| Verified at this SHA | `next typegen`, `tsc --noEmit`, ESLint (zero warnings), production build, required-route HTTP checks, JSON-LD parsing, and responsive browser checks all pass |
+| Working tree at time of writing | Source tree clean except five unrelated untracked service-image assets; context files are the documentation change |
+| Documentation status | Context reflects source commit `d5c2aa5`, immediately before this documentation commit |
+| Verified at this SHA | `next typegen`, `tsc --noEmit`, ESLint (zero warnings), production build, homepage/image-optimizer HTTP checks, and responsive hero checks all pass |
 
-> This context reflects source commit `a39dd70` immediately before its own documentation commit. The source commit is already pushed; later source changes require re-verifying the affected sections.
+> This context reflects source commit `d5c2aa5` immediately before its own documentation commit. The source commit is already pushed; later source changes require re-verifying the affected sections.
 
 ---
 
@@ -222,6 +222,8 @@ Environment notes:
 │   ├── window.svg                DEAD — scaffold leftover. Unreferenced.
 │   └── images/
 │       ├── about/ventilation-installation.svg         ORPHANED placeholder (see note)
+│       ├── hero/conduits-ventilation-metalliques-
+│       │        professionnels.jpg                    ACTIVE homepage LCP photograph
 │       ├── hero/ventilation-hero.svg                  ORPHANED placeholder
 │       ├── logo/ventila-logo.svg                      ORPHANED-ish: referenced by
 │       │                                              images.logo.main but no component
@@ -292,7 +294,7 @@ Environment notes:
         └── utils.ts             `cn()` — 3-line clsx replacement.
 ```
 
-**Note on `public/images/`:** these 13 SVGs were the original placeholders. Commit `687f244` ("real Unsplash images") repointed `src/data/images.ts` at `images.unsplash.com` URLs but left the files in place. Only `logo/ventila-logo.svg` is still named in code (`images.logo.main`), and nothing reads `images.logo`; its embedded wordmark has nevertheless been updated to the current public brand so the tracked asset is not stale. All 13 are safe to delete; 5 root-level scaffold SVGs likewise.
+**Note on `public/images/`:** these 13 SVGs were the original placeholders. Commit `687f244` ("real Unsplash images") repointed `src/data/images.ts` at `images.unsplash.com` URLs but left the files in place. The homepage hero now uses the active local JPEG `hero/conduits-ventilation-metalliques-professionnels.jpg`; do not delete it with the placeholders. Only `logo/ventila-logo.svg` is still named in code (`images.logo.main`), and nothing reads `images.logo`; its embedded wordmark has nevertheless been updated to the current public brand so the tracked asset is not stale. All 13 SVG placeholders are safe to delete; 5 root-level scaffold SVGs likewise.
 
 ### Files that do NOT exist (and that you may be tempted to assume)
 
@@ -593,7 +595,7 @@ No props. Static content; no interactivity.
 ```
 
 - **`85svh` below `md`, full `svh` from `md` up.** Rationale in the file: on a short viewport (320×568) the hero should be driven by its content rather than padded out to a full screen. `svh` (small viewport height) avoids mobile-browser URL-bar jump.
-- Background: absolutely positioned `-z-10` wrapper containing `<Image src={images.hero.ventilation} alt="Système de ventilation industrielle — conduits d'air" fill sizes="100vw" className="object-cover" priority />`. **`priority` is set — this is the LCP image.** Keep it.
+- Background: absolutely positioned `-z-10` wrapper containing `<Image src={images.hero.ventilation} alt="Conduits de ventilation métalliques dans un intérieur moderne" fill sizes="100vw" className="object-cover" priority />`. The registry points this homepage-only image at a local progressive JPEG dominated by polished galvanized ductwork. **`priority` is set — this is the LCP image.** Keep it.
 - Two stacked gradient overlays:
   - `bg-gradient-to-r from-navy-950/90 via-navy-950/70 to-navy-950/55 md:to-navy-950/30` — left-heavy for text legibility; the right stop stays darker below `md` because the copy spans the full width there.
   - `bg-gradient-to-b from-navy-950/40 via-transparent to-navy-950/60` — top/bottom fade.
@@ -1206,8 +1208,8 @@ Five modules in `src/data/`. All are plain typed constants — **no fetching, no
  */
 export const images = {
   hero: {
-    ventilation: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=85&auto=format&fit=crop",
-    // Industrial HVAC ductwork ceiling shot
+    ventilation: "/images/hero/conduits-ventilation-metalliques-professionnels.jpg",
+    // Original generated photograph of polished HVAC ductwork
   },
 
   services: {
@@ -1250,7 +1252,7 @@ Shape: `{ hero: { ventilation }, services: { residential, commercial, industrial
 **THE RULE: all image paths must flow through this file. No scattered paths.**
 
 - Never write `<Image src="https://..." />` or `<Image src="/images/..." />` in a component. Always `import { images } from "@/data/images"` (or reach it indirectly via `service.image` / `project.image`, which are themselves populated from this registry).
-- Why: swapping the whole site's imagery is then a one-file change. That is exactly what commit `687f244` did — it repointed every entry from local SVG placeholders to Unsplash URLs without touching a single component.
+- Why: swapping the whole site's imagery is then a one-file change. Commit `d5c2aa5` repointed only the homepage hero entry from Unsplash to the local generated HVAC photograph; `Hero` changed only its descriptive French alt text.
 - **Adding a remote host requires editing `next.config.ts`.** Only `images.unsplash.com` is allowlisted:
 
 ```ts
@@ -1625,7 +1627,7 @@ Also unused at this commit: the `align="center"` branch of `SectionHeading`, the
 | Mobile navigation | Viewport-level overlay with animated hamburger, synchronized 280ms enter/exit, Escape-to-close, dual `html`+`body` scroll lock, auto-close past `lg` |
 | Layout shell | Fixed `h-16` blurred header, sticky footer via flex, `SiteShell` client boundary correctly scoped |
 | Carousel→grid pattern | `scroll-snap-row` / `scroll-snap-item`, hidden scrollbars, mobile snap carousels becoming grids at `md`; Process dots track and control all four snapped steps |
-| Image pipeline | `next/image` with `fill` + hand-tuned `sizes` per breakpoint everywhere, `priority` on the LCP hero, `remotePatterns` allowlist, centralised registry |
+| Image pipeline | `next/image` with `fill` + hand-tuned `sizes` per breakpoint everywhere, `priority` on the local progressive-JPEG LCP hero, `remotePatterns` for remaining Unsplash assets, centralised registry |
 | Metadata and structured data | Root metadata base and one global Organization JSON-LD; complete route metadata on `/services`, `/contact`, and `/mentions-legales` |
 | Company/legal facts | Central `site.ts`, verified registered identity/address/identifiers, legal-notice route, and concise footer identity |
 | Contact foundation | Responsive labeled form, required semantics, disabled honest submission state, user-confirmed phone, unverified existing email, and registered-office address |
@@ -1645,7 +1647,7 @@ Also unused at this commit: the `align="center"` branch of `SectionHeading`, the
 | **Error/loading UI** | No `not-found.tsx`, `error.tsx`, `loading.tsx`, `global-error.tsx` |
 | **Testing** | No test runner, no tests, no Playwright/Vitest/Jest |
 | **CI** | No `.github/`. Nothing runs `next typegen && tsc --noEmit` or eslint automatically (section 9.7) |
-| **Unverified content** | Email `contact@ventila-solutions.fr` and marketing stats (10+/250+/98%) remain unverified; images are stock. Phone and legal company facts are no longer placeholders |
+| **Unverified content** | Email `contact@ventila-solutions.fr` and marketing stats (10+/250+/98%) remain unverified; the homepage hero is an original generated asset and other imagery remains stock. Phone and legal company facts are no longer placeholders |
 | **i18n** | Single hardcoded locale. No `next-intl`, no `[locale]` segment |
 | **Analytics / consent** | None |
 
@@ -1841,3 +1843,36 @@ below `lg`.
 `/realisations`, and `/blog`. Each route supplies its own eyebrow, H1, and concise French
 description, while the shared state provides links to `/services`, `/contact`, and `/`. No fake
 history, portfolio, article, availability, location, guarantee, or timing content was added.
+
+---
+
+## 15. Homepage hero HVAC photograph (source commit `d5c2aa5`)
+
+The homepage LCP image is now the stable local asset
+`public/images/hero/conduits-ventilation-metalliques-professionnels.jpg`, registered only as
+`images.hero.ventilation`. The `/services` hero and all other image entries are unchanged.
+
+The image is an original generated asset produced with Cursor's image-generation tool on
+2026-08-28. Its generation prompt requested a realistic professional architectural photograph
+dominated by clean, polished galvanized/silver round HVAC ductwork in a bright modern interior,
+with a calmer left side for hero copy and no people, text, logos, rust, grime, generic plumbing,
+or machinery. Visual inspection confirmed that the filename and French alt text truthfully match
+the result.
+
+The generated 1536×1024 RGB PNG was converted with Sharp/mozjpeg to a 1536×1024, 232,999-byte,
+progressive 8-bit RGB JPEG at quality 88 with 4:4:4 chroma. SHA-256:
+`ac31031fe8cb583be44cfd70281159838b4e81487bfe441ee84edbae9a5c4d2a`.
+The file has a valid JPEG signature/MIME. Next's 1920-wide optimizer request returns HTTP 200 as
+a 97,108-byte WebP; the source is not enlarged beyond its intrinsic dimensions.
+
+Validation at the source commit:
+
+- `npx next typegen`, `npx tsc --noEmit`, `npx eslint src/ --max-warnings 0`,
+  `npm run build`, and `git diff --check` pass.
+- The production homepage and local hero optimizer endpoint both return HTTP 200.
+- Chrome checks at 320×844, 375×812, 390×844, 430×932, 1024×768, 1440×900, and
+  1920×1080 confirm prominent ductwork, preserved proportions via `object-fit: cover`, no hero
+  distortion, and no horizontal overflow (`scrollWidth === clientWidth` at every width).
+- No hydration exception, JavaScript console error, or hero-resource failure was captured.
+  Existing unrelated network 404 logs remain from broken service-detail prefetches and the known
+  dead `project04` Unsplash URL documented in sections 9.6 and 13.5.
