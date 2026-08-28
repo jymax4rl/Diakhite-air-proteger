@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+/* ─── Font tokens (inline so Tailwind resolves the var) ───── */
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ─── Design tokens ─────────────────────────────────────────
+   Navy palette  – deep blue-blacks for backgrounds
+   Brand palette – electric blue for accents / CTAs
+──────────────────────────────────────────────────────────── */
+@theme {
+  /* Navy */
+  --color-navy-950: #040810;
+  --color-navy-900: #070c18;
+  --color-navy-800: #0a1020;
+  --color-navy-700: #0d1529;
+  --color-navy-600: #111d36;
+  --color-navy-500: #1a2d4f;
+  --color-navy-400: #233e6b;
+
+  /* Brand blue */
+  --color-brand-700: #1d4ed8;
+  --color-brand-600: #2563eb;
+  --color-brand-500: #3b82f6;
+  --color-brand-400: #60a5fa;
+  --color-brand-300: #93c5fd;
+  --color-brand-100: #dbeafe;
+}
+
+/* ─── Base ─────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #070c18;
+  color: #ffffff;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Container ─────────────────────────────────────────────
+   Mobile-first: 1rem padding each side → grows at md to 2rem
+   Max width 1280px, centered.
+──────────────────────────────────────────────────────────── */
+.site-container {
+  width: min(100% - 2rem, 1280px);
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .site-container {
+    width: min(100% - 4rem, 1280px);
+  }
+}
+
+/* ─── Responsive typography ─────────────────────────────────
+   clamp() so text scales between min/max without breakpoints
+──────────────────────────────────────────────────────────── */
+.hero-title {
+  font-size: clamp(2.25rem, 6.5vw, 5.5rem);
+  line-height: 1.0;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.section-title {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Horizontal scroll snap (mobile card rows) ─────────────
+   Used by Process, Services, Projects on mobile
+──────────────────────────────────────────────────────────── */
+.scroll-snap-row {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 0.5rem;
+}
+
+.scroll-snap-row::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-snap-item {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+/* ─── Scroll dots indicator ─────────────────────────────────── */
+.scroll-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+}
+
+.scroll-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: background-color 0.2s;
+}
+
+.scroll-dot.active {
+  background-color: #2563eb;
+  width: 24px;
+}
+
+/* ─── Custom scrollbar (branded) ───────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #2563eb;
+  border-radius: 2px;
+}
+
+/* ─── Focus ring ────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
