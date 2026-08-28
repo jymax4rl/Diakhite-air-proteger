@@ -25,6 +25,7 @@ export const images = {
     airConditioning: "/images/services/unites-climatisation-batiment.jpg",
     heating: "/images/services/chauffage-radiateur-batiment.jpg",
     professional: "/images/services/ventilation-professionnelle-bureaux.jpg",
+    hydraulicNetwork: "/images/services/reseaux-hydrauliques-cvc-batiment.jpg",
     plumbingNetwork: "/images/services/reseau-plomberie-batiment.jpg",
     plumbingFittings: "/images/services/reseau-plomberie-raccords.jpg",
     technicalIntervention: "/images/services/intervention-technique-equipement.jpg",

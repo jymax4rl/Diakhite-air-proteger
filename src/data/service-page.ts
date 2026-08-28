@@ -8,24 +8,10 @@ export interface ServicePageItem {
   details: readonly string[];
   image?: string;
   imageAlt?: string;
-  treatment: "feature" | "split" | "compact";
+  treatment: "feature" | "split" | "spotlight";
 }
 
 export const servicePageItems: readonly ServicePageItem[] = [
-  {
-    id: "climatisation",
-    title: "Climatisation",
-    eyebrow: "Confort d’été",
-    summary:
-      "Une installation de climatisation se définit selon les volumes, l’occupation et les contraintes du bâtiment. Le choix et l’implantation des équipements visent un confort homogène et une exploitation accessible.",
-    details: [
-      "Étude des besoins et implantation des unités",
-      "Installation, mise en service et entretien",
-    ],
-    image: images.servicePage.airConditioning,
-    imageAlt: "Unités extérieures de climatisation installées sur la façade d’un bâtiment",
-    treatment: "feature",
-  },
   {
     id: "chauffage",
     title: "Chauffage",
@@ -42,7 +28,7 @@ export const servicePageItems: readonly ServicePageItem[] = [
   },
   {
     id: "ventilation",
-    title: "Ventilation et qualité de l’air",
+    title: "Ventilation",
     eyebrow: "Renouvellement d’air",
     summary:
       "VMC, extraction et diffusion organisent le renouvellement de l’air dans les logements, les locaux professionnels et les bâtiments techniques. Les débits et les réseaux sont étudiés selon les usages.",
@@ -52,73 +38,52 @@ export const servicePageItems: readonly ServicePageItem[] = [
     ],
     image: images.servicePage.professional,
     imageAlt: "Intérieur de bureaux contemporains équipé pour le confort et le renouvellement d’air",
+    treatment: "feature",
+  },
+  {
+    id: "climatisation",
+    title: "Climatisation",
+    eyebrow: "Confort d’été",
+    summary:
+      "Une installation de climatisation se définit selon les volumes, l’occupation et les contraintes du bâtiment. Le choix et l’implantation des équipements visent un confort homogène et une exploitation accessible.",
+    details: [
+      "Étude des besoins et implantation des unités",
+      "Installation, mise en service et entretien",
+    ],
+    image: images.servicePage.airConditioning,
+    imageAlt: "Unités extérieures de climatisation installées sur la façade d’un bâtiment",
     treatment: "split",
   },
   {
-    id: "plomberie",
-    title: "Plomberie générale",
-    eyebrow: "Eau & réseaux",
+    id: "hydraulique",
+    title: "Hydraulique",
+    eyebrow: "Réseaux techniques CVC",
     summary:
-      "Création, modification ou remise en état des réseaux d’alimentation et d’évacuation : chaque intervention tient compte du tracé, de l’accessibilité et des équipements raccordés.",
+      "Les réseaux hydrauliques organisent la circulation maîtrisée des fluides au sein des installations techniques du bâtiment. Ils relient les besoins de chauffage aux équipements CVC dans un ensemble cohérent et accessible.",
+    details: [
+      "Distribution et circulation des fluides à l’échelle du bâtiment",
+      "Relation avec les installations de chauffage et de CVC",
+      "Vision d’ensemble pour la maintenance ou la rénovation",
+    ],
+    image: images.servicePage.hydraulicNetwork,
+    imageAlt:
+      "Réseau hydraulique CVC composé de conduites isolées dans un local technique propre",
+    treatment: "spotlight",
+  },
+  {
+    id: "plomberie-sanitaire",
+    title: "Plomberie & sanitaire",
+    eyebrow: "Eau du bâtiment",
+    summary:
+      "La plomberie et le sanitaire concernent l’alimentation en eau, l’évacuation et le raccordement des équipements du bâtiment. Les réseaux sont pensés selon les usages et l’accès nécessaire à leur entretien.",
     details: [
       "Alimentation en eau et évacuation",
-      "Recherche de fuite et remplacement d’éléments",
-    ],
-    image: images.servicePage.plumbingNetwork,
-    imageAlt: "Réseaux métalliques apparents dans un local technique de bâtiment",
-    treatment: "split",
-  },
-  {
-    id: "installations-sanitaires",
-    title: "Installations sanitaires",
-    eyebrow: "Équipements",
-    summary:
-      "Les appareils sanitaires et leurs raccordements sont intégrés au réseau du bâtiment en veillant aux alimentations, aux évacuations et à l’accès nécessaire pour l’entretien.",
-    details: [
-      "Raccordement des équipements sanitaires",
-      "Création ou adaptation des évacuations",
+      "Raccordement des installations sanitaires",
+      "Adaptation des réseaux dans le bâtiment existant",
     ],
     image: images.servicePage.plumbingFittings,
     imageAlt: "Raccords et éléments de canalisation préparés pour une intervention de plomberie",
     treatment: "split",
-  },
-  {
-    id: "maintenance-depannage",
-    title: "Maintenance et dépannage",
-    eyebrow: "Continuité de service",
-    summary:
-      "Les équipements de chauffage, climatisation, ventilation et plomberie demandent un suivi adapté à leur état et à leur usage. Le diagnostic précède toute opération de remise en fonctionnement.",
-    details: ["Contrôle et diagnostic de l’installation", "Entretien et remplacement des éléments concernés"],
-    image: images.servicePage.technicalIntervention,
-    imageAlt: "Technicien intervenant sur le boîtier électrique d’un équipement",
-    treatment: "split",
-  },
-  {
-    id: "renovation-installations",
-    title: "Rénovation des installations",
-    eyebrow: "Bâtiment existant",
-    summary:
-      "Une installation existante peut être repensée après diagnostic des réseaux et des équipements afin de l’adapter aux usages actuels et aux contraintes du bâti.",
-    details: ["État des lieux technique", "Adaptation des réseaux et équipements"],
-    treatment: "compact",
-  },
-  {
-    id: "regulation-pilotage",
-    title: "Régulation et pilotage",
-    eyebrow: "Maîtrise des équipements",
-    summary:
-      "La régulation coordonne le fonctionnement des équipements avec les besoins réels du bâtiment. Son implantation doit rester compréhensible et accessible aux utilisateurs.",
-    details: ["Réglages adaptés aux usages", "Commandes et régulation des équipements"],
-    treatment: "compact",
-  },
-  {
-    id: "reseaux-techniques",
-    title: "Réseaux techniques",
-    eyebrow: "Coordination",
-    summary:
-      "Les réseaux d’air et d’eau partagent les volumes du bâtiment. Leur tracé est étudié pour limiter les conflits, préserver les accès et faciliter les interventions futures.",
-    details: ["Lecture globale des cheminements", "Accessibilité pour la maintenance"],
-    treatment: "compact",
   },
 ] as const;
 
@@ -126,12 +91,12 @@ export const trustThemes = [
   {
     title: "Une vision coordonnée du bâtiment",
     description:
-      "Chauffage, climatisation, ventilation et plomberie sont étudiés avec les volumes, les usages et les réseaux existants.",
+      "Les cinq disciplines sont étudiées avec les volumes, les usages et les réseaux existants.",
   },
   {
     title: "Des réseaux pensés pour durer",
     description:
-      "Le passage des conduites, l’accès aux composants et les besoins d’entretien sont intégrés dès l’étude.",
+      "Le passage des réseaux d’air, de fluides et d’eau ainsi que les besoins d’entretien sont intégrés dès l’étude.",
   },
   {
     title: "Un interlocuteur pour chaque étape",

@@ -4,7 +4,8 @@ import SectionHeading from "@/components/ui/SectionHeading";
 const focusPoints = [
   "Confort thermique",
   "Qualité de l’air",
-  "Distribution de l’eau",
+  "Circulation des fluides",
+  "Eau & sanitaire",
   "Maintenance accessible",
 ] as const;
 
@@ -18,9 +19,9 @@ export default function ExpertiseIntro() {
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <SectionHeading
-              eyebrow="CVC & plomberie"
-              title="Penser ensemble l’air, la température et l’eau"
-              description="Les équipements techniques partagent les mêmes volumes et répondent aux mêmes usages. Les coordonner dès l’étude permet de construire une installation cohérente, accessible et adaptée au bâtiment."
+              eyebrow="CVC · hydraulique · plomberie"
+              title="Coordonner les réseaux qui font fonctionner le bâtiment"
+              description="Les installations techniques partagent les mêmes volumes et répondent aux mêmes usages. Les considérer ensemble permet de construire une solution cohérente, accessible et adaptée au site."
               theme="light"
               headingId="expertise-intro-heading"
             />
@@ -28,9 +29,9 @@ export default function ExpertiseIntro() {
           <div className="lg:col-span-5 lg:border-l lg:border-slate-200 lg:pl-10">
             <p className="text-base leading-7 text-slate-600">
               Nous abordons chaque projet par ses usages réels&nbsp;: occupation, volumes,
-              besoins de chauffage ou de rafraîchissement, renouvellement d’air, points d’eau et
-              contraintes de réseau. La mise en œuvre et la maintenance sont ensuite pensées
-              ensemble pour préserver l’accès aux équipements.
+              besoins thermiques, renouvellement d’air, circulation des fluides, points d’eau et
+              contraintes de réseau. La mise en œuvre, la maintenance et la rénovation sont
+              pensées dans une même continuité.
             </p>
             <ul className="mt-7 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
               {focusPoints.map((point) => (

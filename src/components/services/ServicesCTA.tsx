@@ -12,7 +12,7 @@ export default function ServicesCTA() {
               Votre projet
             </p>
             <h2 id="services-cta-heading" className="section-title mt-3 max-w-3xl text-white">
-              Parlons de vos équipements CVC et de plomberie
+              Parlons de vos réseaux CVC, hydrauliques et de plomberie
             </h2>
             <p className="lead mt-5 max-w-2xl text-blue-100">
               Décrivez-nous le bâtiment, les équipements concernés et l’installation existante.

@@ -5,8 +5,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import { servicePageItems, type ServicePageItem } from "@/data/service-page";
 
 const featureServices = servicePageItems.filter((service) => service.treatment === "feature");
-const splitServices = servicePageItems.filter((service) => service.treatment === "split");
-const compactServices = servicePageItems.filter((service) => service.treatment === "compact");
+const editorialServices = servicePageItems.filter((service) => service.treatment !== "feature");
 
 export default function ServicesEditorialGrid() {
   return (
@@ -15,8 +14,8 @@ export default function ServicesEditorialGrid() {
         <div className="flex flex-col gap-7 border-b border-slate-200 pb-10 md:flex-row md:items-end md:justify-between">
           <SectionHeading
             eyebrow="Nos services"
-            title="Une offre complète pour les réseaux du bâtiment"
-            description="CVC, plomberie et maintenance sont abordés à partir des usages, de l’installation existante et des contraintes propres à chaque site."
+            title="Cinq expertises, une lecture globale du bâtiment"
+            description="Chauffage, ventilation, climatisation, hydraulique et plomberie sont abordés à partir des usages, de l’installation existante et des contraintes propres à chaque site."
             theme="light"
             headingId="services-heading"
           />
@@ -85,73 +84,147 @@ export default function ServicesEditorialGrid() {
         </div>
 
         <div className="mt-16 space-y-16 md:mt-24 md:space-y-24">
-          {splitServices.map((service, index) => (
-            <article
-              key={service.id}
-              id={service.id}
-              className="grid scroll-mt-24 items-center gap-8 lg:grid-cols-12 lg:gap-14"
-            >
-              <div
-                className={`relative aspect-[4/3] overflow-hidden bg-navy-800 lg:col-span-7 ${
-                  index % 2 === 1 ? "lg:order-2" : ""
-                }`}
-              >
-                {service.image && service.imageAlt && (
-                  <Image
-                    src={service.image}
-                    alt={service.imageAlt}
-                    fill
-                    sizes="(max-width: 1023px) 100vw, (max-width: 1350px) 55vw, 740px"
-                    className="object-cover transition-transform duration-500 hover:scale-[1.02] motion-reduce:transition-none"
-                  />
-                )}
-                <span className="absolute bottom-0 left-0 bg-navy-950 px-4 py-3 text-xs font-semibold tracking-[0.12em] text-brand-400">
-                  0{index + featureServices.length + 1}
-                </span>
-              </div>
-              <div className={`lg:col-span-5 ${index % 2 === 1 ? "lg:order-1" : ""}`}>
-                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-brand-600">
-                  {service.eyebrow}
-                </p>
-                <h3 className="mt-3 text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl">
-                  {service.title}
-                </h3>
-                <p className="mt-5 leading-7 text-slate-600">{service.summary}</p>
-                <ServiceDetails service={service} />
-                <ServiceLink title={service.title} />
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <div className="mt-16 border-t border-slate-200 pt-12 md:mt-24 md:pt-16">
-          <p className="mb-8 max-w-2xl text-sm font-medium uppercase tracking-[0.12em] text-slate-500">
-            Pour une installation cohérente dans le temps
-          </p>
-          <div className="grid gap-px border border-slate-200 bg-slate-200 md:grid-cols-3">
-            {compactServices.map((service, index) => (
-              <article
+          {editorialServices.map((service) =>
+            service.treatment === "spotlight" ? (
+              <HydraulicSpotlight key={service.id} service={service} />
+            ) : (
+              <SplitService
                 key={service.id}
-                id={service.id}
-                className="scroll-mt-24 bg-white p-6 sm:p-8"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">
-                    {service.eyebrow}
-                  </span>
-                  <span className="font-mono text-sm text-slate-400">
-                    0{index + featureServices.length + splitServices.length + 1}
-                  </span>
-                </div>
-                <h3 className="mt-8 text-xl font-bold text-navy-900 sm:text-2xl">{service.title}</h3>
-                <p className="mt-4 text-sm leading-6 text-slate-600">{service.summary}</p>
-                <ServiceLink title={service.title} compact />
-              </article>
-            ))}
-          </div>
+                service={service}
+                imageOnRight={service.id === "plomberie-sanitaire"}
+              />
+            ),
+          )}
         </div>
       </Container>
     </section>
+  );
+}
+
+function SplitService({
+  service,
+  imageOnRight,
+}: {
+  service: ServicePageItem;
+  imageOnRight: boolean;
+}) {
+  const index = servicePageItems.indexOf(service);
+
+  return (
+    <article
+      id={service.id}
+      className="grid scroll-mt-24 items-center gap-8 lg:grid-cols-12 lg:gap-14"
+    >
+      <ServiceImage
+        service={service}
+        number={index + 1}
+        className={`lg:col-span-7 ${imageOnRight ? "lg:order-2" : ""}`}
+      />
+      <div className={`lg:col-span-5 ${imageOnRight ? "lg:order-1" : ""}`}>
+        <ServiceCopy service={service} />
+      </div>
+    </article>
+  );
+}
+
+function HydraulicSpotlight({ service }: { service: ServicePageItem }) {
+  const index = servicePageItems.indexOf(service);
+
+  return (
+    <article
+      id={service.id}
+      className="grid scroll-mt-24 overflow-hidden bg-navy-900 lg:grid-cols-12"
+    >
+      <ServiceImage
+        service={service}
+        number={index + 1}
+        className="aspect-[4/3] sm:aspect-[16/9] lg:col-span-8 lg:min-h-[34rem] lg:aspect-auto"
+        imageSizes="(max-width: 1023px) 100vw, (max-width: 1350px) 66vw, 850px"
+      />
+      <div className="flex flex-col justify-center p-6 sm:p-10 lg:col-span-4 lg:p-12">
+        <ServiceCopy service={service} dark />
+        <nav aria-label="Expertises liées à l’hydraulique" className="mt-7 flex flex-wrap gap-3">
+          <RelatedServiceLink href="#chauffage">Chauffage</RelatedServiceLink>
+          <RelatedServiceLink href="#plomberie-sanitaire">
+            Plomberie & sanitaire
+          </RelatedServiceLink>
+        </nav>
+      </div>
+    </article>
+  );
+}
+
+function ServiceImage({
+  service,
+  number,
+  className,
+  imageSizes = "(max-width: 1023px) 100vw, (max-width: 1350px) 55vw, 740px",
+}: {
+  service: ServicePageItem;
+  number: number;
+  className?: string;
+  imageSizes?: string;
+}) {
+  return (
+    <div
+      className={`relative aspect-[4/3] overflow-hidden bg-navy-800 ${className ?? ""}`}
+    >
+      {service.image && service.imageAlt && (
+        <Image
+          src={service.image}
+          alt={service.imageAlt}
+          fill
+          sizes={imageSizes}
+          className="object-cover transition-transform duration-500 hover:scale-[1.02] motion-reduce:transition-none"
+        />
+      )}
+      <span className="absolute bottom-0 left-0 bg-navy-950 px-4 py-3 text-xs font-semibold tracking-[0.12em] text-brand-400">
+        {String(number).padStart(2, "0")}
+      </span>
+    </div>
+  );
+}
+
+function ServiceCopy({
+  service,
+  dark = false,
+}: {
+  service: ServicePageItem;
+  dark?: boolean;
+}) {
+  return (
+    <>
+      <p
+        className={`text-xs font-semibold uppercase tracking-[0.15em] ${
+          dark ? "text-brand-400" : "text-brand-600"
+        }`}
+      >
+        {service.eyebrow}
+      </p>
+      <h3
+        className={`mt-3 text-3xl font-bold tracking-tight sm:text-4xl ${
+          dark ? "text-white" : "text-navy-900"
+        }`}
+      >
+        {service.title}
+      </h3>
+      <p className={`mt-5 leading-7 ${dark ? "text-slate-300" : "text-slate-600"}`}>
+        {service.summary}
+      </p>
+      <ServiceDetails service={service} dark={dark} />
+      <ServiceLink title={service.title} dark={dark} />
+    </>
+  );
+}
+
+function RelatedServiceLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Link
+      href={href}
+      className="inline-flex min-h-11 items-center border border-white/15 px-4 py-2 text-sm font-medium text-slate-200 transition-colors hover:border-brand-400/60 hover:text-white motion-reduce:transition-none"
+    >
+      {children}
+    </Link>
   );
 }
 
@@ -182,18 +255,16 @@ function ServiceDetails({ service, dark = false }: { service: ServicePageItem; d
 function ServiceLink({
   title,
   dark = false,
-  compact = false,
 }: {
   title: string;
   dark?: boolean;
-  compact?: boolean;
 }) {
   return (
     <Link
       href="/contact"
       className={`mt-7 inline-flex min-h-11 items-center gap-2 text-sm font-semibold transition-colors motion-reduce:transition-none ${
         dark ? "text-brand-300 hover:text-white" : "text-brand-600 hover:text-brand-700"
-      } ${compact ? "mt-6" : ""}`}
+      }`}
     >
       Échanger sur {title.toLocaleLowerCase("fr")} <ArrowIcon />
     </Link>
