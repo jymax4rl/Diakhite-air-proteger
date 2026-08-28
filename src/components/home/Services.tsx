@@ -7,7 +7,7 @@ import { services, type Service } from "@/data/services";
 export default function Services() {
   return (
     <section
-      className="bg-slate-50 pt-14 pb-16 md:pt-20 md:pb-24"
+      className="bg-slate-50 section-y"
       aria-labelledby="services-heading"
     >
       <Container>
@@ -34,15 +34,10 @@ export default function Services() {
           </Link>
         </div>
 
-        {/* ── Mobile: horizontal scroll ── */}
-        <div className="scroll-snap-row md:hidden">
-          {services.map((service) => (
-            <ServiceCard key={service.id} service={service} />
-          ))}
-        </div>
-
-        {/* ── Desktop: 4-column grid ── */}
-        <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* ── Carousel on mobile, 2 columns at md, 4 at lg.
+               One set of cards: `scroll-snap-row` switches itself from flex to
+               grid at md, so the markup (and the images) are not duplicated. ── */}
+        <div className="scroll-snap-row md:grid-cols-2 lg:grid-cols-4">
           {services.map((service) => (
             <ServiceCard key={service.id} service={service} />
           ))}
@@ -56,15 +51,16 @@ function ServiceCard({ service }: { service: Service }) {
   return (
     <Link
       href={service.href}
-      className="scroll-snap-item w-[240px] sm:w-[260px] md:w-auto group block relative overflow-hidden rounded-2xl bg-navy-800 aspect-[3/4]"
+      className="scroll-snap-item w-[240px] sm:w-[260px] md:w-auto group block relative overflow-hidden rounded-2xl bg-navy-800 aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4]"
       aria-label={`${service.title} — ${service.description}`}
     >
-      {/* Image */}
+      {/* Image — rendered widths: 240/260px in the carousel, ~47vw in the
+          2-column tablet grid, ~305px max in the 4-column desktop grid. */}
       <Image
         src={service.image}
         alt={`Service de ventilation ${service.title.toLowerCase()}`}
         fill
-        sizes="(max-width: 768px) 260px, (max-width: 1024px) 50vw, 25vw"
+        sizes="(max-width: 639px) 240px, (max-width: 767px) 260px, (max-width: 1023px) 47vw, 305px"
         className="object-cover transition-transform duration-500 group-hover:scale-105"
       />
 

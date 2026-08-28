@@ -12,14 +12,13 @@ const stats = [
 
 export default function AboutPreview() {
   return (
-    <section
-      className="bg-navy-800 py-16 md:py-24 overflow-hidden"
-      aria-labelledby="about-heading"
-    >
+    <section className="bg-navy-800 section-y" aria-labelledby="about-heading">
       <Container>
+        {/* Stacks as content-then-image below lg (DOM order), two columns from
+            lg — no order swapping needed. */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* ── Text column ── */}
-          <div className="order-2 lg:order-1">
+          <div>
             <SectionHeading
               eyebrow="À propos de Ventila"
               title="Votre partenaire de confiance en ventilation"
@@ -27,12 +26,16 @@ export default function AboutPreview() {
               headingId="about-heading"
             />
 
-            {/* Stats row */}
-            <div className="grid grid-cols-3 gap-3 sm:gap-5 mt-8 mb-8">
-              {stats.map((stat) => (
+            {/* Stats row — 2+1 below sm (three columns left only ~64px of text
+                width at 320px, which broke "d'expérience" mid-word), then three
+                equal columns from sm up. */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mt-8 mb-8">
+              {stats.map((stat, i) => (
                 <div
                   key={stat.value}
-                  className="bg-white/5 border border-white/8 rounded-xl p-3 sm:p-4 text-center"
+                  className={`bg-white/5 border border-white/8 rounded-xl p-3 sm:p-4 text-center ${
+                    i === stats.length - 1 ? "col-span-2 sm:col-span-1" : ""
+                  }`}
                 >
                   <div className="flex justify-center mb-2 text-brand-400">
                     {stat.icon}
@@ -40,10 +43,9 @@ export default function AboutPreview() {
                   <p className="text-white font-extrabold text-xl sm:text-2xl md:text-3xl leading-none mb-1">
                     {stat.value}
                   </p>
-                  <p
-                    className="text-slate-400 text-[11px] sm:text-xs leading-tight whitespace-pre-line"
-                    style={{ whiteSpace: "pre-line" }}
-                  >
+                  {/* Labels carry a literal \n; whitespace-pre-line honours it
+                      so each stat breaks at the same point on every screen. */}
+                  <p className="text-slate-400 text-[11px] sm:text-xs leading-tight whitespace-pre-line">
                     {stat.label}
                   </p>
                 </div>
@@ -56,13 +58,15 @@ export default function AboutPreview() {
           </div>
 
           {/* ── Image column ── */}
-          <div className="order-1 lg:order-2">
+          <div>
             <div className="relative rounded-2xl overflow-hidden aspect-[4/3] lg:aspect-[5/4]">
+              {/* Full container width when stacked; half the content column
+                  (448px at lg, 608px max) once side by side. */}
               <Image
                 src={images.about.main}
                 alt="Installation professionnelle de système de ventilation industrielle"
                 fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 1023px) 100vw, (max-width: 1279px) 46vw, 608px"
                 className="object-cover"
               />
               {/* Subtle overlay */}

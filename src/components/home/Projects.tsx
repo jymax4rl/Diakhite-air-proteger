@@ -10,10 +10,42 @@ const categoryColors: Record<string, string> = {
   Résidentiel: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
 };
 
+/**
+ * Grid span per position, plus the widths that span actually renders at so
+ * next/image can pick a sensibly sized file for each slot. Widths below md come
+ * from the carousel card (256/300px); at md every card is one of two columns
+ * (~47vw); from lg the 12-column layout gives 7/12, 5/12 and 12/12 slots, which
+ * top out at 740px, 525px and 1280px inside the 1280px content column.
+ */
+const slots = [
+  {
+    className: "lg:col-span-7 lg:row-span-2",
+    sizes:
+      "(max-width: 639px) 256px, (max-width: 767px) 300px, (max-width: 1023px) 47vw, (max-width: 1279px) 56vw, 740px",
+  },
+  {
+    className: "lg:col-span-5",
+    sizes:
+      "(max-width: 639px) 256px, (max-width: 767px) 300px, (max-width: 1023px) 47vw, (max-width: 1279px) 40vw, 525px",
+  },
+  {
+    className: "lg:col-span-5",
+    sizes:
+      "(max-width: 639px) 256px, (max-width: 767px) 300px, (max-width: 1023px) 47vw, (max-width: 1279px) 40vw, 525px",
+  },
+  {
+    className: "lg:col-span-12",
+    sizes:
+      "(max-width: 639px) 256px, (max-width: 767px) 300px, (max-width: 1023px) 47vw, (max-width: 1279px) 95vw, 1280px",
+  },
+] as const;
+
+const fallbackSlot = { className: "", sizes: "(max-width: 767px) 300px, 47vw" };
+
 export default function Projects() {
   return (
     <section
-      className="bg-navy-700 py-16 md:py-24"
+      className="bg-navy-700 section-y"
       aria-labelledby="projects-heading"
     >
       <Container>
@@ -33,30 +65,21 @@ export default function Projects() {
           </Link>
         </div>
 
-        {/* ── Mobile: horizontal scroll ── */}
-        <div className="scroll-snap-row md:hidden">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
-
-        {/* ── Desktop: 2×2 asymmetric grid ── */}
-        <div className="hidden md:grid grid-cols-2 lg:grid-cols-12 gap-4 auto-rows-[220px] lg:auto-rows-[200px]">
-          {projects.map((project, i) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              className={
-                i === 0
-                  ? "lg:col-span-7 lg:row-span-2"
-                  : i === 1
-                  ? "lg:col-span-5"
-                  : i === 2
-                  ? "lg:col-span-5"
-                  : "col-span-2 lg:col-span-12 lg:row-span-1"
-              }
-            />
-          ))}
+        {/* ── Carousel on mobile, even 2×2 at md, asymmetric 12-column at lg.
+               At md every card stays one column wide: letting the fourth card
+               span both columns left an empty cell at 768/834px. ── */}
+        <div className="scroll-snap-row md:grid-cols-2 md:auto-rows-[220px] lg:grid-cols-12 lg:auto-rows-[200px]">
+          {projects.map((project, i) => {
+            const slot = slots[i] ?? fallbackSlot;
+            return (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                className={slot.className}
+                sizes={slot.sizes}
+              />
+            );
+          })}
         </div>
       </Container>
     </section>
@@ -66,9 +89,11 @@ export default function Projects() {
 function ProjectCard({
   project,
   className = "",
+  sizes,
 }: {
   project: Project;
   className?: string;
+  sizes: string;
 }) {
   const tagColor =
     categoryColors[project.category] ??
@@ -77,7 +102,10 @@ function ProjectCard({
   return (
     <Link
       href={project.href}
-      className={`scroll-snap-item w-[280px] sm:w-[300px] md:w-auto group relative overflow-hidden rounded-2xl bg-navy-700 ${className}`}
+      /* aspect-[4/3] gives the carousel card a height: its only content is
+         absolutely positioned, so without a ratio the card collapsed to 0px.
+         From md the grid rows set the height instead. */
+      className={`scroll-snap-item w-[256px] sm:w-[300px] md:w-auto aspect-[4/3] md:aspect-auto group relative overflow-hidden rounded-2xl bg-navy-700 ${className}`}
       aria-label={`Projet : ${project.title} — ${project.category}, ${project.location}`}
     >
       {/* Image */}
@@ -85,7 +113,7 @@ function ProjectCard({
         src={project.image}
         alt={`Réalisation : ${project.title}`}
         fill
-        sizes="(max-width: 768px) 300px, (max-width: 1024px) 50vw, 40vw"
+        sizes={sizes}
         className="object-cover transition-transform duration-500 group-hover:scale-105"
       />
 

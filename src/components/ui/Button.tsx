@@ -27,10 +27,13 @@ const variants: Record<Variant, string> = {
   ghost: "bg-transparent text-current hover:bg-white/10 border border-transparent",
 };
 
+/* min-h-11 (44px) is a floor, not a size: md and lg already resolve taller than
+   that, so it only guarantees the minimum comfortable touch target if the font
+   scale or line-height ever shrinks. */
 const sizes: Record<Size, string> = {
   sm: "px-4 py-2 text-sm gap-1.5",
-  md: "px-6 py-3 text-base gap-2",
-  lg: "px-7 py-3.5 text-base gap-2 md:px-8 md:py-4 md:text-lg",
+  md: "px-6 py-3 text-base gap-2 min-h-11",
+  lg: "px-7 py-3.5 text-base gap-2 min-h-11 md:px-8 md:py-4 md:text-lg",
 };
 
 export default function Button({
@@ -47,7 +50,7 @@ export default function Button({
   tabIndex,
 }: ButtonProps) {
   const base =
-    "inline-flex items-center justify-center font-semibold rounded-full transition-all duration-200 select-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-400 focus-visible:outline-offset-2 disabled:opacity-60 disabled:cursor-not-allowed";
+    "inline-flex items-center justify-center text-center font-semibold rounded-full transition-all duration-200 select-none max-w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-400 focus-visible:outline-offset-2 disabled:opacity-60 disabled:cursor-not-allowed";
 
   const classes = cn(base, variants[variant], sizes[size], className);
 

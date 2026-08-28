@@ -7,7 +7,8 @@ import ContactCTA from "@/components/home/ContactCTA";
 export default function HomePage() {
   return (
     <>
-      {/* Hero also contains the embedded Process strip */}
+      {/* Hero renders <Process /> as its last child so the glass step panel
+          overlays the hero photograph. */}
       <Hero />
       <Services />
       <AboutPreview />

@@ -29,6 +29,43 @@
   --color-brand-100: #dbeafe;
 }
 
+/* ─── Responsive scale tokens ───────────────────────────────
+   Single source of truth for the horizontal gutter and the
+   vertical section rhythm. Every section/container reads these
+   so spacing stays consistent instead of being re-guessed per
+   component. Breakpoints match Tailwind's sm / md / lg.
+──────────────────────────────────────────────────────────── */
+:root {
+  /* Horizontal page gutter — content never touches the screen edge */
+  --gutter: 1rem;
+  /* Vertical padding for a full content section */
+  --section-py: 4rem;
+  /* Vertical padding for a slim full-width band (e.g. the CTA bar) */
+  --band-py: 1.25rem;
+  /* Max width of the content itself, excluding gutters */
+  --content-max: 1280px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --gutter: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --section-py: 5rem;
+    --band-py: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 2rem;
+    --section-py: 6rem;
+  }
+}
+
 /* ─── Base ─────────────────────────────────────────────────── */
 *,
 *::before,
@@ -50,78 +87,98 @@ body {
 }
 
 /* ─── Container ─────────────────────────────────────────────
-   Mobile-first: 1rem padding each side → grows at md to 2rem
-   Max width 1280px, centered.
+   Padding-based rather than width-based: the box is always
+   100% wide and the gutter is real padding, so a child can
+   never be laid out wider than the visible area. Max width is
+   content (1280px) + both gutters, so the content column caps
+   at exactly 1280px on wide screens.
 ──────────────────────────────────────────────────────────── */
-.site-container {
-  width: min(100% - 2rem, 1280px);
+@utility site-container {
+  width: 100%;
+  max-width: calc(var(--content-max) + 2 * var(--gutter));
   margin-inline: auto;
+  padding-inline: var(--gutter);
 }
 
-@media (min-width: 768px) {
-  .site-container {
-    width: min(100% - 4rem, 1280px);
-  }
+/* ─── Vertical rhythm ───────────────────────────────────────
+   section-y : standard content section (4 / 5 / 6rem)
+   band-y    : slim accent band (1.25 / 1.5rem)
+──────────────────────────────────────────────────────────── */
+@utility section-y {
+  padding-block: var(--section-py);
+}
+
+@utility band-y {
+  padding-block: var(--band-py);
 }
 
 /* ─── Responsive typography ─────────────────────────────────
-   clamp() so text scales between min/max without breakpoints
+   clamp() so text scales between min/max without breakpoints.
+   The vw term is paired with a rem term so growth is gradual
+   instead of snapping flat between the clamp bounds, and long
+   words ("performantes") break rather than overflow.
 ──────────────────────────────────────────────────────────── */
-.hero-title {
-  font-size: clamp(2.25rem, 6.5vw, 5.5rem);
-  line-height: 1.0;
+@utility hero-title {
+  /* 36px at 320 → 83px at 1280 → caps at 88px, matching the
+     previous 6.5vw curve at both ends without the flat stretch
+     below 554px. */
+  font-size: clamp(2.25rem, 4.9vw + 1.27rem, 5.5rem);
+  /* 1.05 rather than 1.0 so accented capitals (É, À) are not clipped */
+  line-height: 1.05;
   font-weight: 800;
   letter-spacing: -0.025em;
+  overflow-wrap: break-word;
 }
 
-.section-title {
-  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+@utility section-title {
+  font-size: clamp(1.75rem, 2.25vw + 0.9rem, 2.75rem);
   line-height: 1.15;
   font-weight: 700;
   letter-spacing: -0.02em;
+  text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
-/* ─── Horizontal scroll snap (mobile card rows) ─────────────
-   Used by Process, Services, Projects on mobile
+/* Lead / intro paragraph — one fluid size for hero sub-copy and
+   section descriptions so body text stays comfortable everywhere. */
+@utility lead {
+  font-size: clamp(1rem, 0.6vw + 0.88rem, 1.25rem);
+  line-height: 1.65;
+}
+
+/* ─── Card row ──────────────────────────────────────────────
+   Mobile: horizontal scroll-snap carousel with hidden scrollbar.
+   md and up: switches itself to a grid, so consumers only need
+   to declare the column count (md:grid-cols-*). The switch lives
+   here rather than as a `md:grid` utility in markup because this
+   custom class and Tailwind's utilities share specificity —
+   owning both states removes the cascade race entirely.
 ──────────────────────────────────────────────────────────── */
-.scroll-snap-row {
+@utility scroll-snap-row {
   display: flex;
   gap: 1rem;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   padding-bottom: 0.5rem;
+
+  @media (min-width: 768px) {
+    display: grid;
+    overflow-x: visible;
+    scroll-snap-type: none;
+    padding-bottom: 0;
+  }
 }
 
 .scroll-snap-row::-webkit-scrollbar {
   display: none;
 }
 
-.scroll-snap-item {
+@utility scroll-snap-item {
   flex-shrink: 0;
   scroll-snap-align: start;
-}
-
-/* ─── Scroll dots indicator ─────────────────────────────────── */
-.scroll-dots {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  padding-top: 1rem;
-}
-
-.scroll-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 9999px;
-  background-color: rgba(255, 255, 255, 0.2);
-  transition: background-color 0.2s;
-}
-
-.scroll-dot.active {
-  background-color: #2563eb;
-  width: 24px;
 }
 
 /* ─── Custom scrollbar (branded) ───────────────────────────── */

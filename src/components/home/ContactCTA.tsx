@@ -3,10 +3,7 @@ import Button from "@/components/ui/Button";
 
 export default function ContactCTA() {
   return (
-    <section
-      className="bg-brand-600 py-5 md:py-6"
-      aria-label="Demander un devis"
-    >
+    <section className="bg-brand-600 band-y" aria-label="Demander un devis">
       <Container>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* Left – message */}
@@ -23,11 +20,12 @@ export default function ContactCTA() {
             </div>
           </div>
 
-          {/* Right – CTA */}
+          {/* Right – CTA. Full width while stacked so it is easy to tap, then
+              intrinsic width once it sits beside the message. */}
           <Button
             href="/contact"
             variant="outline"
-            className="border-white/50 text-white hover:bg-white/15 hover:border-white whitespace-nowrap flex-shrink-0"
+            className="border-white/50 text-white hover:bg-white/15 hover:border-white whitespace-nowrap flex-shrink-0 w-full sm:w-auto"
           >
             Demander un devis →
           </Button>

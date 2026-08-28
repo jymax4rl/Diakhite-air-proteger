@@ -53,7 +53,7 @@ export default function SectionHeading({
       {description && (
         <p
           className={cn(
-            "text-lg leading-relaxed",
+            "lead",
             isDark ? "text-slate-400" : "text-slate-600"
           )}
         >
