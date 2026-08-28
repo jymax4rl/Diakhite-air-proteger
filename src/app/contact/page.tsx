@@ -3,8 +3,9 @@ import ContactDetails from "@/components/contact/ContactDetails";
 import ContactForm from "@/components/contact/ContactForm";
 import ContactHero from "@/components/contact/ContactHero";
 import Container from "@/components/ui/Container";
+import { site } from "@/data/site";
 
-const origin = "https://diakhite-air-proteger.vercel.app";
+const origin = site.url;
 const canonicalUrl = `${origin}/contact`;
 const description =
   "Présentez votre projet de ventilation, VMC, extraction ou traitement de l’air à Ventila Solutions et retrouvez nos coordonnées.";
@@ -23,13 +24,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "fr_FR",
     url: canonicalUrl,
-    siteName: "Ventila Solutions",
-    title: "Parlons de votre projet de ventilation | Ventila Solutions",
+    siteName: site.brand.name,
+    title: `Parlons de votre projet de ventilation | ${site.brand.name}`,
     description,
   },
   twitter: {
     card: "summary",
-    title: "Parlons de votre projet de ventilation | Ventila Solutions",
+    title: `Parlons de votre projet de ventilation | ${site.brand.name}`,
     description,
   },
 };

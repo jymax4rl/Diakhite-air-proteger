@@ -1,5 +1,6 @@
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
+import { site } from "@/data/site";
 
 export default function ServicesCTA() {
   return (
@@ -27,17 +28,17 @@ export default function ServicesCTA() {
               Demander un devis <ArrowIcon />
             </Button>
             <a
-              href="tel:+33651644657"
+              href={site.contact.phone.href}
               className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/35 px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-white/10 motion-reduce:transition-none"
-              aria-label="Appelez Ventila Solutions au 06 51 64 46 57"
+              aria-label={`Appelez ${site.brand.name} au ${site.contact.phone.display}`}
             >
-              <PhoneIcon /> 06 51 64 46 57
+              <PhoneIcon /> {site.contact.phone.display}
             </a>
             <a
-              href="mailto:contact@ventila-solutions.fr"
+              href={site.contact.email.href}
               className="text-center text-sm text-blue-100 underline decoration-white/35 underline-offset-4 transition-colors hover:text-white motion-reduce:transition-none"
             >
-              contact@ventila-solutions.fr
+              {site.contact.email.address}
             </a>
           </div>
         </div>

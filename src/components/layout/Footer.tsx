@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Container from "@/components/ui/Container";
+import { site } from "@/data/site";
 
 const services = [
   { href: "/services/residentiel", label: "Ventilation Résidentielle" },
@@ -25,43 +26,50 @@ export default function Footer() {
             <Link
               href="/"
               className="inline-flex items-center gap-2.5 mb-5"
-              aria-label="Ventila Solutions"
+              aria-label={site.brand.name}
             >
               <div className="w-9 h-9 bg-brand-600 rounded-lg flex items-center justify-center flex-shrink-0">
                 <LogoIcon />
               </div>
               <div className="leading-none">
-                <span className="block text-white font-bold text-[15px]">Ventila</span>
+                <span className="block text-white font-bold text-[15px]">
+                  {site.brand.logoPrimary}
+                </span>
                 <span className="block text-brand-400 text-[9px] font-bold tracking-[0.15em] uppercase">
-                  Solutions
+                  {site.brand.logoSecondary}
                 </span>
               </div>
             </Link>
 
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm mb-6">
-              Votre partenaire de confiance pour des solutions de ventilation
-              performantes, économiques et durables depuis plus de 10 ans.
+              Solutions d’installation, de maintenance et d’entretien des
+              systèmes de ventilation.
             </p>
 
             <address className="not-italic space-y-2 text-sm text-slate-400">
               <p>
                 <a
-                  href="tel:+33651644657"
+                  href={site.contact.phone.href}
                   className="hover:text-white transition-colors"
                 >
-                  📞 06 51 64 46 57
+                  📞 {site.contact.phone.display}
                 </a>
               </p>
               <p>
                 <a
-                  href="mailto:contact@ventila-solutions.fr"
+                  href={site.contact.email.href}
                   className="hover:text-white transition-colors"
                 >
-                  ✉️ contact@ventila-solutions.fr
+                  ✉️ {site.contact.email.address}
                 </a>
               </p>
-              <p>📍 75001 Paris, France</p>
+              <p>📍 Siège social : {site.company.registeredAddress.display}</p>
             </address>
+            <p className="mt-5 text-xs leading-5 text-slate-500">
+              {site.company.legalName} · {site.company.legalForm}
+              <br />
+              SIREN {site.company.sirenDisplay} · {site.company.rcs}
+            </p>
           </div>
 
           {/* ── Services column ── */}
@@ -105,7 +113,9 @@ export default function Footer() {
 
         {/* ── Bottom bar ── */}
         <div className="border-t border-white/6 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} Ventila Solutions. Tous droits réservés.</p>
+          <p>
+            © {new Date().getFullYear()} {site.brand.name}. Tous droits réservés.
+          </p>
           <nav aria-label="Liens légaux" className="flex gap-5">
             <Link
               href="/mentions-legales"

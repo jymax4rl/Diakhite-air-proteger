@@ -30,6 +30,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { site } from "@/data/site";
 
 interface NavLink {
   readonly href: string;
@@ -162,7 +163,7 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
         }}
       >
         <a
-          href="tel:+33651644657"
+          href={site.contact.phone.href}
           style={{
             display: "flex",
             alignItems: "center",
@@ -177,7 +178,7 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
             textDecoration: "none",
           }}
         >
-          <PhoneIcon /> 06 51 64 46 57
+          <PhoneIcon /> {site.contact.phone.display}
         </a>
         <Link
           href="/contact"

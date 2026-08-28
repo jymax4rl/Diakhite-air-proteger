@@ -1,16 +1,17 @@
 import Link from "next/link";
+import { site } from "@/data/site";
 
 const contactItems = [
   {
     label: "Téléphone",
-    value: "06 51 64 46 57",
-    href: "tel:+33651644657",
+    value: site.contact.phone.display,
+    href: site.contact.phone.href,
     icon: <PhoneIcon />,
   },
   {
     label: "E-mail",
-    value: "contact@ventila-solutions.fr",
-    href: "mailto:contact@ventila-solutions.fr",
+    value: site.contact.email.address,
+    href: site.contact.email.href,
     icon: <MailIcon />,
   },
 ] as const;
@@ -60,10 +61,13 @@ export default function ContactDetails() {
             </span>
             <span>
               <span className="block text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                Adresse
+                Siège social
               </span>
               <span className="mt-1 block text-sm font-semibold text-white sm:text-base">
-                75001 Paris, France
+                {site.company.registeredAddress.display}
+              </span>
+              <span className="mt-1 block text-xs leading-5 text-slate-400">
+                Adresse administrative, sans indication d’accueil du public.
               </span>
             </span>
           </li>

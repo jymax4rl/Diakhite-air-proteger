@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { site } from "@/data/site";
 
 const fieldClassName =
   "min-h-12 w-full max-w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-navy-900 shadow-sm transition-colors placeholder:text-slate-400 hover:border-slate-400 focus:border-brand-600 focus:outline-2 focus:outline-brand-600 focus:outline-offset-2 disabled:cursor-not-allowed disabled:bg-slate-100";
@@ -29,10 +30,10 @@ export default function ContactForm() {
           ligne sera activé lorsqu’un service de traitement sécurisé sera disponible. Pour
           transmettre votre demande aujourd’hui, écrivez à{" "}
           <a
-            href="mailto:contact@ventila-solutions.fr"
+            href={site.contact.email.href}
             className="font-semibold text-brand-700 underline decoration-brand-600/40 underline-offset-4"
           >
-            contact@ventila-solutions.fr
+            {site.contact.email.address}
           </a>
           .
         </p>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Button from "@/components/ui/Button";
+import { site } from "@/data/site";
 
 export const navLinks = [
   { href: "/", label: "Accueil" },
@@ -40,17 +41,17 @@ export default function Navbar({ onMenuToggle, menuOpen }: NavbarProps) {
           <Link
             href="/"
             className="flex items-center gap-2.5 group flex-shrink-0"
-            aria-label="Ventila Solutions — Accueil"
+            aria-label={`${site.brand.name} — Accueil`}
           >
             <div className="w-9 h-9 bg-brand-600 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-brand-500 transition-colors duration-200">
               <LogoIcon />
             </div>
             <div className="leading-none">
               <span className="block text-white font-bold text-[15px] tracking-tight">
-                Ventila
+                {site.brand.logoPrimary}
               </span>
               <span className="block text-brand-400 text-[9px] font-bold tracking-[0.15em] uppercase">
-                Solutions
+                {site.brand.logoSecondary}
               </span>
             </div>
           </Link>
@@ -72,12 +73,12 @@ export default function Navbar({ onMenuToggle, menuOpen }: NavbarProps) {
           {/* ── Desktop CTA ── */}
           <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
             <a
-              href="tel:+33651644657"
+              href={site.contact.phone.href}
               className="flex items-center gap-1.5 text-[13px] font-medium text-slate-300 hover:text-white transition-colors"
-              aria-label="Appelez-nous au 06 51 64 46 57"
+              aria-label={`Appelez-nous au ${site.contact.phone.display}`}
             >
               <PhoneIcon className="w-3.5 h-3.5" />
-              06 51 64 46 57
+              {site.contact.phone.display}
             </a>
             <Button href="/contact" size="sm">
               Demander un devis →
@@ -87,7 +88,7 @@ export default function Navbar({ onMenuToggle, menuOpen }: NavbarProps) {
           {/* ── Mobile controls ── */}
           <div className="flex lg:hidden items-center gap-2.5">
             <a
-              href="tel:+33651644657"
+              href={site.contact.phone.href}
               className="flex items-center justify-center w-9 h-9 rounded-full bg-brand-600 text-white hover:bg-brand-500 transition-colors"
               aria-label="Nous appeler"
             >
