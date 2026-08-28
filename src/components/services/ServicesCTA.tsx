@@ -22,7 +22,7 @@ export default function ServicesCTA() {
             <Button
               href="/contact"
               size="lg"
-              className="w-full border-white bg-white text-brand-700 hover:border-blue-50 hover:bg-blue-50"
+              className="w-full border-white bg-white text-brand-700! hover:border-blue-50 hover:bg-blue-50 active:border-blue-100! active:bg-blue-100!"
             >
               Demander un devis <ArrowIcon />
             </Button>
