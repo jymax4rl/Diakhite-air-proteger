@@ -5,15 +5,15 @@
 
 | Field | Value |
 | --- | --- |
-| Commit documented | `674f6b953e875a39831f5077a18c525c9a3bd2b6` (`674f6b9`) |
-| Commit subject | `fix: global responsive layout system — container, fluid type, overflow fixes, Process extraction` |
-| Commit date | 2026-08-28 16:14:14 +0000 |
-| Branch | `main` |
+| Commit documented | `5ee36f323c6d284b6045926d083e1e7af21c6d30` (`5ee36f3`) |
+| Commit subject | `feat: build premium SEO-focused services page` |
+| Commit date | 2026-08-28 16:49:08 +0000 |
+| Branch | `cursor/services-page-95cc` |
 | Working tree at time of writing | clean (no uncommitted changes) |
-| Documentation status | Source snapshot: `674f6b9`; documentation workflow added in the subsequent commit |
-| Verified at this SHA | `npx tsc --noEmit` → 0 errors; `npx eslint src/ --max-warnings 0` → 0 problems |
+| Documentation status | Context reflects source commit `5ee36f3`, immediately before this documentation commit |
+| Verified at this SHA | `next typegen`, `tsc --noEmit`, ESLint (zero warnings), and production build all pass |
 
-> This document was written while another agent was actively committing responsive-layout work. Every source file below was re-read after the tree settled at `674f6b9` and verified by checksum. The context reflects that source snapshot immediately before its own documentation/workflow commit; later source changes require re-verifying sections 5, 6 and 9.
+> This context reflects source commit `5ee36f3` immediately before its own documentation commit. The source commit is already pushed; later source changes require re-verifying the affected sections.
 
 ---
 
@@ -27,7 +27,7 @@
 - **Do NOT "simplify" `SiteShell.tsx` away, and do NOT move menu state into `Navbar`.** It exists for two hard technical reasons (section 8.1). Collapsing it re-breaks the mobile menu.
 - **Do NOT convert `MobileMenu.tsx`'s inline styles to Tailwind classes** as a drive-by cleanup. It is deliberate (section 8.2). It is acknowledged technical debt, but changing it requires re-verifying the stacking-context fix.
 - **All image paths must go through `src/data/images.ts`.** Never inline a URL or `/images/...` path in a component.
-- The five sub-pages (`/services`, `/a-propos`, `/realisations`, `/blog`, `/contact`) are **placeholder stubs**. There is no contact form, no CMS, no SEO file conventions, no detail routes.
+- `/services` is a complete static editorial page. The other four sub-pages (`/a-propos`, `/realisations`, `/blog`, `/contact`) remain placeholder stubs. There is no contact form, CMS, or detail routes.
 - ~14 internal `<Link>` instances point at **10 routes that do not exist** (section 9.6). This is known. Do not treat a 404 as a new bug you introduced.
 
 ---
@@ -242,7 +242,7 @@ Environment notes:
     │   ├── blog/page.tsx         STUB page. SERVER.
     │   ├── contact/page.tsx      STUB page. SERVER.
     │   ├── realisations/page.tsx STUB page. SERVER.
-    │   └── services/page.tsx     STUB page. SERVER.
+    │   └── services/page.tsx     Full editorial page. SERVER. Metadata + JSON-LD composition.
     │
     ├── components/
     │   ├── home/
@@ -259,6 +259,13 @@ Environment notes:
     │   │   ├── MobileMenu.tsx    **CLIENT** ("use client"). Viewport-level overlay. Inline
     │   │   │                     styles are deliberate — read section 8.2.
     │   │   └── Footer.tsx        SERVER. 4-column footer. Contains 6 broken links.
+    │   ├── services/
+    │   │   ├── ServicesHero.tsx          SERVER. Hero, breadcrumb, H1 and primary CTAs.
+    │   │   ├── ExpertiseIntro.tsx        SERVER. Light editorial introduction.
+    │   │   ├── ServicesEditorialGrid.tsx SERVER. Nine-service varied editorial layout.
+    │   │   ├── WhyChooseUs.tsx           SERVER. Supportable trust themes.
+    │   │   ├── ServicesProcess.tsx       SERVER. Five-step ordered process.
+    │   │   └── ServicesCTA.tsx           SERVER. Contact CTA using repository facts.
     │   └── ui/
     │       ├── Button.tsx        SERVER. Link-or-button polymorph. 3 variants × 3 sizes.
     │       ├── Container.tsx     SERVER. Thin wrapper over `.site-container`.
@@ -267,6 +274,7 @@ Environment notes:
     │
     ├── data/
     │   ├── images.ts             Centralised image registry. THE single source of image paths.
+    │   ├── service-page.ts       Nine service topics + trust and process content contracts.
     │   ├── services.ts           `Service` interface + 4 services. Hrefs are all broken.
     │   └── projects.ts           `Project` interface + 4 projects. Hrefs are all broken.
     │
@@ -1679,3 +1687,103 @@ npx next typegen && npx tsc --noEmit    # the correct CI invocation
 **Not available / do not suggest:** `next lint` (removed), `next export` (use `output: "export"`), `--turbo` (renamed then made default).
 
 **Docs:** version-matched Next.js 16.3.2 documentation is bundled at `node_modules/next/dist/docs/`. Start with `01-app/02-guides/upgrading/version-16.md` for breaking changes and `01-app/03-api-reference/` for API details. Prefer these over recalled knowledge — they are authoritative for the exact installed version.
+
+---
+
+## 13. `/services` editorial page (source commit `5ee36f3`)
+
+### 13.1 Composition and semantics
+
+`src/app/services/page.tsx` remains a Server Component and renders a plain `<div>` because
+`SiteShell` already owns the document `<main>`. Its section order is:
+
+1. `ServicesHero` — local LCP image, accessible breadcrumb, the route's single `<h1>`, and
+   links to `/contact` and `#services`.
+2. `ExpertiseIntro` — indoor-air-quality and building-performance editorial context.
+3. `ServicesEditorialGrid` — the stable `id="services"` target and nine service `<article>`s.
+   Two feature panels, four alternating image/text rows, and three compact technical cards avoid
+   a repeated-card catalogue.
+4. `WhyChooseUs` — three neutral, supportable approach themes and `/a-propos` link.
+5. `ServicesProcess` — ordered five-step sequence: need analysis, solution study, installation,
+   commissioning, then follow-up and maintenance.
+6. `ServicesCTA` — `/contact`, phone, and email actions. The repository phone/email are reused
+   verbatim but remain placeholder-like facts (see known issues).
+
+Every section is named with `aria-labelledby`; service names are `<h3>` under section `<h2>`s.
+All new components are Server Components. `Navbar`, `SiteShell`, `MobileMenu`, `Footer`, global
+tokens, and unrelated routes were not changed.
+
+### 13.2 Content contract
+
+`src/data/service-page.ts` owns all substantial page copy:
+
+- `ServicePageItem` has `id`, `title`, `eyebrow`, `summary`, `details`, optional image/alt, and
+  a `treatment` discriminator (`feature | split | compact`).
+- `servicePageItems` exposes nine visible topics: VMC installation overview, VMC double flux,
+  professional ventilation, industrial ventilation, air extraction, air treatment, smoke
+  extraction, maintenance, and renovation.
+- `trustThemes` and `serviceProcess` keep the approach and five process steps out of UI files.
+- Copy deliberately makes no certification, regulatory-compliance, service-area, rating,
+  guarantee, brand, tenure, project-count, or satisfaction claim. Désenfumage wording says that
+  applicable requirements depend on the project; it does not claim compliance.
+
+### 13.3 Local image strategy
+
+`images.servicePage` in `src/data/images.ts` is the only source of the page's image paths. Five
+distinct progressive JPEGs are stored under `public/images/services/`, all downloaded from
+Unsplash's stable image CDN and visually checked:
+
+| Registry key | Local file | Source photo |
+| --- | --- | --- |
+| `hero` | `solutions-ventilation-conduits-air.jpg` (2400×1600) | Taylor Vick, `qVXFewdVWn4` |
+| `professional` | `ventilation-professionnelle-bureaux.jpg` (1800×1202) | `photo-1497366216548-37526070297c` |
+| `industrial` | `ventilation-industrielle-plafond.jpg` (1800×1200) | Joao Vitor Marcilio, `elIxMb1_LEg` |
+| `extraction` | `unites-ventilation-toiture.jpg` (1800×1350) | `4YGvQCztjiM` |
+| `technicalIntervention` | `intervention-technique-equipement.jpg` (1800×1202) | `photo-1621905251189-08b45d6a269e` |
+
+Files have unique SHA-256 values, valid JPEG signatures, and sizes from roughly 240–732 KB.
+Meaningful images use `next/image`, `fill`, aspect-ratio parents, responsive `sizes`, `object-cover`,
+and French replacement alt text. Only the hero uses Next 16's `preload`; below-fold images retain
+native lazy loading. VMC, treatment-air, désenfumage, and renovation entries intentionally have no
+service-specific stock image because the available photographs did not prove those exact subjects.
+
+### 13.4 Route metadata and structured data
+
+The route exports static metadata:
+
+- Resolved title: `Services de ventilation et traitement de l’air | Ventila Solutions` (the route
+  title relies on the root template, so the brand is not duplicated).
+- Description names installation, maintenance, VMC, extraction, and air treatment without
+  geographic stuffing.
+- Absolute canonical and Open Graph URL:
+  `https://diakhite-air-proteger.vercel.app/services`.
+- `index, follow`, `fr_FR` Open Graph website fields, Twitter `summary_large_image`, and the
+  absolute local hero-image URL. No `keywords` field is added at route level.
+
+One native `<script type="application/ld+json">` contains an `@graph` with:
+
+- `BreadcrumbList` for Accueil → Services.
+- `ItemList` of nine visible `Service` entries whose URLs point to the corresponding in-page
+  article IDs.
+
+The JSON is serialized with `JSON.stringify(...).replace(/</g, "\\u003c")`; `next/script` is not
+used. No location, price, rating, review, certification, or area-served property is present.
+
+### 13.5 Validation at source commit
+
+- `npx next typegen` — pass.
+- `npx tsc --noEmit` — 0 errors.
+- `npx eslint src/ --max-warnings 0` — 0 warnings.
+- `npm run build` — pass; `/services` statically prerendered.
+- Dev server — `/services` returns HTTP 200.
+- Chrome checks at 320, 375, 390, 430, 768, 1024, 1280, 1440, and 1920 px:
+  no horizontal overflow; exactly one H1; H1 is the first heading; five H2s and seventeen H3s;
+  canonical/description/OG/Twitter tags present; JSON-LD parses with nine services; all page
+  anchors exist; `/`, `/contact`, `/realisations`, and `/a-propos` return 200; no captured console
+  errors. Mobile menu opens as a fixed visible overlay below 1024 px; desktop nav replaces it at
+  1024 px. All five local source images were visually inspected and all image optimizer endpoints
+  return HTTP 200.
+
+Known limitation: the site-wide footer still links to missing service-detail and legal routes, and
+other unrelated pages still use remote Unsplash images (one existing project URL returns 404).
+Those pre-existing issues are outside the `/services` scope.

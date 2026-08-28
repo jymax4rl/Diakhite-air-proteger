@@ -20,6 +20,14 @@ export const images = {
     // Technician doing HVAC maintenance
   },
 
+  servicePage: {
+    hero: "/images/services/solutions-ventilation-conduits-air.jpg",
+    professional: "/images/services/ventilation-professionnelle-bureaux.jpg",
+    industrial: "/images/services/ventilation-industrielle-plafond.jpg",
+    extraction: "/images/services/unites-ventilation-toiture.jpg",
+    technicalIntervention: "/images/services/intervention-technique-equipement.jpg",
+  },
+
   about: {
     main: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80&auto=format&fit=crop",
     // Modern building exterior with glass facade
