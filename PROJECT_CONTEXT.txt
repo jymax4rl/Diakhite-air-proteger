@@ -1,25 +1,25 @@
-# PROJECT_CONTEXT.md — Ventila Solutions website
+# PROJECT_CONTEXT.md — Diakhite Air Proteger website
 
 **Audience:** an AI coding assistant with no prior exposure to this repository.
 **Purpose:** enough context to make correct changes without exploring first.
 
 | Field | Value |
 | --- | --- |
-| Commit documented | `ea65ed04d84ca20d6be253dc47ad2baa0147fe6c` (`ea65ed0`) |
-| Commit subject | `fix: preserve legal form capitalization` |
-| Commit date | 2026-08-28 17:49:54 +0000 |
+| Commit documented | `a39dd7072ce593d421d5d97c71012723d58510cc` (`a39dd70`) |
+| Commit subject | `content: rename public brand to Diakhite Air Proteger` |
+| Commit date | 2026-08-28 17:52:02 +0000 |
 | Branch | `main` |
 | Working tree at time of writing | clean (no uncommitted changes) |
-| Documentation status | Context reflects source commit `ea65ed0`, immediately before this documentation commit |
+| Documentation status | Context reflects source commit `a39dd70`, immediately before this documentation commit |
 | Verified at this SHA | `next typegen`, `tsc --noEmit`, ESLint (zero warnings), production build, required-route HTTP checks, JSON-LD parsing, and responsive browser checks all pass |
 
-> This context reflects source commit `ea65ed0` immediately before its own documentation commit. The source commit is already pushed; later source changes require re-verifying the affected sections.
+> This context reflects source commit `a39dd70` immediately before its own documentation commit. The source commit is already pushed; later source changes require re-verifying the affected sections.
 
 ---
 
 ## 1. TL;DR for the assistant
 
-- Marketing website for a French ventilation/HVAC company branded **"Ventila Solutions"**. Single locale, French only (`<html lang="fr">`), French route slugs.
+- Marketing website for a French ventilation/HVAC company publicly branded **"Diakhite Air Proteger"**. The registered legal denomination remains **"AIR PROTEGER"**. Single locale, French only (`<html lang="fr">`), French route slugs.
 - Stack: **Next.js 16.3.2 App Router** + **React 19.2.8** + **TypeScript 5.9.3 (strict)** + **Tailwind CSS v4.3.3**. Package manager is **npm** (`package-lock.json`, lockfileVersion 3). Node **≥ 20.9.0**.
 - **This is Next.js 16, not 13/14/15.** Read section 2 before writing any code. Most pre-16 patterns you know are removed or renamed.
 - **Tailwind is v4.** There is no `tailwind.config.js` and there never should be. Tokens live in `@theme {}` inside `src/app/globals.css`. Never emit `@tailwind base;` / `@tailwind components;` / `@tailwind utilities;`.
@@ -292,7 +292,7 @@ Environment notes:
         └── utils.ts             `cn()` — 3-line clsx replacement.
 ```
 
-**Note on `public/images/`:** these 13 SVGs were the original placeholders. Commit `687f244` ("real Unsplash images") repointed `src/data/images.ts` at `images.unsplash.com` URLs but left the files in place. Only `logo/ventila-logo.svg` is still named in code (`images.logo.main`), and nothing reads `images.logo`. All 13 are safe to delete; 5 root-level scaffold SVGs likewise.
+**Note on `public/images/`:** these 13 SVGs were the original placeholders. Commit `687f244` ("real Unsplash images") repointed `src/data/images.ts` at `images.unsplash.com` URLs but left the files in place. Only `logo/ventila-logo.svg` is still named in code (`images.logo.main`), and nothing reads `images.logo`; its embedded wordmark has nevertheless been updated to the current public brand so the tracked asset is not stale. All 13 are safe to delete; 5 root-level scaffold SVGs likewise.
 
 ### Files that do NOT exist (and that you may be tempted to assume)
 
@@ -312,8 +312,8 @@ Root layout. Server because it exports `metadata` (only legal in a Server Compon
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "Ventila Solutions — Solutions de ventilation performantes",
-    template: "%s | Ventila Solutions",
+    default: "Diakhite Air Proteger — Solutions de ventilation performantes",
+    template: "%s | Diakhite Air Proteger",
   },
   description: "Nous concevons, installons et entretenons des systèmes de ventilation efficaces, économiques et durables. Résidentiel, commercial et industriel.",
   keywords: [ /* 8 French/HVAC keywords, incl. AIR PROTEGER */ ],
@@ -463,6 +463,7 @@ Key implementation details:
 
 - Header shell: `fixed top-0 left-0 right-0 z-[60] bg-navy-950/90 backdrop-blur-xl border-b border-white/5`. **The `backdrop-blur-xl` here is the root cause of the whole `SiteShell` design** (section 8.1). The `z-[60]` is deliberately above `MobileMenu`'s `z-50`.
 - Nav bar height is `h-16` = **4rem**. Multiple other files hardcode 4rem to clear it (`Hero` `pt-16`, `MobileMenu` `paddingTop: "4rem"`, stub pages `pt-24`). Changing `h-16` requires updating all of them.
+- The public wordmark is a compact two-line lockup sourced from `site.brand`: `Diakhite Air` over `Proteger`. Narrow-screen typography drops from 15/9px to 13/8px so the logo, phone, and unchanged hamburger controls fit without overlap at 320px.
 - Desktop links + phone + CTA are `hidden lg:flex`; mobile phone + hamburger are `flex lg:hidden`. The `lg` (1024px) breakpoint matches `SiteShell`'s `LG_BREAKPOINT`.
 - **Animated hamburger.** Three `<span>`s share a base class:
 
@@ -575,7 +576,7 @@ const company = [
 
 - Layout: `<footer className="bg-navy-950 border-t border-white/6">` → `<Container className="py-12 md:py-16">` → `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10`. Brand column spans `sm:col-span-2 lg:col-span-2`.
 - Contact block uses `<address className="not-italic">` with **emoji** as icons (📞 ✉️ 📍), plus the verified registered office and concise AIR PROTEGER legal identity.
-- Bottom bar: `© {new Date().getFullYear()} Ventila Solutions. Tous droits réservés.` — **`new Date()` in a Server Component means the year is baked in at render time.** Fine for a dynamically rendered page; if you later make this statically cached, the year will freeze.
+- Bottom bar: `© {new Date().getFullYear()} Diakhite Air Proteger. Tous droits réservés.` — **`new Date()` in a Server Component means the year is baked in at render time.** Fine for a dynamically rendered page; if you later make this statically cached, the year will freeze.
 - Column headers use `<h3>`. On the stub pages this yields `h3` without a preceding `h1` (section 9.4).
 - **All 4 `services` hrefs plus `/politique-confidentialite` are 404s** (section 9.6). `/mentions-legales` now exists.
 - Local helper: `LogoIcon()` — a byte-identical duplicate of `Navbar`'s. Not shared.
@@ -1384,8 +1385,9 @@ export const projects: Project[] = [
 
 ### 7.4 `src/data/site.ts`
 
-`site` centralizes the `Ventila Solutions` display brand, production URL, user-confirmed phone,
-existing contact email, and AIR PROTEGER legal facts. Verified values include SIREN
+`site` centralizes the `Diakhite Air Proteger` display brand (`Diakhite Air` / `Proteger` in the
+two-line wordmark), production URL, user-confirmed phone, existing contact email, and AIR PROTEGER
+legal facts. Verified values include SIREN
 `987 925 013`, head-office SIRET `987 925 013 00011`, SAS legal form, creation date
 `3 juin 2025`, registered office `10 avenue Normandie Niemen, 77290 Mitry-Mory`, APE
 `43.22B`, capital `1 000 €`, VAT number, active status, and `987 925 013 R.C.S. Meaux`.
@@ -1663,7 +1665,7 @@ Also unused at this commit: the `align="center"` branch of `SectionHeading`, the
 10. **Always supply a `sizes` prop with `<Image fill>`,** and match it to the actual rendered width at each breakpoint. Every existing call site does this deliberately; copy the pattern from the nearest component.
 11. **Icons are inline SVG** with `aria-hidden="true"`, defined as un-exported local helpers at the bottom of the consuming file. Prefer `stroke="currentColor"` so the palette flows through (note several existing icons hardcode `#60a5fa` — do not propagate that).
 12. **Every `<section>` gets an accessible name:** `aria-labelledby` pointing at a `SectionHeading` `headingId`, or `aria-label` when there is no heading (`ContactCTA`).
-13. **Naming inconsistency — do not "fix" it blindly.** The brand in all UI, copy and metadata is **"Ventila Solutions"**. The `package.json` `name`, the `README` title and the GitHub repo are **"diakhite-air-proteger"** / "Diakhite Air Protéger". `layout.tsx` keeps `"Diakhite Air Proteger"` as a metadata keyword. Both names are live; renaming either requires a decision from the project owner.
+13. **Brand and legal-name distinction.** The public website brand is exactly **"Diakhite Air Proteger"** (without an accent), including UI, copy, metadata, and JSON-LD `name`. The verified registered legal denomination is **"AIR PROTEGER"** and must remain in legal copy and JSON-LD `legalName`. The package/repository slug stays `diakhite-air-proteger`. The existing `contact@ventila-solutions.fr` address is retained because no replacement was provided; it is brand-inconsistent and still requires owner confirmation.
 14. **`AGENTS.md`'s managed block** (`<!-- BEGIN:nextjs-agent-rules -->` … `<!-- END: -->`) is written and re-added by `next dev`. If it appears dirty, commit it with your work rather than reverting — reverting only re-creates the change.
 15. **Comment style.** Existing files use section-divider comments (`{/* ── Section header ── */}`, `/* ─── Base ─── */`) and multi-line rationale comments that explain **why** a non-obvious choice was made (see `SiteShell`, `MobileMenu`, `Navbar`'s `burgerLine`, `Projects`'s `slots`). Match this: document constraints and trade-offs, not what the code obviously does.
 
@@ -1768,7 +1770,7 @@ service-specific stock image because the available photographs did not prove tho
 
 The route exports static metadata:
 
-- Resolved title: `Services de ventilation et traitement de l’air | Ventila Solutions` (the route
+- Resolved title: `Services de ventilation et traitement de l’air | Diakhite Air Proteger` (the route
   title relies on the root template, so the brand is not duplicated).
 - Description names installation, maintenance, VMC, extraction, and air treatment without
   geographic stuffing.
