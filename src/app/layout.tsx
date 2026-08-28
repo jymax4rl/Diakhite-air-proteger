@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Navbar from "@/components/layout/Navbar";
+import SiteShell from "@/components/layout/SiteShell";
 import Footer from "@/components/layout/Footer";
 import "./globals.css";
 
@@ -43,8 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-navy-900 text-white">
-        <Navbar />
-        <main className="flex-1">{children}</main>
+        <SiteShell>{children}</SiteShell>
         <Footer />
       </body>
     </html>

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Button from "@/components/ui/Button";
-import MobileMenu from "./MobileMenu";
 
 export const navLinks = [
   { href: "/", label: "Accueil" },
@@ -11,9 +10,14 @@ export const navLinks = [
   { href: "/contact", label: "Contact" },
 ] as const;
 
-export default function Navbar() {
+interface NavbarProps {
+  onMenuOpen: () => void;
+  menuOpen: boolean;
+}
+
+export default function Navbar({ onMenuOpen, menuOpen }: NavbarProps) {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-navy-950/90 backdrop-blur-xl border-b border-white/5">
+    <header className="fixed top-0 left-0 right-0 z-[60] bg-navy-950/90 backdrop-blur-xl border-b border-white/5">
       <div className="site-container">
         <nav
           className="flex items-center justify-between h-16"
@@ -76,7 +80,14 @@ export default function Navbar() {
             >
               <PhoneIcon className="w-4 h-4" />
             </a>
-            <MobileMenu links={navLinks} />
+            <button
+              onClick={onMenuOpen}
+              aria-expanded={menuOpen}
+              aria-label="Ouvrir le menu de navigation"
+              className="flex items-center justify-center w-9 h-9 rounded-lg border border-white/15 text-white hover:bg-white/10 transition-colors"
+            >
+              <HamburgerIcon />
+            </button>
           </div>
         </nav>
       </div>
@@ -93,12 +104,30 @@ function LogoIcon() {
       fill="none"
       aria-hidden="true"
     >
-      {/* Four "blade" shapes suggesting a ventilation fan */}
       <path d="M10 3 C10 3 7.5 7 10 11 C12.5 7 10 3 10 3Z" fill="white" opacity="0.92" />
       <path d="M3 10 C3 10 7 12.5 11 10 C7 7.5 3 10 3 10Z" fill="white" opacity="0.92" />
       <path d="M17 10 C17 10 13 7.5 9 10 C13 12.5 17 10 17 10Z" fill="white" opacity="0.92" />
       <path d="M10 17 C10 17 12.5 13 10 9 C7.5 13 10 17 10 17Z" fill="white" opacity="0.92" />
       <circle cx="10" cy="10" r="2.5" fill="white" />
+    </svg>
+  );
+}
+
+function HamburgerIcon() {
+  return (
+    <svg
+      width="16"
+      height="12"
+      viewBox="0 0 16 12"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M0 1H16M0 6H16M0 11H16"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
