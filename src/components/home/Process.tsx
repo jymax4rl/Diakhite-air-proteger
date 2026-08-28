@@ -10,6 +10,8 @@
  * Layout: horizontal scroll-snap carousel below md, four equal columns from md
  * up (the `scroll-snap-row` utility owns that switch).
  */
+import ProcessCarousel from "@/components/home/ProcessCarousel";
+
 const steps = [
   {
     num: "01",
@@ -60,17 +62,9 @@ export default function Process() {
         </div>
 
         {/* ── Steps: carousel on mobile, 4 columns from md ── */}
-        <div
-          className="scroll-snap-row md:grid-cols-4"
-          role="list"
-          aria-label="Notre processus en 4 étapes"
-        >
+        <ProcessCarousel stepLabels={steps.map((step) => step.title)}>
           {steps.map((s) => (
-            <div
-              key={s.num}
-              role="listitem"
-              className="scroll-snap-item w-[180px] sm:w-[200px] md:w-auto flex flex-col gap-2"
-            >
+            <div key={s.num} className="contents">
               {/* Icon badge */}
               <div className="w-9 h-9 rounded-xl bg-brand-600/20 border border-brand-600/30 flex items-center justify-center flex-shrink-0">
                 {s.icon}
@@ -87,22 +81,7 @@ export default function Process() {
               </p>
             </div>
           ))}
-        </div>
-
-        {/* ── Scroll dots (mobile only) ── */}
-        <div
-          className="flex md:hidden justify-center gap-2 mt-4"
-          aria-hidden="true"
-        >
-          {steps.map((s, i) => (
-            <span
-              key={s.num}
-              className={`h-1.5 rounded-full transition-all ${
-                i === 0 ? "w-5 bg-brand-500" : "w-1.5 bg-white/20"
-              }`}
-            />
-          ))}
-        </div>
+        </ProcessCarousel>
       </div>
     </div>
   );
