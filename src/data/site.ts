@@ -1,8 +1,8 @@
 export const site = {
   brand: {
-    name: "Ventila Solutions",
-    logoPrimary: "Ventila",
-    logoSecondary: "Solutions",
+    name: "Diakhite Air Proteger",
+    logoPrimary: "Diakhite Air",
+    logoSecondary: "Proteger",
   },
   url: "https://diakhite-air-proteger.vercel.app",
   contact: {

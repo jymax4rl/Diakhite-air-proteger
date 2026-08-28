@@ -7,8 +7,7 @@ import { site } from "@/data/site";
 
 const origin = site.url;
 const canonicalUrl = `${origin}/contact`;
-const description =
-  "Présentez votre projet de ventilation, VMC, extraction ou traitement de l’air à Ventila Solutions et retrouvez nos coordonnées.";
+const description = `Présentez votre projet de ventilation, VMC, extraction ou traitement de l’air à ${site.brand.name} et retrouvez nos coordonnées.`;
 
 export const metadata: Metadata = {
   title: "Contact — Parlons de votre projet de ventilation",

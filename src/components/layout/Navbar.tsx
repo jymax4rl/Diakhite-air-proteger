@@ -40,17 +40,17 @@ export default function Navbar({ onMenuToggle, menuOpen }: NavbarProps) {
           {/* ── Logo ── */}
           <Link
             href="/"
-            className="flex items-center gap-2.5 group flex-shrink-0"
+            className="flex min-w-0 items-center gap-2 group flex-shrink-0 sm:gap-2.5"
             aria-label={`${site.brand.name} — Accueil`}
           >
             <div className="w-9 h-9 bg-brand-600 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-brand-500 transition-colors duration-200">
               <LogoIcon />
             </div>
-            <div className="leading-none">
-              <span className="block text-white font-bold text-[15px] tracking-tight">
+            <div className="min-w-0 leading-none">
+              <span className="block whitespace-nowrap text-[13px] font-bold tracking-tight text-white sm:text-[15px]">
                 {site.brand.logoPrimary}
               </span>
-              <span className="block text-brand-400 text-[9px] font-bold tracking-[0.15em] uppercase">
+              <span className="block text-[8px] font-bold uppercase tracking-[0.14em] text-brand-400 sm:text-[9px] sm:tracking-[0.15em]">
                 {site.brand.logoSecondary}
               </span>
             </div>

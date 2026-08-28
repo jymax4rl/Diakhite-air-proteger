@@ -26,13 +26,13 @@ export default function Footer() {
             <Link
               href="/"
               className="inline-flex items-center gap-2.5 mb-5"
-              aria-label={site.brand.name}
+              aria-label={`${site.brand.name} — Accueil`}
             >
               <div className="w-9 h-9 bg-brand-600 rounded-lg flex items-center justify-center flex-shrink-0">
                 <LogoIcon />
               </div>
               <div className="leading-none">
-                <span className="block text-white font-bold text-[15px]">
+                <span className="block whitespace-nowrap text-[15px] font-bold text-white">
                   {site.brand.logoPrimary}
                 </span>
                 <span className="block text-brand-400 text-[9px] font-bold tracking-[0.15em] uppercase">

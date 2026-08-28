@@ -1,6 +1,6 @@
-# Diakhite Air Protéger
+# Diakhite Air Proteger
 
-Site for ventilation services — Next.js (App Router, TypeScript, Tailwind CSS).
+Website for Diakhite Air Proteger’s ventilation services — Next.js (App Router, TypeScript, Tailwind CSS).
 
 Repository: https://github.com/jymax4rl/Diakhite-air-proteger
 

@@ -164,6 +164,7 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
       >
         <a
           href={site.contact.phone.href}
+          aria-label={`Appelez ${site.brand.name} au ${site.contact.phone.display}`}
           style={{
             display: "flex",
             alignItems: "center",

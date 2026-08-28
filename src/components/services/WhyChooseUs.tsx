@@ -2,6 +2,7 @@ import Link from "next/link";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { trustThemes } from "@/data/service-page";
+import { site } from "@/data/site";
 
 export default function WhyChooseUs() {
   return (
@@ -19,7 +20,7 @@ export default function WhyChooseUs() {
               href="/a-propos"
               className="mt-7 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-brand-400 transition-colors hover:text-brand-300 motion-reduce:transition-none"
             >
-              En savoir plus sur Ventila Solutions <ArrowIcon />
+              En savoir plus sur {site.brand.name} <ArrowIcon />
             </Link>
           </div>
 

@@ -3,6 +3,7 @@ import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { images } from "@/data/images";
+import { site } from "@/data/site";
 
 const stats = [
   { value: "10+", label: "Années\nd'expérience", icon: <ClockIcon /> },
@@ -20,7 +21,7 @@ export default function AboutPreview() {
           {/* ── Text column ── */}
           <div>
             <SectionHeading
-              eyebrow="À propos de Ventila"
+              eyebrow={`À propos de ${site.brand.name}`}
               title="Votre partenaire de confiance en ventilation"
               description="Plus de 10 ans d'expérience au service de la qualité de l'air et de la performance énergétique. Nous accompagnons particuliers et entreprises dans tous leurs projets."
               headingId="about-heading"
