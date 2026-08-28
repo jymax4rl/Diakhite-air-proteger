@@ -1,22 +1,18 @@
 import type { Metadata } from "next";
-import Container from "@/components/ui/Container";
-import SectionHeading from "@/components/ui/SectionHeading";
+import ComingSoon from "@/components/ui/ComingSoon";
 
 export const metadata: Metadata = {
-  title: "Blog",
-  description: "Actualités, conseils et ressources sur la ventilation et la qualité de l'air.",
+  title: "Conseils et actualités",
+  description:
+    "Nos contenus sur la ventilation et la qualité de l’air sont en préparation. Retrouvez en attendant nos services et nos coordonnées.",
 };
 
 export default function BlogPage() {
   return (
-    <div className="pt-24 pb-16 bg-navy-900 min-h-screen">
-      <Container>
-        <SectionHeading
-          eyebrow="Ressources"
-          title="Blog & actualités"
-          description="Articles et conseils à venir prochainement."
-        />
-      </Container>
-    </div>
+    <ComingSoon
+      eyebrow="Conseils & actualités"
+      title="De nouvelles ressources arrivent bientôt"
+      description="Nous préparons des contenus utiles autour de la ventilation, de l’entretien des installations et de la qualité de l’air. Vous pouvez déjà découvrir nos services ou nous faire part de votre question."
+    />
   );
 }

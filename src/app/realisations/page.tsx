@@ -1,22 +1,18 @@
 import type { Metadata } from "next";
-import Container from "@/components/ui/Container";
-import SectionHeading from "@/components/ui/SectionHeading";
+import ComingSoon from "@/components/ui/ComingSoon";
 
 export const metadata: Metadata = {
-  title: "Nos Réalisations",
-  description: "Découvrez nos projets de ventilation réalisés partout en France.",
+  title: "Nos réalisations",
+  description:
+    "La présentation de nos réalisations en ventilation est en préparation. Découvrez nos services ou échangeons sur votre projet.",
 };
 
 export default function RealisationsPage() {
   return (
-    <div className="pt-24 pb-16 bg-navy-900 min-h-screen">
-      <Container>
-        <SectionHeading
-          eyebrow="Portfolio"
-          title="Nos réalisations"
-          description="Cette page sera complétée prochainement avec tous nos projets."
-        />
-      </Container>
-    </div>
+    <ComingSoon
+      eyebrow="Réalisations"
+      title="Nos projets seront bientôt présentés ici"
+      description="Nous préparons un aperçu soigné de nos réalisations. D’ici là, consultez nos domaines d’intervention ou décrivez-nous le projet que vous souhaitez étudier."
+    />
   );
 }
