@@ -12,11 +12,11 @@ export default function ServicesCTA() {
               Votre projet
             </p>
             <h2 id="services-cta-heading" className="section-title mt-3 max-w-3xl text-white">
-              Parlons de votre bâtiment et de vos besoins en ventilation
+              Parlons de vos équipements CVC et de plomberie
             </h2>
             <p className="lead mt-5 max-w-2xl text-blue-100">
-              Décrivez-nous les espaces concernés, leurs usages et l’installation existante. Ces
-              premiers éléments nous permettront de préparer l’échange.
+              Décrivez-nous le bâtiment, les équipements concernés et l’installation existante.
+              Ces premiers éléments nous permettront de préparer l’échange.
             </p>
           </div>
           <div className="flex flex-col gap-3 lg:col-span-4 lg:items-stretch">

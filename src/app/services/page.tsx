@@ -10,12 +10,12 @@ import { organizationId, site } from "@/data/site";
 
 const origin = site.url;
 const canonicalUrl = `${origin}/services`;
-const heroImageUrl = `${origin}/images/services/solutions-ventilation-conduits-air.jpg`;
+const heroImageUrl = `${origin}/images/services/systemes-techniques-cvc-batiment.jpg`;
 const description =
-  "Installation et maintenance de ventilation, VMC, extraction et traitement de l’air pour l’habitat, les locaux professionnels et l’industrie.";
+  "Installation, rénovation et maintenance en chauffage, climatisation, ventilation et plomberie pour les bâtiments résidentiels et professionnels.";
 
 export const metadata: Metadata = {
-  title: "Services de ventilation et traitement de l’air",
+  title: "Services CVC et plomberie",
   description,
   alternates: {
     canonical: canonicalUrl,
@@ -29,20 +29,20 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     url: canonicalUrl,
     siteName: site.brand.name,
-    title: `Services de ventilation et traitement de l’air | ${site.brand.name}`,
+    title: `Services CVC et plomberie | ${site.brand.name}`,
     description,
     images: [
       {
         url: heroImageUrl,
         width: 2400,
         height: 1600,
-        alt: "Réseau de conduits et bouche de ventilation",
+        alt: "Équipements techniques CVC installés dans un bâtiment",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `Services de ventilation et traitement de l’air | ${site.brand.name}`,
+    title: `Services CVC et plomberie | ${site.brand.name}`,
     description,
     images: [heroImageUrl],
   },
@@ -71,7 +71,7 @@ export default function ServicesPage() {
       },
       {
         "@type": "ItemList",
-        name: "Services de ventilation et traitement de l’air",
+        name: "Services de chauffage, climatisation, ventilation et plomberie",
         url: canonicalUrl,
         numberOfItems: servicePageItems.length,
         itemListElement: servicePageItems.map((service, index) => ({

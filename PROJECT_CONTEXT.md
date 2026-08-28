@@ -5,15 +5,15 @@
 
 | Field | Value |
 | --- | --- |
-| Commit documented | `d5c2aa57f67a936dc2107e4da94e6e625e4965dd` (`d5c2aa5`) |
-| Commit subject | `feat: replace homepage hero with professional HVAC ductwork` |
-| Commit date | 2026-08-28 19:12:31 +0000 |
-| Branch | `main` |
-| Working tree at time of writing | Source tree clean except five unrelated untracked service-image assets; context files are the documentation change |
-| Documentation status | Context reflects source commit `d5c2aa5`, immediately before this documentation commit |
-| Verified at this SHA | `next typegen`, `tsc --noEmit`, ESLint (zero warnings), production build, homepage/image-optimizer HTTP checks, and responsive hero checks all pass |
+| Commit documented | `WORKTREE` |
+| Commit subject | CVC and plumbing `/services` redesign |
+| Commit date | 2026-08-28 |
+| Branch | `cursor/cvc-plumbing-services-95cc` |
+| Working tree at time of writing | CVC/plumbing services source and five new local image assets are the implementation change; context files are this synchronized documentation change |
+| Documentation status | Context reflects the source tree immediately before its own documentation commit |
+| Verified at this SHA | Verification is recorded in section 13.5 after the implementation commit |
 
-> This context reflects source commit `d5c2aa5` immediately before its own documentation commit. The source commit is already pushed; later source changes require re-verifying the affected sections.
+> This context reflects the CVC/plumbing services source tree immediately before its own documentation commit. Later source changes require re-verifying the affected sections.
 
 ---
 
@@ -27,7 +27,7 @@
 - **Do NOT "simplify" `SiteShell.tsx` away, and do NOT move menu state into `Navbar`.** It exists for two hard technical reasons (section 8.1). Collapsing it re-breaks the mobile menu.
 - **Do NOT convert `MobileMenu.tsx`'s inline styles to Tailwind classes** as a drive-by cleanup. It is deliberate (section 8.2). It is acknowledged technical debt, but changing it requires re-verifying the stacking-context fix.
 - **All image paths must go through `src/data/images.ts`.** Never inline a URL or `/images/...` path in a component.
-- `/services` is a complete static editorial page. `/contact` has a polished semantic form foundation and contact-details panel; online submission is deliberately disabled because there is no transport. `/mentions-legales` publishes verified company facts. `/a-propos`, `/realisations`, and `/blog` share a polished `ComingSoon` state. There is no CMS or detail routes.
+- `/services` is a complete static CVC and plumbing editorial page. `/contact` has a polished semantic form foundation and contact-details panel; online submission is deliberately disabled because there is no transport. `/mentions-legales` publishes verified company facts. `/a-propos`, `/realisations`, and `/blog` share a polished `ComingSoon` state. There is no CMS or detail routes.
 - `src/data/site.ts` is the source of truth for the brand, production URL, contact details, registered office, and legal identifiers. The phone is user-confirmed; the email remains an existing, unverified contact value.
 - 13 internal `<Link>` instances point at **9 routes that do not exist** (section 9.6). This is known. Do not treat a 404 as a new bug you introduced.
 
@@ -268,7 +268,7 @@ Environment notes:
     │   ├── services/
     │   │   ├── ServicesHero.tsx          SERVER. Hero, breadcrumb, H1 and primary CTAs.
     │   │   ├── ExpertiseIntro.tsx        SERVER. Light editorial introduction.
-    │   │   ├── ServicesEditorialGrid.tsx SERVER. Nine-service varied editorial layout.
+    │   │   ├── ServicesEditorialGrid.tsx SERVER. Nine-service CVC/plumbing editorial layout.
     │   │   ├── WhyChooseUs.tsx           SERVER. Supportable trust themes.
     │   │   ├── ServicesProcess.tsx       SERVER. Five-step ordered process.
     │   │   └── ServicesCTA.tsx           SERVER. Contact CTA using repository facts.
@@ -285,7 +285,7 @@ Environment notes:
     │
     ├── data/
     │   ├── images.ts             Centralised image registry. THE single source of image paths.
-    │   ├── service-page.ts       Nine service topics + trust and process content contracts.
+    │   ├── service-page.ts       Nine CVC/plumbing topics + trust and process contracts.
     │   ├── site.ts               Brand/contact/legal facts + production URL and Organization ID.
     │   ├── services.ts           `Service` interface + 4 services. Hrefs are all broken.
     │   └── projects.ts           `Project` interface + 4 projects. Hrefs are all broken.
@@ -1223,6 +1223,16 @@ export const images = {
     // Technician doing HVAC maintenance
   },
 
+  servicePage: {
+    hero: "/images/services/systemes-techniques-cvc-batiment.jpg",
+    airConditioning: "/images/services/unites-climatisation-batiment.jpg",
+    heating: "/images/services/chauffage-radiateur-batiment.jpg",
+    professional: "/images/services/ventilation-professionnelle-bureaux.jpg",
+    plumbingNetwork: "/images/services/reseau-plomberie-batiment.jpg",
+    plumbingFittings: "/images/services/reseau-plomberie-raccords.jpg",
+    technicalIntervention: "/images/services/intervention-technique-equipement.jpg",
+  },
+
   about: {
     main: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80&auto=format&fit=crop",
     // Modern building exterior with glass facade
@@ -1247,7 +1257,7 @@ export const images = {
 export type ImageKey = typeof images;
 ```
 
-Shape: `{ hero: { ventilation }, services: { residential, commercial, industrial, maintenance }, about: { main }, projects: { project01..project04 }, logo: { main } }` — a two-level `category → name → path` map, `as const` so every value is a string literal type.
+Shape: `{ hero: { ventilation }, services: { residential, commercial, industrial, maintenance }, servicePage: { hero, airConditioning, heating, professional, plumbingNetwork, plumbingFittings, technicalIntervention }, about: { main }, projects: { project01..project04 }, logo: { main } }` — a two-level `category → name → path` map, `as const` so every value is a string literal type.
 
 **THE RULE: all image paths must flow through this file. No scattered paths.**
 
@@ -1266,7 +1276,7 @@ const nextConfig: NextConfig = {
 ```
 
   Use `remotePatterns`, never the deprecated `images.domains` (section 2.2).
-- Consumers: `images.hero.ventilation` (`Hero`), `images.about.main` (`AboutPreview`), `images.services.*` (via `data/services.ts`), `images.projects.*` (via `data/projects.ts`). **`images.logo` has no consumer** — both logos are inline SVG.
+- Consumers: `images.hero.ventilation` (`Hero`), `images.servicePage.*` (`ServicesHero` and `service-page.ts`), `images.about.main` (`AboutPreview`), `images.services.*` (via `data/services.ts`), `images.projects.*` (via `data/projects.ts`). **`images.logo` has no consumer** — both logos are inline SVG.
 - `ImageKey` is exported but unused. Misleadingly named: it is the type of the whole registry object, not a key union.
 - The `q=85` / `q=80` in these URLs are **Unsplash** parameters and are unrelated to Next.js's `images.qualities` (section 2.2).
 
@@ -1711,21 +1721,21 @@ npx next typegen && npx tsc --noEmit    # the correct CI invocation
 
 ---
 
-## 13. `/services` editorial page (source commit `5ee36f3`)
+## 13. `/services` CVC and plumbing editorial page (`WORKTREE`)
 
 ### 13.1 Composition and semantics
 
 `src/app/services/page.tsx` remains a Server Component and renders a plain `<div>` because
 `SiteShell` already owns the document `<main>`. Its section order is:
 
-1. `ServicesHero` — local LCP image, accessible breadcrumb, the route's single `<h1>`, and
-   links to `/contact` and `#services`.
-2. `ExpertiseIntro` — indoor-air-quality and building-performance editorial context.
+1. `ServicesHero` — local CVC-equipment LCP image, accessible breadcrumb, the route's single
+   `<h1>`, and links to `/contact` and `#services`.
+2. `ExpertiseIntro` — coordinated heating, cooling, air and water editorial context.
 3. `ServicesEditorialGrid` — the stable `id="services"` target and nine service `<article>`s.
-   Two feature panels, four alternating image/text rows, and three compact technical cards avoid
-   a repeated-card catalogue.
+   Two photographic feature panels, four alternating image/text rows, and three compact technical
+   cards avoid a repeated-card catalogue.
 4. `WhyChooseUs` — three neutral, supportable approach themes and `/a-propos` link.
-5. `ServicesProcess` — ordered five-step sequence: need analysis, solution study, installation,
+5. `ServicesProcess` — ordered five-step sequence: need analysis, solution study, implementation,
    commissioning, then follow-up and maintenance.
 6. `ServicesCTA` — `/contact`, phone, and email actions sourced from `site.ts`. The phone is
    user-confirmed; the existing email remains unverified.
@@ -1740,41 +1750,49 @@ tokens, and unrelated routes were not changed.
 
 - `ServicePageItem` has `id`, `title`, `eyebrow`, `summary`, `details`, optional image/alt, and
   a `treatment` discriminator (`feature | split | compact`).
-- `servicePageItems` exposes nine visible topics: VMC installation overview, VMC double flux,
-  professional ventilation, industrial ventilation, air extraction, air treatment, smoke
-  extraction, maintenance, and renovation.
+- `servicePageItems` exposes nine visible topics: air conditioning, heating, ventilation and
+  indoor-air quality, general plumbing, sanitary installations, maintenance and troubleshooting,
+  installation renovation, controls, and technical-network coordination.
 - `trustThemes` and `serviceProcess` keep the approach and five process steps out of UI files.
 - Copy deliberately makes no certification, regulatory-compliance, service-area, rating,
-  guarantee, brand, tenure, project-count, or satisfaction claim. Désenfumage wording says that
-  applicable requirements depend on the project; it does not claim compliance.
+  guarantee, equipment-brand, tenure, project-count, response-time, or satisfaction claim.
 
 ### 13.3 Local image strategy
 
-`images.servicePage` in `src/data/images.ts` is the only source of the page's image paths. Five
-distinct progressive JPEGs are stored under `public/images/services/`, all downloaded from
-Unsplash's stable image CDN and visually checked:
+`images.servicePage` in `src/data/images.ts` is the only source of the page's image paths. Seven
+distinct progressive JPEGs are active under `public/images/services/`. The five CVC/plumbing
+assets added by this redesign were preserved from the earlier failed run and visually checked:
 
 | Registry key | Local file | Source photo |
 | --- | --- | --- |
-| `hero` | `solutions-ventilation-conduits-air.jpg` (2400×1600) | Taylor Vick, `qVXFewdVWn4` |
-| `professional` | `ventilation-professionnelle-bureaux.jpg` (1800×1202) | `photo-1497366216548-37526070297c` |
-| `industrial` | `ventilation-industrielle-plafond.jpg` (1800×1200) | Joao Vitor Marcilio, `elIxMb1_LEg` |
-| `extraction` | `unites-ventilation-toiture.jpg` (1800×1350) | `4YGvQCztjiM` |
-| `technicalIntervention` | `intervention-technique-equipement.jpg` (1800×1202) | `photo-1621905251189-08b45d6a269e` |
+| `hero` | `systemes-techniques-cvc-batiment.jpg` (2400×1600) | CVC equipment in a technical building volume |
+| `airConditioning` | `unites-climatisation-batiment.jpg` (2000×1333) | exterior air-conditioning units |
+| `heating` | `chauffage-radiateur-batiment.jpg` (2000×2667) | architectural radiator |
+| `professional` | `ventilation-professionnelle-bureaux.jpg` (1800×1202) | contemporary office interior |
+| `plumbingNetwork` | `reseau-plomberie-batiment.jpg` (2000×1500) | exposed technical pipework |
+| `plumbingFittings` | `reseau-plomberie-raccords.jpg` (2000×3000) | plumbing fittings |
+| `technicalIntervention` | `intervention-technique-equipement.jpg` (1800×1202) | equipment intervention |
 
-Files have unique SHA-256 values, valid JPEG signatures, and sizes from roughly 240–732 KB.
+New-asset SHA-256 values, in table order for the five added files:
+`dcd6b6bcf21d924152decedcef99206b541ccbb6ade85d2215f5a41b8e01eeb2`,
+`bafee0496d4ac7c91078748a9d4ee01c6a22b2b61f8f7359a1f11b62b7ec5929`,
+`ed3f0ad4ab196b2344b85a4a2cc5799409d6435314a5bfc9e7fcacf86f32776a`,
+`6faf7dda7b1f98bf97e78cb01e70839e834a33d825f036d5a520db01e3b330bf`, and
+`6f3821fb70ddb195685096cb798754dced4bb68aba7f1d0f03d77a6852f1335d`.
+
 Meaningful images use `next/image`, `fill`, aspect-ratio parents, responsive `sizes`, `object-cover`,
 and French replacement alt text. Only the hero uses Next 16's `preload`; below-fold images retain
-native lazy loading. VMC, treatment-air, désenfumage, and renovation entries intentionally have no
-service-specific stock image because the available photographs did not prove those exact subjects.
+native lazy loading. Renovation, controls, and network-coordination entries intentionally have no
+image because the available photographs do not prove those exact subjects.
 
 ### 13.4 Route metadata and structured data
 
 The route exports static metadata:
 
-- Resolved title: `Services de ventilation et traitement de l’air | Diakhite Air Proteger` (the route
+- Resolved title: `Services CVC et plomberie | Diakhite Air Proteger` (the route
   title relies on the root template, so the brand is not duplicated).
-- Description names installation, maintenance, VMC, extraction, and air treatment without
+- Description names installation, renovation, maintenance, heating, cooling, ventilation, and
+  plumbing without
   geographic stuffing.
 - Absolute canonical and Open Graph URL:
   `https://diakhite-air-proteger.vercel.app/services`.
@@ -1790,20 +1808,14 @@ One native `<script type="application/ld+json">` contains an `@graph` with:
 The JSON is serialized with `JSON.stringify(...).replace(/</g, "\\u003c")`; `next/script` is not
 used. No location, price, rating, review, certification, or area-served property is present.
 
-### 13.5 Validation at source commit
+### 13.5 Validation
 
 - `npx next typegen` — pass.
 - `npx tsc --noEmit` — 0 errors.
 - `npx eslint src/ --max-warnings 0` — 0 warnings.
 - `npm run build` — pass; `/services` statically prerendered.
-- Dev server — `/services` returns HTTP 200.
-- Chrome checks at 320, 375, 390, 430, 768, 1024, 1280, 1440, and 1920 px:
-  no horizontal overflow; exactly one H1; H1 is the first heading; five H2s and seventeen H3s;
-  canonical/description/OG/Twitter tags present; JSON-LD parses with nine services; all page
-  anchors exist; `/`, `/contact`, `/realisations`, and `/a-propos` return 200; no captured console
-  errors. Mobile menu opens as a fixed visible overlay below 1024 px; desktop nav replaces it at
-  1024 px. All five local source images were visually inspected and all image optimizer endpoints
-  return HTTP 200.
+- Runtime and responsive checks are performed after the implementation commit, in accordance with
+  the branch workflow. Their final result is recorded in the follow-up context commit.
 
 Known limitation: the site-wide footer still links to missing service-detail and privacy routes, and
 other unrelated pages still use remote Unsplash images (one existing project URL returns 404).
@@ -1850,7 +1862,8 @@ history, portfolio, article, availability, location, guarantee, or timing conten
 
 The homepage LCP image is now the stable local asset
 `public/images/hero/conduits-ventilation-metalliques-professionnels.jpg`, registered only as
-`images.hero.ventilation`. The `/services` hero and all other image entries are unchanged.
+`images.hero.ventilation`. The `/services` page now has its own CVC-equipment hero and remains
+independent from the homepage image.
 
 The image is an original generated asset produced with Cursor's image-generation tool on
 2026-08-28. Its generation prompt requested a realistic professional architectural photograph

@@ -13,126 +13,130 @@ export interface ServicePageItem {
 
 export const servicePageItems: readonly ServicePageItem[] = [
   {
-    id: "installation-vmc",
-    title: "Installation de VMC",
-    eyebrow: "Habitat",
+    id: "climatisation",
+    title: "Climatisation",
+    eyebrow: "Confort d’été",
     summary:
-      "Une ventilation mécanique contrôlée renouvelle l’air du logement et aide à évacuer l’humidité produite au quotidien. Le choix entre simple flux et double flux dépend du bâtiment, de son usage et du projet.",
+      "Une installation de climatisation se définit selon les volumes, l’occupation et les contraintes du bâtiment. Le choix et l’implantation des équipements visent un confort homogène et une exploitation accessible.",
     details: [
-      "La simple flux extrait l’air des pièces humides et fait entrer l’air neuf par des entrées dédiées.",
-      "La double flux associe extraction et insufflation avec récupération d’une partie de la chaleur de l’air extrait.",
+      "Étude des besoins et implantation des unités",
+      "Installation, mise en service et entretien",
     ],
+    image: images.servicePage.airConditioning,
+    imageAlt: "Unités extérieures de climatisation installées sur la façade d’un bâtiment",
     treatment: "feature",
   },
   {
-    id: "vmc-double-flux",
-    title: "VMC double flux",
-    eyebrow: "Confort & énergie",
+    id: "chauffage",
+    title: "Chauffage",
+    eyebrow: "Confort thermique",
     summary:
-      "La double flux organise les débits d’air entrant et sortant autour d’un échangeur. Son étude prend en compte le passage des réseaux, l’accessibilité des filtres, l’équilibrage et l’entretien futur.",
+      "Le chauffage est abordé comme un ensemble associant production, distribution, émission et régulation. L’installation est adaptée aux usages du bâtiment et aux équipements déjà en place.",
     details: [
-      "Étude de l’implantation et des réseaux",
-      "Attention portée à l’équilibrage et à la maintenance",
+      "Équipements de production et d’émission",
+      "Distribution, réglage et entretien",
     ],
+    image: images.servicePage.heating,
+    imageAlt: "Radiateur vertical intégré dans un intérieur contemporain",
     treatment: "feature",
   },
   {
-    id: "ventilation-professionnelle",
-    title: "Ventilation professionnelle",
-    eyebrow: "Tertiaire & commercial",
+    id: "ventilation",
+    title: "Ventilation et qualité de l’air",
+    eyebrow: "Renouvellement d’air",
     summary:
-      "Bureaux, commerces et locaux d’activité demandent un renouvellement d’air adapté à l’occupation, aux volumes et aux usages. La solution est pensée avec l’aménagement et les contraintes techniques du site.",
+      "VMC, extraction et diffusion organisent le renouvellement de l’air dans les logements, les locaux professionnels et les bâtiments techniques. Les débits et les réseaux sont étudiés selon les usages.",
     details: [
-      "Renouvellement d’air des espaces occupés",
-      "Intégration aux volumes et à l’aménagement",
+      "VMC simple flux ou double flux selon le projet",
+      "Extraction, filtration et diffusion de l’air",
     ],
     image: images.servicePage.professional,
-    imageAlt: "Intérieur de bureaux contemporains destiné à recevoir une ventilation professionnelle",
+    imageAlt: "Intérieur de bureaux contemporains équipé pour le confort et le renouvellement d’air",
     treatment: "split",
   },
   {
-    id: "ventilation-industrielle",
-    title: "Ventilation industrielle",
-    eyebrow: "Industrie",
+    id: "plomberie",
+    title: "Plomberie générale",
+    eyebrow: "Eau & réseaux",
     summary:
-      "Les environnements industriels nécessitent des débits, réseaux et équipements cohérents avec les volumes et les émissions du procédé. L’analyse porte sur la circulation de l’air et les contraintes d’exploitation.",
+      "Création, modification ou remise en état des réseaux d’alimentation et d’évacuation : chaque intervention tient compte du tracé, de l’accessibilité et des équipements raccordés.",
     details: [
-      "Réseaux et diffusion adaptés aux grands volumes",
-      "Prise en compte des contraintes d’exploitation",
+      "Alimentation en eau et évacuation",
+      "Recherche de fuite et remplacement d’éléments",
     ],
-    image: images.servicePage.industrial,
-    imageAlt: "Bouche de ventilation installée sous un plafond industriel",
+    image: images.servicePage.plumbingNetwork,
+    imageAlt: "Réseaux métalliques apparents dans un local technique de bâtiment",
     treatment: "split",
   },
   {
-    id: "extraction-air",
-    title: "Extraction d’air",
-    eyebrow: "Air vicié",
+    id: "installations-sanitaires",
+    title: "Installations sanitaires",
+    eyebrow: "Équipements",
     summary:
-      "L’extraction capte l’air chargé en humidité, odeurs ou polluants au plus près des zones concernées, puis l’évacue par un réseau dimensionné pour l’usage du local.",
+      "Les appareils sanitaires et leurs raccordements sont intégrés au réseau du bâtiment en veillant aux alimentations, aux évacuations et à l’accès nécessaire pour l’entretien.",
     details: [
-      "Captage localisé ou extraction générale",
-      "Étude du rejet et du cheminement des conduits",
+      "Raccordement des équipements sanitaires",
+      "Création ou adaptation des évacuations",
     ],
-    image: images.servicePage.extraction,
-    imageAlt: "Unités métalliques d’extraction d’air installées sur une toiture",
+    image: images.servicePage.plumbingFittings,
+    imageAlt: "Raccords et éléments de canalisation préparés pour une intervention de plomberie",
     treatment: "split",
   },
   {
-    id: "traitement-air",
-    title: "Traitement de l’air",
-    eyebrow: "Qualité d’air",
+    id: "maintenance-depannage",
+    title: "Maintenance et dépannage",
+    eyebrow: "Continuité de service",
     summary:
-      "Filtration, renouvellement et diffusion sont envisagés ensemble pour maîtriser la qualité de l’air intérieur et assurer une distribution homogène dans les espaces.",
-    details: ["Filtration adaptée à l’installation", "Diffusion et renouvellement de l’air"],
-    treatment: "compact",
-  },
-  {
-    id: "desenfumage",
-    title: "Désenfumage",
-    eyebrow: "Gestion des fumées",
-    summary:
-      "Un système de désenfumage vise à évacuer les fumées et la chaleur en cas d’incendie. Chaque projet doit être étudié selon le bâtiment, son usage et les exigences applicables.",
-    details: ["Analyse du bâtiment et des circulations", "Solution mécanique ou naturelle selon le projet"],
-    treatment: "compact",
-  },
-  {
-    id: "maintenance-entretien",
-    title: "Maintenance et entretien",
-    eyebrow: "Pérennité",
-    summary:
-      "L’entretien conserve l’accessibilité et le bon fonctionnement des organes de ventilation. Les opérations sont définies selon l’équipement, son état et ses conditions d’utilisation.",
-    details: ["Contrôle visuel et fonctionnel", "Nettoyage et remplacement des éléments concernés"],
+      "Les équipements de chauffage, climatisation, ventilation et plomberie demandent un suivi adapté à leur état et à leur usage. Le diagnostic précède toute opération de remise en fonctionnement.",
+    details: ["Contrôle et diagnostic de l’installation", "Entretien et remplacement des éléments concernés"],
     image: images.servicePage.technicalIntervention,
     imageAlt: "Technicien intervenant sur le boîtier électrique d’un équipement",
     treatment: "split",
   },
   {
-    id: "renovation-systemes",
-    title: "Rénovation de systèmes de ventilation",
+    id: "renovation-installations",
+    title: "Rénovation des installations",
     eyebrow: "Bâtiment existant",
     summary:
-      "Une installation existante peut être repensée après diagnostic des réseaux, des débits et des équipements. L’objectif est d’adapter la solution aux usages actuels et aux contraintes du bâti.",
-    details: ["Diagnostic de l’installation existante", "Adaptation des réseaux et équipements"],
+      "Une installation existante peut être repensée après diagnostic des réseaux et des équipements afin de l’adapter aux usages actuels et aux contraintes du bâti.",
+    details: ["État des lieux technique", "Adaptation des réseaux et équipements"],
+    treatment: "compact",
+  },
+  {
+    id: "regulation-pilotage",
+    title: "Régulation et pilotage",
+    eyebrow: "Maîtrise des équipements",
+    summary:
+      "La régulation coordonne le fonctionnement des équipements avec les besoins réels du bâtiment. Son implantation doit rester compréhensible et accessible aux utilisateurs.",
+    details: ["Réglages adaptés aux usages", "Commandes et régulation des équipements"],
+    treatment: "compact",
+  },
+  {
+    id: "reseaux-techniques",
+    title: "Réseaux techniques",
+    eyebrow: "Coordination",
+    summary:
+      "Les réseaux d’air et d’eau partagent les volumes du bâtiment. Leur tracé est étudié pour limiter les conflits, préserver les accès et faciliter les interventions futures.",
+    details: ["Lecture globale des cheminements", "Accessibilité pour la maintenance"],
     treatment: "compact",
   },
 ] as const;
 
 export const trustThemes = [
   {
-    title: "Une lecture globale du bâtiment",
+    title: "Une vision coordonnée du bâtiment",
     description:
-      "Volumes, occupation, humidité, circulation de l’air et contraintes d’accès sont considérés avant de définir la solution.",
+      "Chauffage, climatisation, ventilation et plomberie sont étudiés avec les volumes, les usages et les réseaux existants.",
   },
   {
-    title: "Une installation pensée pour durer",
+    title: "Des réseaux pensés pour durer",
     description:
-      "Le passage des réseaux, l’accès aux composants et les besoins d’entretien sont intégrés dès l’étude.",
+      "Le passage des conduites, l’accès aux composants et les besoins d’entretien sont intégrés dès l’étude.",
   },
   {
-    title: "Un accompagnement dans le temps",
+    title: "Un interlocuteur pour chaque étape",
     description:
-      "De l’analyse initiale au suivi, chaque étape reste reliée aux usages réels et au fonctionnement de l’installation.",
+      "De l’analyse initiale à la maintenance, chaque étape reste reliée au fonctionnement réel de l’installation.",
   },
 ] as const;
 
@@ -140,17 +144,17 @@ export const serviceProcess = [
   {
     number: "01",
     title: "Analyse du besoin",
-    description: "Comprendre le bâtiment, ses usages et les attentes liées au renouvellement d’air.",
+    description: "Comprendre le bâtiment, ses usages, ses équipements et les contraintes existantes.",
   },
   {
     number: "02",
     title: "Étude de la solution",
-    description: "Définir les principes, l’implantation et les équipements adaptés au projet.",
+    description: "Définir les réseaux, l’implantation et les équipements adaptés au projet.",
   },
   {
     number: "03",
-    title: "Installation",
-    description: "Mettre en œuvre les réseaux et équipements selon la solution étudiée.",
+    title: "Mise en œuvre",
+    description: "Installer ou adapter les réseaux et équipements selon la solution étudiée.",
   },
   {
     number: "04",

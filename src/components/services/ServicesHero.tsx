@@ -11,7 +11,7 @@ export default function ServicesHero() {
     >
       <Image
         src={images.servicePage.hero}
-        alt="Réseau de conduits isolés et bouche de ventilation dans un local technique"
+        alt="Équipements de chauffage, ventilation et climatisation installés dans un bâtiment"
         fill
         sizes="100vw"
         className="-z-20 object-cover"
@@ -42,15 +42,15 @@ export default function ServicesHero() {
 
         <div className="max-w-5xl py-12 md:py-16">
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-brand-400 sm:text-sm">
-            Ventilation · qualité de l’air · maintenance
+            Chauffage · climatisation · ventilation · plomberie
           </p>
           <h1 id="services-hero-heading" className="hero-title max-w-4xl text-white">
-            Solutions de ventilation et de{" "}
-            <span className="text-brand-400">traitement de l’air</span>
+            Les équipements techniques de votre{" "}
+            <span className="text-brand-400">bâtiment</span>
           </h1>
           <p className="lead mt-6 max-w-2xl text-slate-200">
-            De l’étude à la maintenance, nous concevons et installons des solutions adaptées
-            aux logements, aux espaces professionnels et aux environnements industriels.
+            De l’étude à la maintenance, nous intervenons sur vos installations de chauffage,
+            climatisation, ventilation et plomberie.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <Button href="/contact" size="lg" className="w-full sm:w-auto">
@@ -68,8 +68,8 @@ export default function ServicesHero() {
         </div>
 
         <p className="mt-auto max-w-xl border-l border-brand-400 pl-4 text-sm leading-relaxed text-slate-300">
-          Une approche attentive aux usages, aux débits d’air, à l’intégration des réseaux et à
-          l’accessibilité des équipements.
+          Une approche coordonnée des réseaux d’air et d’eau, attentive aux usages, à
+          l’intégration technique et à l’accessibilité des équipements.
         </p>
       </div>
     </section>

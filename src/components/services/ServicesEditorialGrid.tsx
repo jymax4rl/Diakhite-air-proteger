@@ -15,8 +15,8 @@ export default function ServicesEditorialGrid() {
         <div className="flex flex-col gap-7 border-b border-slate-200 pb-10 md:flex-row md:items-end md:justify-between">
           <SectionHeading
             eyebrow="Nos services"
-            title="Des réponses adaptées à chaque environnement"
-            description="Du logement aux locaux professionnels et industriels, chaque intervention commence par l’analyse du besoin et des contraintes du site."
+            title="Une offre complète pour les réseaux du bâtiment"
+            description="CVC, plomberie et maintenance sont abordés à partir des usages, de l’installation existante et des contraintes propres à chaque site."
             theme="light"
             headingId="services-heading"
           />
@@ -33,24 +33,53 @@ export default function ServicesEditorialGrid() {
             <article
               key={service.id}
               id={service.id}
-              className={index === 0 ? "bg-navy-900 p-6 text-white sm:p-9" : "bg-slate-50 p-6 sm:p-9"}
+              className={
+                index === 0
+                  ? "group scroll-mt-24 bg-navy-900 text-white"
+                  : "group scroll-mt-24 bg-slate-50"
+              }
             >
-              <ServiceNumber index={index} dark={index === 0} />
-              <p
-                className={`mt-12 text-xs font-semibold uppercase tracking-[0.15em] ${
-                  index === 0 ? "text-brand-400" : "text-brand-600"
-                }`}
-              >
-                {service.eyebrow}
-              </p>
-              <h3 className={`mt-3 text-2xl font-bold sm:text-3xl ${index === 0 ? "text-white" : "text-navy-900"}`}>
-                {service.title}
-              </h3>
-              <p className={`mt-5 max-w-xl leading-7 ${index === 0 ? "text-slate-300" : "text-slate-600"}`}>
-                {service.summary}
-              </p>
-              <ServiceDetails service={service} dark={index === 0} />
-              <ServiceLink title={service.title} dark={index === 0} />
+              {service.image && service.imageAlt && (
+                <div className="relative aspect-[16/10] overflow-hidden bg-navy-800">
+                  <Image
+                    src={service.image}
+                    alt={service.imageAlt}
+                    fill
+                    sizes="(max-width: 767px) 100vw, (max-width: 1350px) 50vw, 640px"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:transition-none"
+                  />
+                  <div
+                    className="absolute inset-0 bg-gradient-to-t from-navy-950/45 to-transparent"
+                    aria-hidden="true"
+                  />
+                </div>
+              )}
+              <div className="p-6 sm:p-9">
+                <ServiceNumber index={index} dark={index === 0} />
+                <p
+                  className={`mt-8 text-xs font-semibold uppercase tracking-[0.15em] ${
+                    index === 0 ? "text-brand-400" : "text-brand-600"
+                  }`}
+                >
+                  {service.eyebrow}
+                </p>
+                <h3
+                  className={`mt-3 text-2xl font-bold sm:text-3xl ${
+                    index === 0 ? "text-white" : "text-navy-900"
+                  }`}
+                >
+                  {service.title}
+                </h3>
+                <p
+                  className={`mt-5 max-w-xl leading-7 ${
+                    index === 0 ? "text-slate-300" : "text-slate-600"
+                  }`}
+                >
+                  {service.summary}
+                </p>
+                <ServiceDetails service={service} dark={index === 0} />
+                <ServiceLink title={service.title} dark={index === 0} />
+              </div>
             </article>
           ))}
         </div>
@@ -97,7 +126,7 @@ export default function ServicesEditorialGrid() {
 
         <div className="mt-16 border-t border-slate-200 pt-12 md:mt-24 md:pt-16">
           <p className="mb-8 max-w-2xl text-sm font-medium uppercase tracking-[0.12em] text-slate-500">
-            Expertises complémentaires
+            Pour une installation cohérente dans le temps
           </p>
           <div className="grid gap-px border border-slate-200 bg-slate-200 md:grid-cols-3">
             {compactServices.map((service, index) => (

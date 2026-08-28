@@ -9,7 +9,7 @@ export default function ServicesProcess() {
         <SectionHeading
           eyebrow="Du besoin au suivi"
           title="Un projet conduit en cinq étapes"
-          description="Une progression lisible pour relier les contraintes du site, la solution technique et son fonctionnement dans le temps."
+          description="Une progression lisible pour relier les usages du bâtiment, la coordination des réseaux et le fonctionnement des équipements dans le temps."
           theme="light"
           headingId="services-process-heading"
         />
