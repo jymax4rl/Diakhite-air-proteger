@@ -1,21 +1,48 @@
 import type { Metadata } from "next";
+import ContactDetails from "@/components/contact/ContactDetails";
+import ContactForm from "@/components/contact/ContactForm";
+import ContactHero from "@/components/contact/ContactHero";
 import Container from "@/components/ui/Container";
-import SectionHeading from "@/components/ui/SectionHeading";
+
+const origin = "https://diakhite-air-proteger.vercel.app";
+const canonicalUrl = `${origin}/contact`;
+const description =
+  "Présentez votre projet de ventilation, VMC, extraction ou traitement de l’air à Ventila Solutions et retrouvez nos coordonnées.";
 
 export const metadata: Metadata = {
-  title: "Contact",
-  description: "Contactez-nous pour demander un devis ou obtenir des informations sur nos services.",
+  title: "Contact — Parlons de votre projet de ventilation",
+  description,
+  alternates: {
+    canonical: canonicalUrl,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    url: canonicalUrl,
+    siteName: "Ventila Solutions",
+    title: "Parlons de votre projet de ventilation | Ventila Solutions",
+    description,
+  },
+  twitter: {
+    card: "summary",
+    title: "Parlons de votre projet de ventilation | Ventila Solutions",
+    description,
+  },
 };
 
 export default function ContactPage() {
   return (
-    <div className="pt-24 pb-16 bg-navy-900 min-h-screen">
-      <Container>
-        <SectionHeading
-          eyebrow="Parlons-en"
-          title="Contactez-nous"
-          description="Formulaire de contact et informations de contact à venir."
-        />
+    <div className="bg-slate-50">
+      <ContactHero />
+      <Container className="section-y">
+        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(19rem,24rem)] lg:gap-12 xl:gap-16">
+          <ContactForm />
+          <ContactDetails />
+        </div>
       </Container>
     </div>
   );
