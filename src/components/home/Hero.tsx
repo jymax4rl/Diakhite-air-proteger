@@ -16,7 +16,7 @@ export default function Hero() {
       <div className="absolute inset-0 -z-10">
         <Image
           src={images.hero.ventilation}
-          alt="Système de ventilation industrielle — conduits d'air"
+          alt="Conduits de ventilation métalliques dans un intérieur moderne"
           fill
           sizes="100vw"
           className="object-cover"

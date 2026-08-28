@@ -5,8 +5,8 @@
  */
 export const images = {
   hero: {
-    ventilation: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=85&auto=format&fit=crop",
-    // Industrial HVAC ductwork ceiling shot
+    ventilation: "/images/hero/conduits-ventilation-metalliques-professionnels.jpg",
+    // Original generated photograph of polished HVAC ductwork
   },
 
   services: {
