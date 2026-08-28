@@ -13,7 +13,7 @@ const stats = [
 export default function AboutPreview() {
   return (
     <section
-      className="bg-navy-700 py-16 md:py-24 overflow-hidden"
+      className="bg-navy-800 py-16 md:py-24 overflow-hidden"
       aria-labelledby="about-heading"
     >
       <Container>
@@ -64,7 +64,6 @@ export default function AboutPreview() {
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
-                unoptimized
               />
               {/* Subtle overlay */}
               <div className="absolute inset-0 bg-gradient-to-tr from-navy-900/40 to-transparent" />

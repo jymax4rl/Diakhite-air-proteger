@@ -66,11 +66,10 @@ function ServiceCard({ service }: { service: Service }) {
         fill
         sizes="(max-width: 768px) 260px, (max-width: 1024px) 50vw, 25vw"
         className="object-cover transition-transform duration-500 group-hover:scale-105"
-        unoptimized
       />
 
       {/* Gradient overlay — always present, intensifies on hover */}
-      <div className="absolute inset-0 bg-gradient-to-t from-navy-950/95 via-navy-900/50 to-transparent transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-navy-900/30 to-transparent transition-opacity duration-300" />
       <div className="absolute inset-0 bg-navy-950/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       {/* Content */}

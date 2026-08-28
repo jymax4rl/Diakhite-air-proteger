@@ -13,10 +13,10 @@
 @theme {
   /* Navy */
   --color-navy-950: #040810;
-  --color-navy-900: #070c18;
-  --color-navy-800: #0a1020;
-  --color-navy-700: #0d1529;
-  --color-navy-600: #111d36;
+  --color-navy-900: #080f1e;
+  --color-navy-800: #0c1528;
+  --color-navy-700: #111e38;
+  --color-navy-600: #162640;
   --color-navy-500: #1a2d4f;
   --color-navy-400: #233e6b;
 
@@ -42,7 +42,7 @@ html {
 }
 
 body {
-  background-color: #070c18;
+  background-color: #080f1e;
   color: #ffffff;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;

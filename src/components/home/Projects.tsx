@@ -13,7 +13,7 @@ const categoryColors: Record<string, string> = {
 export default function Projects() {
   return (
     <section
-      className="bg-navy-800 py-16 md:py-24"
+      className="bg-navy-700 py-16 md:py-24"
       aria-labelledby="projects-heading"
     >
       <Container>
@@ -87,11 +87,10 @@ function ProjectCard({
         fill
         sizes="(max-width: 768px) 300px, (max-width: 1024px) 50vw, 40vw"
         className="object-cover transition-transform duration-500 group-hover:scale-105"
-        unoptimized
       />
 
       {/* Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-navy-950/95 via-navy-900/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-navy-950/80 via-navy-900/25 to-transparent" />
 
       {/* Content */}
       <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-5">

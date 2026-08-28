@@ -18,12 +18,11 @@ export default function Hero() {
           sizes="100vw"
           className="object-cover"
           priority
-          unoptimized
         />
         {/* Left-heavy gradient so text on left always readable */}
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/98 via-navy-950/85 to-navy-950/50" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/70 to-navy-950/30" />
         {/* Top + bottom fade */}
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/60 via-transparent to-navy-950/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/40 via-transparent to-navy-950/60" />
       </div>
 
       {/* ── Hero content ── */}
