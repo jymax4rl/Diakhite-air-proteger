@@ -27,11 +27,11 @@ export default function ServicesCTA() {
               Demander un devis <ArrowIcon />
             </Button>
             <a
-              href="tel:+33123456789"
+              href="tel:+33651644657"
               className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/35 px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-white/10 motion-reduce:transition-none"
-              aria-label="Appelez Ventila Solutions au 01 23 45 67 89"
+              aria-label="Appelez Ventila Solutions au 06 51 64 46 57"
             >
-              <PhoneIcon /> 01 23 45 67 89
+              <PhoneIcon /> 06 51 64 46 57
             </a>
             <a
               href="mailto:contact@ventila-solutions.fr"

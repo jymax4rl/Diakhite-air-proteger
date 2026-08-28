@@ -468,7 +468,7 @@ absolute left-1/2 top-1/2 -ml-2 -mt-[0.75px] w-4 h-[1.5px] bg-white rounded-full
   **Gotcha, documented in the file:** centering uses `left-1/2 top-1/2` + negative margins (`-ml-2 -mt-[0.75px]`) instead of `-translate-x-1/2 -translate-y-1/2`. Tailwind v4 emits the discrete `translate` CSS property, so a centering translate would be **overwritten** by the animation's translate. Do not "clean this up" into translate-based centering.
 
 - Accessibility on the button: `aria-label` toggles `"Fermer le menu"` / `"Ouvrir le menu"`, plus `aria-expanded={menuOpen}` and `aria-controls="mobile-navigation"` (which matches `MobileMenu`'s `id`).
-- Phone number `+33123456789` / display `01 23 45 67 89` is hardcoded in **three** places (`Navbar` desktop, `Navbar` mobile, `MobileMenu`, and again in `Footer`). Placeholder data.
+- Phone number `+33651644657` / display `06 51 64 46 57` is hardcoded in `Navbar` desktop and mobile, `MobileMenu`, `Footer`, `ContactDetails`, and `ServicesCTA`. Placeholder-like data; the repository does not independently verify the business contact facts.
 - Local helpers (not exported): `LogoIcon()`, `PhoneIcon({ className }: { className?: string })`.
 
 ### 5.6 `src/components/layout/MobileMenu.tsx` — **CLIENT COMPONENT**
@@ -1607,7 +1607,7 @@ Also unused at this commit: the `align="center"` branch of `SectionHeading`, the
 | **Error/loading UI** | No `not-found.tsx`, `error.tsx`, `loading.tsx`, `global-error.tsx` |
 | **Testing** | No test runner, no tests, no Playwright/Vitest/Jest |
 | **CI** | No `.github/`. Nothing runs `next typegen && tsc --noEmit` or eslint automatically (section 9.7) |
-| **Real content** | Phone `01 23 45 67 89`, email `contact@ventila-solutions.fr`, address `75001 Paris` and all stats (10+/250+/98%) are placeholders. Images are Unsplash stock |
+| **Real content** | Phone `06 51 64 46 57`, email `contact@ventila-solutions.fr`, address `75001 Paris` and all stats (10+/250+/98%) remain placeholder-like repository facts and are not independently verified. Images are Unsplash stock |
 | **i18n** | Single hardcoded locale. No `next-intl`, no `[locale]` segment |
 | **Analytics / consent** | None |
 
@@ -1782,7 +1782,7 @@ Components under `src/components/contact/`:
 2. `ContactForm` — light semantic form with visible labels, required and autocomplete attributes,
    48px fields, help text, native input types, a required carefully worded consent checkbox, and
    project/building options aligned with the existing service offering.
-3. `ContactDetails` — sticky-at-desktop panel using only repository facts: `01 23 45 67 89`,
+3. `ContactDetails` — sticky-at-desktop panel using only repository facts: `06 51 64 46 57`,
    `contact@ventila-solutions.fr`, and `75001 Paris, France`; it links to `/services`.
 
 There is deliberately no `"use client"`, form action, API endpoint, provider, database, or personal

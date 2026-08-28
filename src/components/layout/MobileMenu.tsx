@@ -162,7 +162,7 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
         }}
       >
         <a
-          href="tel:+33123456789"
+          href="tel:+33651644657"
           style={{
             display: "flex",
             alignItems: "center",
@@ -177,7 +177,7 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
             textDecoration: "none",
           }}
         >
-          <PhoneIcon /> 01 23 45 67 89
+          <PhoneIcon /> 06 51 64 46 57
         </a>
         <Link
           href="/contact"

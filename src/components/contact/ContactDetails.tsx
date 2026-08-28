@@ -3,8 +3,8 @@ import Link from "next/link";
 const contactItems = [
   {
     label: "Téléphone",
-    value: "01 23 45 67 89",
-    href: "tel:+33123456789",
+    value: "06 51 64 46 57",
+    href: "tel:+33651644657",
     icon: <PhoneIcon />,
   },
   {

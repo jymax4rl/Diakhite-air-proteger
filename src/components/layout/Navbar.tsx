@@ -72,12 +72,12 @@ export default function Navbar({ onMenuToggle, menuOpen }: NavbarProps) {
           {/* ── Desktop CTA ── */}
           <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
             <a
-              href="tel:+33123456789"
+              href="tel:+33651644657"
               className="flex items-center gap-1.5 text-[13px] font-medium text-slate-300 hover:text-white transition-colors"
-              aria-label="Appelez-nous au 01 23 45 67 89"
+              aria-label="Appelez-nous au 06 51 64 46 57"
             >
               <PhoneIcon className="w-3.5 h-3.5" />
-              01 23 45 67 89
+              06 51 64 46 57
             </a>
             <Button href="/contact" size="sm">
               Demander un devis →
@@ -87,7 +87,7 @@ export default function Navbar({ onMenuToggle, menuOpen }: NavbarProps) {
           {/* ── Mobile controls ── */}
           <div className="flex lg:hidden items-center gap-2.5">
             <a
-              href="tel:+33123456789"
+              href="tel:+33651644657"
               className="flex items-center justify-center w-9 h-9 rounded-full bg-brand-600 text-white hover:bg-brand-500 transition-colors"
               aria-label="Nous appeler"
             >

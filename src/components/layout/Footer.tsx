@@ -46,10 +46,10 @@ export default function Footer() {
             <address className="not-italic space-y-2 text-sm text-slate-400">
               <p>
                 <a
-                  href="tel:+33123456789"
+                  href="tel:+33651644657"
                   className="hover:text-white transition-colors"
                 >
-                  📞 01 23 45 67 89
+                  📞 06 51 64 46 57
                 </a>
               </p>
               <p>
