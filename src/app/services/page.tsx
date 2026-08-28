@@ -6,8 +6,9 @@ import ServicesHero from "@/components/services/ServicesHero";
 import ServicesProcess from "@/components/services/ServicesProcess";
 import WhyChooseUs from "@/components/services/WhyChooseUs";
 import { servicePageItems } from "@/data/service-page";
+import { organizationId, site } from "@/data/site";
 
-const origin = "https://diakhite-air-proteger.vercel.app";
+const origin = site.url;
 const canonicalUrl = `${origin}/services`;
 const heroImageUrl = `${origin}/images/services/solutions-ventilation-conduits-air.jpg`;
 const description =
@@ -27,8 +28,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "fr_FR",
     url: canonicalUrl,
-    siteName: "Ventila Solutions",
-    title: "Services de ventilation et traitement de l’air | Ventila Solutions",
+    siteName: site.brand.name,
+    title: `Services de ventilation et traitement de l’air | ${site.brand.name}`,
     description,
     images: [
       {
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Services de ventilation et traitement de l’air | Ventila Solutions",
+    title: `Services de ventilation et traitement de l’air | ${site.brand.name}`,
     description,
     images: [heroImageUrl],
   },
@@ -82,9 +83,7 @@ export default function ServicesPage() {
             description: service.summary,
             url: `${canonicalUrl}#${service.id}`,
             provider: {
-              "@type": "Organization",
-              name: "Ventila Solutions",
-              url: origin,
+              "@id": organizationId,
             },
           },
         })),
