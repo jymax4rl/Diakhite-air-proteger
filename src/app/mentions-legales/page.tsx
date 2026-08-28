@@ -57,8 +57,8 @@ export default function LegalNoticePage() {
             </h2>
             <p className="mt-4 leading-7 text-slate-700">
               Le présent site, présenté sous le nom {site.brand.name}, est édité par{" "}
-              <strong>{site.company.legalName}</strong>, {site.company.legalForm.toLowerCase()} au
-              capital social de {site.company.shareCapital}.
+              <strong>{site.company.legalName}</strong>, {site.company.legalForm} au capital social
+              de {site.company.shareCapital}.
             </p>
           </section>
 
