@@ -11,6 +11,14 @@
  * element that has backdrop-filter. That filter creates a new stacking context
  * which would trap any fixed children inside it. As a sibling, position:fixed
  * on this overlay resolves to the viewport (initial containing block).
+ *
+ * The overlay stays permanently mounted and is toggled with opacity/transform/
+ * visibility/pointer-events so it can animate on the way OUT as well as in —
+ * unmounting on close would skip the exit transition entirely.
+ *
+ * There is no separate backdrop element: this root IS the backdrop, covering the
+ * full viewport with a near-opaque fill plus blur. Consequently there is no
+ * "click outside" region — only the close button and the nav links dismiss it.
  */
 "use client";
 
@@ -38,19 +46,20 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
     return () => document.removeEventListener("keydown", handler);
   }, [isOpen, onClose]);
 
+  // Capture whatever inline `overflow` the body already had so closing restores
+  // it instead of blanket-clearing a value another component may own.
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!isOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
     };
   }, [isOpen]);
 
   return (
     <div
+      id="mobile-navigation"
       role="dialog"
       aria-modal="true"
       aria-label="Menu de navigation"
@@ -67,8 +76,14 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
         backdropFilter: "blur(24px)",
         WebkitBackdropFilter: "blur(24px)",
         opacity: isOpen ? 1 : 0,
-        transform: isOpen ? "translateY(0)" : "translateY(-12px)",
-        transition: "opacity 250ms ease, transform 250ms ease",
+        transform: isOpen ? "translateY(0)" : "translateY(-20px)",
+        visibility: isOpen ? "visible" : "hidden",
+        // `visibility` is not interpolable, so it is stepped: immediately on
+        // open, and deferred a full 280ms on close so the exit animation is not
+        // cut short. While hidden, the panel's links leave the tab order.
+        transition: `opacity 280ms ease-in-out, transform 280ms ease-in-out, visibility 0s linear ${
+          isOpen ? "0s" : "280ms"
+        }`,
         pointerEvents: isOpen ? "auto" : "none",
         overflowX: "hidden",
         overflowY: "auto",

@@ -10,12 +10,25 @@ export const navLinks = [
   { href: "/contact", label: "Contact" },
 ] as const;
 
+/**
+ * Hamburger line base styles.
+ *
+ * Centering uses left/top + negative margins rather than `-translate-x-1/2
+ * -translate-y-1/2`: Tailwind v4 emits the individual `translate` CSS property,
+ * so a centering translate would be overwritten by the animation's translate.
+ * Negative margins keep `translate`/`rotate`/`scale` free for the animation and
+ * leave `transform-origin` at the element's centre, so the X forms in place and
+ * the 36px button never changes size.
+ */
+const burgerLine =
+  "absolute left-1/2 top-1/2 -ml-2 -mt-[0.75px] w-4 h-[1.5px] bg-white rounded-full transition-all duration-300 ease-in-out";
+
 interface NavbarProps {
-  onMenuOpen: () => void;
+  onMenuToggle: () => void;
   menuOpen: boolean;
 }
 
-export default function Navbar({ onMenuOpen, menuOpen }: NavbarProps) {
+export default function Navbar({ onMenuToggle, menuOpen }: NavbarProps) {
   return (
     <header className="fixed top-0 left-0 right-0 z-[60] bg-navy-950/90 backdrop-blur-xl border-b border-white/5">
       <div className="site-container">
@@ -81,12 +94,31 @@ export default function Navbar({ onMenuOpen, menuOpen }: NavbarProps) {
               <PhoneIcon className="w-4 h-4" />
             </a>
             <button
-              onClick={onMenuOpen}
+              type="button"
+              onClick={onMenuToggle}
+              aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
               aria-expanded={menuOpen}
-              aria-label="Ouvrir le menu de navigation"
-              className="flex items-center justify-center w-9 h-9 rounded-lg border border-white/15 text-white hover:bg-white/10 transition-colors"
+              aria-controls="mobile-navigation"
+              className="relative w-9 h-9 rounded-lg border border-white/15 text-white hover:bg-white/10 transition-colors"
             >
-              <HamburgerIcon />
+              <span
+                aria-hidden="true"
+                className={`${burgerLine} ${
+                  menuOpen ? "translate-y-0 rotate-45" : "-translate-y-[5px]"
+                }`}
+              />
+              <span
+                aria-hidden="true"
+                className={`${burgerLine} ${
+                  menuOpen ? "opacity-0 scale-x-0" : "opacity-100 scale-x-100"
+                }`}
+              />
+              <span
+                aria-hidden="true"
+                className={`${burgerLine} ${
+                  menuOpen ? "translate-y-0 -rotate-45" : "translate-y-[5px]"
+                }`}
+              />
             </button>
           </div>
         </nav>
@@ -109,25 +141,6 @@ function LogoIcon() {
       <path d="M17 10 C17 10 13 7.5 9 10 C13 12.5 17 10 17 10Z" fill="white" opacity="0.92" />
       <path d="M10 17 C10 17 12.5 13 10 9 C7.5 13 10 17 10 17Z" fill="white" opacity="0.92" />
       <circle cx="10" cy="10" r="2.5" fill="white" />
-    </svg>
-  );
-}
-
-function HamburgerIcon() {
-  return (
-    <svg
-      width="16"
-      height="12"
-      viewBox="0 0 16 12"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M0 1H16M0 6H16M0 11H16"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
     </svg>
   );
 }
