@@ -5,15 +5,15 @@
 
 | Field | Value |
 | --- | --- |
-| Commit documented | `33239df627137643264039b4fcbe9af758447b7e` (`33239df`) |
-| Commit subject | `fix: respect reduced motion in process pagination` |
-| Commit date | 2026-08-28 17:42:41 +0000 |
+| Commit documented | `12100d005faa5313a06bdc71ebac61a528459cb0` (`12100d0`) |
+| Commit subject | `feat: add legal notice and organization structured data` |
+| Commit date | 2026-08-28 17:46:47 +0000 |
 | Branch | `main` |
 | Working tree at time of writing | clean (no uncommitted changes) |
-| Documentation status | Context reflects source commit `33239df`, immediately before this documentation commit |
-| Verified at this SHA | `next typegen`, `tsc --noEmit`, ESLint (zero warnings), responsive browser interaction checks, and HTTP `/` 200 all pass |
+| Documentation status | Context reflects source commit `12100d0`, immediately before this documentation commit |
+| Verified at this SHA | `next typegen`, `tsc --noEmit`, ESLint (zero warnings), production build, required-route HTTP checks, JSON-LD parsing, and responsive browser checks all pass |
 
-> This context reflects source commit `33239df` immediately before its own documentation commit. The source commit is already pushed; later source changes require re-verifying the affected sections.
+> This context reflects source commit `12100d0` immediately before its own documentation commit. The source commit is already pushed; later source changes require re-verifying the affected sections.
 
 ---
 
@@ -27,8 +27,9 @@
 - **Do NOT "simplify" `SiteShell.tsx` away, and do NOT move menu state into `Navbar`.** It exists for two hard technical reasons (section 8.1). Collapsing it re-breaks the mobile menu.
 - **Do NOT convert `MobileMenu.tsx`'s inline styles to Tailwind classes** as a drive-by cleanup. It is deliberate (section 8.2). It is acknowledged technical debt, but changing it requires re-verifying the stacking-context fix.
 - **All image paths must go through `src/data/images.ts`.** Never inline a URL or `/images/...` path in a component.
-- `/services` is a complete static editorial page. `/contact` has a polished semantic form foundation and contact-details panel; online submission is deliberately disabled because there is no transport. `/a-propos`, `/realisations`, and `/blog` share a polished `ComingSoon` state. There is no CMS or detail routes.
-- ~14 internal `<Link>` instances point at **10 routes that do not exist** (section 9.6). This is known. Do not treat a 404 as a new bug you introduced.
+- `/services` is a complete static editorial page. `/contact` has a polished semantic form foundation and contact-details panel; online submission is deliberately disabled because there is no transport. `/mentions-legales` publishes verified company facts. `/a-propos`, `/realisations`, and `/blog` share a polished `ComingSoon` state. There is no CMS or detail routes.
+- `src/data/site.ts` is the source of truth for the brand, production URL, contact details, registered office, and legal identifiers. The phone is user-confirmed; the email remains an existing, unverified contact value.
+- 13 internal `<Link>` instances point at **9 routes that do not exist** (section 9.6). This is known. Do not treat a 404 as a new bug you introduced.
 
 ---
 
@@ -233,14 +234,16 @@ Environment notes:
 │
 └── src/
     ├── app/
-    │   ├── layout.tsx            Root layout. SERVER. metadata, Geist fonts, <html lang="fr">,
-    │   │                         renders <SiteShell>{children}</SiteShell> + <Footer/>.
+    │   ├── layout.tsx            Root layout. SERVER. Metadata, fonts, global Organization
+    │   │                         JSON-LD, <SiteShell>{children}</SiteShell> + <Footer/>.
     │   ├── page.tsx              Home route `/`. SERVER. Composes the 5 home sections.
     │   ├── globals.css           THE design system. Tailwind v4 @theme tokens + @utility classes.
     │   ├── favicon.ico           App-icon file convention (25931 bytes).
     │   ├── a-propos/page.tsx     SERVER. Polished shared coming-soon state.
     │   ├── blog/page.tsx         SERVER. Polished shared coming-soon state.
     │   ├── contact/page.tsx      SERVER. Metadata + contact-page composition.
+    │   ├── mentions-legales/
+    │   │   └── page.tsx          SERVER. Verified company facts and route metadata.
     │   ├── realisations/page.tsx SERVER. Polished shared coming-soon state.
     │   └── services/page.tsx     Full editorial page. SERVER. Metadata + JSON-LD composition.
     │
@@ -259,7 +262,7 @@ Environment notes:
     │   │   ├── Navbar.tsx        SERVER. Fixed header + animated hamburger. Exports `navLinks`.
     │   │   ├── MobileMenu.tsx    **CLIENT** ("use client"). Viewport-level overlay. Inline
     │   │   │                     styles are deliberate — read section 8.2.
-    │   │   └── Footer.tsx        SERVER. 4-column footer. Contains 6 broken links.
+    │   │   └── Footer.tsx        SERVER. 4-column footer. Contains 5 broken links.
     │   ├── services/
     │   │   ├── ServicesHero.tsx          SERVER. Hero, breadcrumb, H1 and primary CTAs.
     │   │   ├── ExpertiseIntro.tsx        SERVER. Light editorial introduction.
@@ -281,6 +284,7 @@ Environment notes:
     ├── data/
     │   ├── images.ts             Centralised image registry. THE single source of image paths.
     │   ├── service-page.ts       Nine service topics + trust and process content contracts.
+    │   ├── site.ts               Brand/contact/legal facts + production URL and Organization ID.
     │   ├── services.ts           `Service` interface + 4 services. Hrefs are all broken.
     │   └── projects.ts           `Project` interface + 4 projects. Hrefs are all broken.
     │
@@ -292,13 +296,13 @@ Environment notes:
 
 ### Files that do NOT exist (and that you may be tempted to assume)
 
-`middleware.ts` / `proxy.ts`, `sitemap.ts`, `robots.ts`, `manifest.ts`, `opengraph-image.*`, `not-found.tsx`, `error.tsx`, `loading.tsx`, `template.tsx`, `route.ts` (no API routes), `tailwind.config.*`, `.env*`, any test file or test runner, any CI workflow (`.github/`).
+`middleware.ts` / `proxy.ts`, `sitemap.ts`, `robots.ts`, `manifest.ts`, `opengraph-image.*`, `not-found.tsx`, `error.tsx`, `loading.tsx`, `template.tsx`, `route.ts` (no API routes), `tailwind.config.*`, `.env*`, any test file or test runner, any CI workflow (`.github/`), and `/politique-confidentialite`.
 
 ---
 
 ## 5. Per-file breakdown
 
-Server/Client rule for this repo: **Server Component unless the file literally begins with `"use client"`.** Only two files do, both in `src/components/layout/`.
+Server/Client rule for this repo: **Server Component unless the file contains a `"use client"` directive before statements.** The three client entries are `SiteShell`, `MobileMenu`, and the focused `ProcessCarousel` leaf.
 
 ### 5.1 `src/app/layout.tsx` — Server Component
 
@@ -306,12 +310,13 @@ Root layout. Server because it exports `metadata` (only legal in a Server Compon
 
 ```tsx
 export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
   title: {
     default: "Ventila Solutions — Solutions de ventilation performantes",
     template: "%s | Ventila Solutions",
   },
   description: "Nous concevons, installons et entretenons des systèmes de ventilation efficaces, économiques et durables. Résidentiel, commercial et industriel.",
-  keywords: [ /* 8 French/HVAC keywords, incl. "Diakhite Air Proteger" */ ],
+  keywords: [ /* 8 French/HVAC keywords, incl. AIR PROTEGER */ ],
   robots: { index: true, follow: true },
 };
 
@@ -334,7 +339,7 @@ Key details:
 ```
 
 - `<body>` is `flex flex-col`; `<main>` inside `SiteShell` is `flex-1`, which is what keeps the footer at the bottom on short pages.
-- Gotchas: no `openGraph`, no `metadataBase`, no `twitter`, no `alternates`, no JSON-LD. `<html>` has **no** `data-scroll-behavior="smooth"` while `globals.css` sets `scroll-behavior: smooth` — under Next 16 semantics that means route changes animate rather than jump (section 2.1).
+- `metadataBase` comes from `site.url`. The body begins with one native JSON-LD script describing the legal `Organization`; it uses `JSON.stringify(...).replace(/</g, "\\u003c")` per the bundled Next.js 16 guide. `<html>` has **no** `data-scroll-behavior="smooth"` while `globals.css` sets `scroll-behavior: smooth` — under Next 16 semantics route changes animate rather than jump (section 2.1).
 - **The `<Footer/>` sits outside `SiteShell`,** so it is a plain Server Component and is not part of the client boundary.
 
 ### 5.2 `src/app/page.tsx` — Server Component
@@ -359,7 +364,7 @@ export default function HomePage() {
 
 Gotcha: **`Process` is not rendered here.** It is a child of `Hero`. Adding `<Process />` to this list renders it twice.
 
-### 5.3 Contact and incomplete route pages — all Server Components
+### 5.3 Contact, legal, and incomplete route pages — all Server Components
 
 `src/app/contact/page.tsx` composes `ContactHero`, `ContactForm`, and `ContactDetails`. It exports
 route-specific canonical, robots, Open Graph, and Twitter metadata. `ContactHero` owns the route's
@@ -370,6 +375,12 @@ and required consent controls. It intentionally has no action, Server Action, cl
 API route, storage, or transport. Its submit button is disabled and says
 `Envoi en ligne prochainement`; nearby copy states that entered values are neither transmitted nor
 stored. The repository `mailto:` address is available both in the form notice and contact panel.
+
+`src/app/mentions-legales/page.tsx` provides exactly one H1, static canonical/robots/Open
+Graph/Twitter metadata, and semantic sections for AIR PROTEGER's verified publisher identity,
+registration, activity, registered office, and contact details. It intentionally omits officer
+names and unsupported hosting/editor information. The registered-office caveat does not imply
+walk-in access.
 
 `src/app/{a-propos,blog,realisations}/page.tsx` each renders the shared `ComingSoon` Server
 Component with route-specific French copy. `ComingSoon` provides exactly one H1 and links to `/`,
@@ -469,7 +480,7 @@ absolute left-1/2 top-1/2 -ml-2 -mt-[0.75px] w-4 h-[1.5px] bg-white rounded-full
   **Gotcha, documented in the file:** centering uses `left-1/2 top-1/2` + negative margins (`-ml-2 -mt-[0.75px]`) instead of `-translate-x-1/2 -translate-y-1/2`. Tailwind v4 emits the discrete `translate` CSS property, so a centering translate would be **overwritten** by the animation's translate. Do not "clean this up" into translate-based centering.
 
 - Accessibility on the button: `aria-label` toggles `"Fermer le menu"` / `"Ouvrir le menu"`, plus `aria-expanded={menuOpen}` and `aria-controls="mobile-navigation"` (which matches `MobileMenu`'s `id`).
-- Phone number `+33651644657` / display `06 51 64 46 57` is hardcoded in `Navbar` desktop and mobile, `MobileMenu`, `Footer`, `ContactDetails`, and `ServicesCTA`. Placeholder-like data; the repository does not independently verify the business contact facts.
+- Phone number `+33651644657` / display `06 51 64 46 57` comes from `site.contact.phone` in every navigation, footer, contact, and services CTA occurrence. It is user-confirmed and intentionally takes precedence over third-party directory numbers.
 - Local helpers (not exported): `LogoIcon()`, `PhoneIcon({ className }: { className?: string })`.
 
 ### 5.6 `src/components/layout/MobileMenu.tsx` — **CLIENT COMPONENT**
@@ -563,10 +574,10 @@ const company = [
 ```
 
 - Layout: `<footer className="bg-navy-950 border-t border-white/6">` → `<Container className="py-12 md:py-16">` → `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10`. Brand column spans `sm:col-span-2 lg:col-span-2`.
-- Contact block uses `<address className="not-italic">` with **emoji** as icons (📞 ✉️ 📍) — inconsistent with the inline-SVG convention everywhere else.
+- Contact block uses `<address className="not-italic">` with **emoji** as icons (📞 ✉️ 📍), plus the verified registered office and concise AIR PROTEGER legal identity.
 - Bottom bar: `© {new Date().getFullYear()} Ventila Solutions. Tous droits réservés.` — **`new Date()` in a Server Component means the year is baked in at render time.** Fine for a dynamically rendered page; if you later make this statically cached, the year will freeze.
 - Column headers use `<h3>`. On the stub pages this yields `h3` without a preceding `h1` (section 9.4).
-- **All 4 `services` hrefs plus `/mentions-legales` and `/politique-confidentialite` are 404s** (section 9.6).
+- **All 4 `services` hrefs plus `/politique-confidentialite` are 404s** (section 9.6). `/mentions-legales` now exists.
 - Local helper: `LogoIcon()` — a byte-identical duplicate of `Navbar`'s. Not shared.
 
 ### 5.8 `src/components/home/Hero.tsx` — Server Component
@@ -1182,7 +1193,7 @@ Target device widths the responsive work is tuned for:
 
 ## 7. Data layer contracts
 
-Three modules in `src/data/`. All are plain typed constants — **no fetching, no async, no CMS.** They are imported directly into Server Components.
+Five modules in `src/data/`. All are plain typed constants — **no fetching, no async, no CMS.** They are imported directly into Server and Client Components.
 
 ### 7.1 `src/data/images.ts` — the image registry
 
@@ -1371,6 +1382,21 @@ export const projects: Project[] = [
 - **All 4 `href`s are 404s** (section 9.6).
 - The array has exactly 4 entries, which pairs positionally with the 4-entry `slots` array in `Projects.tsx`. Adding a 5th project falls back to `fallbackSlot` (no `lg:` span).
 
+### 7.4 `src/data/site.ts`
+
+`site` centralizes the `Ventila Solutions` display brand, production URL, user-confirmed phone,
+existing contact email, and AIR PROTEGER legal facts. Verified values include SIREN
+`987 925 013`, head-office SIRET `987 925 013 00011`, SAS legal form, creation date
+`3 juin 2025`, registered office `10 avenue Normandie Niemen, 77290 Mitry-Mory`, APE
+`43.22B`, capital `1 000 €`, VAT number, active status, and `987 925 013 R.C.S. Meaux`.
+`organizationId` is the stable `${site.url}/#organization` JSON-LD identifier.
+
+Registry research was accessed 2026-08-28. Societe.com was the user-provided source; the French
+Annuaire des Entreprises/INSEE/RNE record and public BODACC-derived data were used to cross-check.
+The email is not registry-verified (`verified: false`). Do not turn that flag into a public claim,
+and do not add officers, birth data, employee/revenue estimates, risk scores, certifications,
+opening hours, service areas, or other unsupported directory fields.
+
 ---
 
 ## 8. Architecture decisions and WHY
@@ -1525,9 +1551,9 @@ Options: keep the double lock and document it (current state), or remove `html {
 
 ### 9.6 Internal links pointing at non-existent routes — **OPEN**
 
-Routes that exist: `/`, `/a-propos`, `/blog`, `/contact`, `/realisations`, `/services` (confirmed against the generated `AppRoutes` union).
+Routes that exist: `/`, `/a-propos`, `/blog`, `/contact`, `/mentions-legales`, `/realisations`, `/services` (confirmed against generated route types).
 
-**10 unique non-existent routes, reached by 14 `<Link>` instances:**
+**9 unique non-existent routes, reached by 13 `<Link>` instances:**
 
 | Broken route | Referenced from | Count |
 | --- | --- | --- |
@@ -1539,14 +1565,13 @@ Routes that exist: `/`, `/a-propos`, `/blog`, `/contact`, `/realisations`, `/ser
 | `/realisations/immeuble-bureaux` | `data/projects.ts` | 1 |
 | `/realisations/residence-haut-gamme` | `data/projects.ts` | 1 |
 | `/realisations/usine-agroalimentaire` | `data/projects.ts` | 1 |
-| `/mentions-legales` | `Footer.tsx` | 1 |
 | `/politique-confidentialite` | `Footer.tsx` | 1 |
 
-Every service card on the home page, every project card, all four footer service links and both footer legal links are 404s. There is also **no `not-found.tsx`**, so users get the framework default.
+Every service card on the home page, every project card, all four footer service links and the privacy link are 404s. There is also **no `not-found.tsx`**, so users get the framework default.
 
 These do **not** fail `tsc` because `typedRoutes` is not enabled in `next.config.ts`. Enabling it would turn all 14 into compile errors — useful as a guardrail once the routes exist.
 
-Fix paths: add `app/services/[slug]/page.tsx` + `app/realisations/[slug]/page.tsx` dynamic routes (remember `params` is a Promise — section 2.1), or point the hrefs at existing pages until detail pages are built. Legal pages need creating either way.
+Fix paths: add `app/services/[slug]/page.tsx` + `app/realisations/[slug]/page.tsx` dynamic routes (remember `params` is a Promise — section 2.1), or point the hrefs at existing pages until detail pages are built. A privacy page still requires product/legal review rather than fabricated boilerplate.
 
 ### 9.7 `tsc --noEmit` passes only because `.next/` exists — **OPEN**
 
@@ -1599,8 +1624,9 @@ Also unused at this commit: the `align="center"` branch of `SectionHeading`, the
 | Layout shell | Fixed `h-16` blurred header, sticky footer via flex, `SiteShell` client boundary correctly scoped |
 | Carousel→grid pattern | `scroll-snap-row` / `scroll-snap-item`, hidden scrollbars, mobile snap carousels becoming grids at `md`; Process dots track and control all four snapped steps |
 | Image pipeline | `next/image` with `fill` + hand-tuned `sizes` per breakpoint everywhere, `priority` on the LCP hero, `remotePatterns` allowlist, centralised registry |
-| Basic metadata | Title template, description, keywords, robots; complete route metadata on `/services` and `/contact`; accurate title/description on coming-soon pages |
-| Contact foundation | Responsive labeled form, required semantics, disabled honest submission state, and repository phone/email/address with direct phone and mail links |
+| Metadata and structured data | Root metadata base and one global Organization JSON-LD; complete route metadata on `/services`, `/contact`, and `/mentions-legales` |
+| Company/legal facts | Central `site.ts`, verified registered identity/address/identifiers, legal-notice route, and concise footer identity |
+| Contact foundation | Responsive labeled form, required semantics, disabled honest submission state, user-confirmed phone, unverified existing email, and registered-office address |
 | Accessibility basics | Exactly one H1 per existing route, `aria-labelledby` on sections, explicit form labels/help text, `aria-expanded`/`aria-controls` on the hamburger, decorative SVGs `aria-hidden`, `:focus-visible` ring, 44px touch-target floor |
 | Toolchain hygiene | `tsc --noEmit` clean, `eslint --max-warnings 0` clean |
 
@@ -1608,16 +1634,16 @@ Also unused at this commit: the `align="center"` branch of `SectionHeading`, the
 
 | Area | Missing |
 | --- | --- |
-| **SEO** | No `sitemap.ts`, no `robots.ts`, no `manifest.ts`, no `openGraph` / `twitter` metadata, no `opengraph-image`, no `metadataBase`, no JSON-LD structured data (`LocalBusiness` / `Service` would be the obvious schemas — see `node_modules/next/dist/docs/01-app/02-guides/json-ld.md`), no canonical URLs |
+| **SEO remainder** | No `sitemap.ts`, `robots.ts`, `manifest.ts`, or `opengraph-image`; root Open Graph/Twitter defaults remain sparse. Route canonicals exist for services, contact, and legal notice |
 | **Contact delivery** | No Server Action, email transport, storage, spam protection, or active online submit. The visible form foundation cannot send and says so; users can use the repository `mailto:` link |
 | **CMS / data source** | None. `data/*.ts` are hardcoded arrays. No fetching, no `use cache`, no revalidation, no DB |
 | **Animations** | No scroll reveal, no View Transitions, no `framer-motion`. Motion is limited to CSS UI transitions, the hamburger/overlay, smooth Process dot navigation, and native scroll snap; Process respects `prefers-reduced-motion` |
 | **Sub-page content** | `/a-propos`, `/realisations`, and `/blog` intentionally remain concise shared coming-soon states; no fake editorial content |
-| **Detail routes** | No `/services/[slug]`, no `/realisations/[slug]` (10 broken links — section 9.6), no `/mentions-legales`, no `/politique-confidentialite` |
+| **Detail routes** | No `/services/[slug]`, no `/realisations/[slug]` (9 broken routes total with privacy — section 9.6), no `/politique-confidentialite` |
 | **Error/loading UI** | No `not-found.tsx`, `error.tsx`, `loading.tsx`, `global-error.tsx` |
 | **Testing** | No test runner, no tests, no Playwright/Vitest/Jest |
 | **CI** | No `.github/`. Nothing runs `next typegen && tsc --noEmit` or eslint automatically (section 9.7) |
-| **Real content** | Phone `06 51 64 46 57`, email `contact@ventila-solutions.fr`, address `75001 Paris` and all stats (10+/250+/98%) remain placeholder-like repository facts and are not independently verified. Images are Unsplash stock |
+| **Unverified content** | Email `contact@ventila-solutions.fr` and marketing stats (10+/250+/98%) remain unverified; images are stock. Phone and legal company facts are no longer placeholders |
 | **i18n** | Single hardcoded locale. No `next-intl`, no `[locale]` segment |
 | **Analytics / consent** | None |
 
@@ -1697,8 +1723,8 @@ npx next typegen && npx tsc --noEmit    # the correct CI invocation
 4. `WhyChooseUs` — three neutral, supportable approach themes and `/a-propos` link.
 5. `ServicesProcess` — ordered five-step sequence: need analysis, solution study, installation,
    commissioning, then follow-up and maintenance.
-6. `ServicesCTA` — `/contact`, phone, and email actions. The repository phone/email are reused
-   verbatim but remain placeholder-like facts (see known issues).
+6. `ServicesCTA` — `/contact`, phone, and email actions sourced from `site.ts`. The phone is
+   user-confirmed; the existing email remains unverified.
 
 Every section is named with `aria-labelledby`; service names are `<h3>` under section `<h2>`s.
 All new components are Server Components. `Navbar`, `SiteShell`, `MobileMenu`, `Footer`, global
@@ -1755,7 +1781,7 @@ One native `<script type="application/ld+json">` contains an `@graph` with:
 
 - `BreadcrumbList` for Accueil → Services.
 - `ItemList` of nine visible `Service` entries whose URLs point to the corresponding in-page
-  article IDs.
+  article IDs. Each provider references the global Organization by `@id`, avoiding a duplicate.
 
 The JSON is serialized with `JSON.stringify(...).replace(/</g, "\\u003c")`; `next/script` is not
 used. No location, price, rating, review, certification, or area-served property is present.
@@ -1775,7 +1801,7 @@ used. No location, price, rating, review, certification, or area-served property
   1024 px. All five local source images were visually inspected and all image optimizer endpoints
   return HTTP 200.
 
-Known limitation: the site-wide footer still links to missing service-detail and legal routes, and
+Known limitation: the site-wide footer still links to missing service-detail and privacy routes, and
 other unrelated pages still use remote Unsplash images (one existing project URL returns 404).
 Those pre-existing issues are outside the `/services` scope.
 
@@ -1792,8 +1818,10 @@ Components under `src/components/contact/`:
 2. `ContactForm` — light semantic form with visible labels, required and autocomplete attributes,
    48px fields, help text, native input types, a required carefully worded consent checkbox, and
    project/building options aligned with the existing service offering.
-3. `ContactDetails` — sticky-at-desktop panel using only repository facts: `06 51 64 46 57`,
-   `contact@ventila-solutions.fr`, and `75001 Paris, France`; it links to `/services`.
+3. `ContactDetails` — sticky-at-desktop panel using the user-confirmed `06 51 64 46 57`,
+   existing unverified `contact@ventila-solutions.fr`, and registered office at
+   `10 avenue Normandie Niemen, 77290 Mitry-Mory`; it links to `/services` and does not imply
+   public walk-in access.
 
 There is deliberately no `"use client"`, form action, API endpoint, provider, database, or personal
 data logging. The disabled submit control and two visible notices state that online sending is not
