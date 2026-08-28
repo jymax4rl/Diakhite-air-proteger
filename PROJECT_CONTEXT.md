@@ -5,15 +5,15 @@
 
 | Field | Value |
 | --- | --- |
-| Commit documented | `5ee36f323c6d284b6045926d083e1e7af21c6d30` (`5ee36f3`) |
-| Commit subject | `feat: build premium SEO-focused services page` |
-| Commit date | 2026-08-28 16:49:08 +0000 |
-| Branch | `cursor/services-page-95cc` |
+| Commit documented | `0304d02fc181aa6ee1552af2cbbb35d97fb0dbe8` (`0304d02`) |
+| Commit subject | `content: add coming-soon states for incomplete pages` |
+| Commit date | 2026-08-28 17:31:59 +0000 |
+| Branch | `main` |
 | Working tree at time of writing | clean (no uncommitted changes) |
-| Documentation status | Context reflects source commit `5ee36f3`, immediately before this documentation commit |
+| Documentation status | Context reflects source commit `0304d02`, immediately before this documentation commit |
 | Verified at this SHA | `next typegen`, `tsc --noEmit`, ESLint (zero warnings), and production build all pass |
 
-> This context reflects source commit `5ee36f3` immediately before its own documentation commit. The source commit is already pushed; later source changes require re-verifying the affected sections.
+> This context reflects source commit `0304d02` immediately before its own documentation commit. The source commit is already pushed; later source changes require re-verifying the affected sections.
 
 ---
 
@@ -27,7 +27,7 @@
 - **Do NOT "simplify" `SiteShell.tsx` away, and do NOT move menu state into `Navbar`.** It exists for two hard technical reasons (section 8.1). Collapsing it re-breaks the mobile menu.
 - **Do NOT convert `MobileMenu.tsx`'s inline styles to Tailwind classes** as a drive-by cleanup. It is deliberate (section 8.2). It is acknowledged technical debt, but changing it requires re-verifying the stacking-context fix.
 - **All image paths must go through `src/data/images.ts`.** Never inline a URL or `/images/...` path in a component.
-- `/services` is a complete static editorial page. The other four sub-pages (`/a-propos`, `/realisations`, `/blog`, `/contact`) remain placeholder stubs. There is no contact form, CMS, or detail routes.
+- `/services` is a complete static editorial page. `/contact` has a polished semantic form foundation and contact-details panel; online submission is deliberately disabled because there is no transport. `/a-propos`, `/realisations`, and `/blog` share a polished `ComingSoon` state. There is no CMS or detail routes.
 - ~14 internal `<Link>` instances point at **10 routes that do not exist** (section 9.6). This is known. Do not treat a 404 as a new bug you introduced.
 
 ---
@@ -238,10 +238,10 @@ Environment notes:
     │   ├── page.tsx              Home route `/`. SERVER. Composes the 5 home sections.
     │   ├── globals.css           THE design system. Tailwind v4 @theme tokens + @utility classes.
     │   ├── favicon.ico           App-icon file convention (25931 bytes).
-    │   ├── a-propos/page.tsx     STUB page. SERVER.
-    │   ├── blog/page.tsx         STUB page. SERVER.
-    │   ├── contact/page.tsx      STUB page. SERVER.
-    │   ├── realisations/page.tsx STUB page. SERVER.
+    │   ├── a-propos/page.tsx     SERVER. Polished shared coming-soon state.
+    │   ├── blog/page.tsx         SERVER. Polished shared coming-soon state.
+    │   ├── contact/page.tsx      SERVER. Metadata + contact-page composition.
+    │   ├── realisations/page.tsx SERVER. Polished shared coming-soon state.
     │   └── services/page.tsx     Full editorial page. SERVER. Metadata + JSON-LD composition.
     │
     ├── components/
@@ -266,11 +266,16 @@ Environment notes:
     │   │   ├── WhyChooseUs.tsx           SERVER. Supportable trust themes.
     │   │   ├── ServicesProcess.tsx       SERVER. Five-step ordered process.
     │   │   └── ServicesCTA.tsx           SERVER. Contact CTA using repository facts.
+    │   ├── contact/
+    │   │   ├── ContactHero.tsx    SERVER. Route eyebrow, single H1 and introduction.
+    │   │   ├── ContactForm.tsx    SERVER. Semantic form foundation; no active transport.
+    │   │   └── ContactDetails.tsx SERVER. Phone, email, address and `/services` link.
     │   └── ui/
     │       ├── Button.tsx        SERVER. Link-or-button polymorph. 3 variants × 3 sizes.
     │       ├── Container.tsx     SERVER. Thin wrapper over `.site-container`.
     │       ├── SectionHeading.tsx SERVER. eyebrow + <h2> + description. Hardcodes <h2>.
-    │       └── GlassCard.tsx     **DEAD CODE.** Zero importers. See section 9.9.
+    │       ├── GlassCard.tsx     **DEAD CODE.** Zero importers. See section 9.9.
+    │       └── ComingSoon.tsx    SERVER. Shared one-H1 state for incomplete routes.
     │
     ├── data/
     │   ├── images.ts             Centralised image registry. THE single source of image paths.
@@ -353,45 +358,22 @@ export default function HomePage() {
 
 Gotcha: **`Process` is not rendered here.** It is a child of `Hero`. Adding `<Process />` to this list renders it twice.
 
-### 5.3 The five stub pages — all Server Components
+### 5.3 Contact and incomplete route pages — all Server Components
 
-`src/app/{a-propos,blog,contact,realisations,services}/page.tsx` are the same shape. Example:
+`src/app/contact/page.tsx` composes `ContactHero`, `ContactForm`, and `ContactDetails`. It exports
+route-specific canonical, robots, Open Graph, and Twitter metadata. `ContactHero` owns the route's
+single H1; form and contact-detail sections use H2 headings.
 
-```tsx
-export const metadata: Metadata = {
-  title: "À propos",
-  description: "Découvrez Ventila Solutions, votre partenaire de confiance en ventilation depuis plus de 10 ans.",
-};
+The form contains labeled name, e-mail, optional telephone, project/service, building, message,
+and required consent controls. It intentionally has no action, Server Action, client event handler,
+API route, storage, or transport. Its submit button is disabled and says
+`Envoi en ligne prochainement`; nearby copy states that entered values are neither transmitted nor
+stored. The repository `mailto:` address is available both in the form notice and contact panel.
 
-export default function AProposPage() {
-  return (
-    <div className="pt-24 pb-16 bg-navy-900 min-h-screen">
-      <Container>
-        <SectionHeading
-          eyebrow="Notre histoire"
-          title="À propos de Ventila Solutions"
-          description="Cette page sera complétée prochainement avec notre histoire et notre équipe."
-        />
-      </Container>
-    </div>
-  );
-}
-```
-
-| Route | Component | `metadata.title` | eyebrow | title |
-| --- | --- | --- | --- | --- |
-| `/a-propos` | `AProposPage` | `"À propos"` | `"Notre histoire"` | `"À propos de Ventila Solutions"` |
-| `/blog` | `BlogPage` | `"Blog"` | `"Ressources"` | `"Blog & actualités"` |
-| `/contact` | `ContactPage` | `"Contact"` | `"Parlons-en"` | `"Contactez-nous"` |
-| `/realisations` | `RealisationsPage` | `"Nos Réalisations"` | `"Portfolio"` | `"Nos réalisations"` |
-| `/services` | `ServicesPage` | `"Nos Services"` | `"Nos services"` | `"Solutions sur mesure pour chaque besoin"` |
-
-Shared details:
-
-- `pt-24` (6rem) clears the fixed `h-16` (4rem) navbar with 2rem of breathing room.
-- `min-h-screen` guarantees the dark background fills a tall viewport even with almost no content.
-- **These use raw `pt-24 pb-16` rather than the `section-y` utility.** Deliberate: they need asymmetric padding to clear the navbar. Do not "normalize" them to `section-y`.
-- **Gotcha (accessibility bug, see 9.4):** every one of these pages has **no `<h1>`**, because `SectionHeading` hardcodes `<h2>`. Only the home page has an `<h1>` (in `Hero`).
+`src/app/{a-propos,blog,realisations}/page.tsx` each renders the shared `ComingSoon` Server
+Component with route-specific French copy. `ComingSoon` provides exactly one H1 and links to `/`,
+`/services`, and `/contact`. It uses `Container`, `Button`, existing color tokens, and no client JS.
+Metadata descriptions accurately describe the in-progress content without inventing claims.
 
 ### 5.4 `src/components/layout/SiteShell.tsx` — **CLIENT COMPONENT**
 
@@ -1492,7 +1474,7 @@ Each item was **verified against commit `674f6b9`**. Several were fixed by the i
 | 9.1 | `Projects` cards collapse on mobile | **FIXED** |
 | 9.2 | `MobileMenu` close button vs navbar z-index | **FIXED** (button removed) |
 | 9.3 | Menu links focusable while closed | **FIXED** |
-| 9.4 | No `<h1>` on the five sub-pages | **OPEN** |
+| 9.4 | No `<h1>` on the five sub-pages | **FIXED** |
 | 9.5 | `html { overflow-x: hidden }` vs body scroll lock | **MITIGATED, root cause remains** |
 | 9.6 | 10 internal links to non-existent routes | **OPEN** |
 | 9.7 | `tsc --noEmit` depends on a pre-existing `.next/` | **OPEN** |
@@ -1517,13 +1499,11 @@ The overlay stays permanently mounted, so this was a real bug. It is now handled
 
 Residual gap: there is **no focus trap and no focus restoration**. Opening the menu does not move focus into it, and closing does not return focus to the hamburger. `role="dialog" aria-modal="true"` is declared but not fully implemented. Low severity, still open if you want strict dialog semantics.
 
-### 9.4 Missing `<h1>` on the five sub-pages — **OPEN**
+### 9.4 Missing `<h1>` on the five sub-pages — **FIXED**
 
-`SectionHeading` hardcodes `<h2>` with no `as` / `level` prop (section 5.16). All five stub pages use it as their only heading, so `/services`, `/a-propos`, `/realisations`, `/blog` and `/contact` each render a document whose highest heading is `<h2>` — an accessibility and SEO defect. The `<h3>` column headers in `Footer` then appear with no `h1` above them.
-
-The home page is fine: `Hero` renders the app's only `<h1>` (`hero-title`, `id="hero-heading"`).
-
-Suggested fix: add `as?: "h1" | "h2" | "h3"` (default `"h2"`) to `SectionHeadingProps` and pass `as="h1"` from each stub page. Note the visual size comes from the `section-title` utility, not the tag, so the fix is semantics-only.
+`/services` already gained its H1 in `ServicesHero`. `/contact` now gets one H1 from
+`ContactHero`, while `/a-propos`, `/realisations`, and `/blog` get one H1 from `ComingSoon`.
+`SectionHeading` still correctly defaults to H2 for actual sections and was not changed.
 
 ### 9.5 `html { overflow-x: hidden }` vs the body scroll lock — **MITIGATED, root cause remains**
 
@@ -1609,8 +1589,9 @@ Also unused at this commit: the `align="center"` branch of `SectionHeading`, the
 | Layout shell | Fixed `h-16` blurred header, sticky footer via flex, `SiteShell` client boundary correctly scoped |
 | Carousel→grid pattern | `scroll-snap-row` / `scroll-snap-item`, hidden scrollbars, mobile snap carousels becoming grids at `md` |
 | Image pipeline | `next/image` with `fill` + hand-tuned `sizes` per breakpoint everywhere, `priority` on the LCP hero, `remotePatterns` allowlist, centralised registry |
-| Basic metadata | Title template, description, keywords, robots; per-page `title`/`description` on all 5 stubs |
-| Accessibility basics | `aria-labelledby` on sections, `aria-label` on icon-only controls, `aria-expanded`/`aria-controls` on the hamburger, `role="dialog"`, `aria-hidden` toggling, decorative SVGs `aria-hidden`, `:focus-visible` ring, 44px touch-target floor |
+| Basic metadata | Title template, description, keywords, robots; complete route metadata on `/services` and `/contact`; accurate title/description on coming-soon pages |
+| Contact foundation | Responsive labeled form, required semantics, disabled honest submission state, and repository phone/email/address with direct phone and mail links |
+| Accessibility basics | Exactly one H1 per existing route, `aria-labelledby` on sections, explicit form labels/help text, `aria-expanded`/`aria-controls` on the hamburger, decorative SVGs `aria-hidden`, `:focus-visible` ring, 44px touch-target floor |
 | Toolchain hygiene | `tsc --noEmit` clean, `eslint --max-warnings 0` clean |
 
 ### Not built
@@ -1618,10 +1599,10 @@ Also unused at this commit: the `align="center"` branch of `SectionHeading`, the
 | Area | Missing |
 | --- | --- |
 | **SEO** | No `sitemap.ts`, no `robots.ts`, no `manifest.ts`, no `openGraph` / `twitter` metadata, no `opengraph-image`, no `metadataBase`, no JSON-LD structured data (`LocalBusiness` / `Service` would be the obvious schemas — see `node_modules/next/dist/docs/01-app/02-guides/json-ld.md`), no canonical URLs |
-| **Contact form** | None. `/contact` is a stub. No Server Action, no validation, no email transport, no spam protection |
+| **Contact delivery** | No Server Action, email transport, storage, spam protection, or active online submit. The visible form foundation cannot send and says so; users can use the repository `mailto:` link |
 | **CMS / data source** | None. `data/*.ts` are hardcoded arrays. No fetching, no `use cache`, no revalidation, no DB |
 | **Animations** | No scroll reveal, no View Transitions, no `framer-motion`. The only transitions are CSS hover/blur states and the hamburger + overlay. `Process`'s progress bar and scroll dots are **hardcoded to index 0** and not wired to scroll position |
-| **Sub-page content** | All 5 pages are `SectionHeading`-only placeholders whose copy literally says "à venir prochainement" |
+| **Sub-page content** | `/a-propos`, `/realisations`, and `/blog` intentionally remain concise shared coming-soon states; no fake editorial content |
 | **Detail routes** | No `/services/[slug]`, no `/realisations/[slug]` (10 broken links — section 9.6), no `/mentions-legales`, no `/politique-confidentialite` |
 | **Error/loading UI** | No `not-found.tsx`, `error.tsx`, `loading.tsx`, `global-error.tsx` |
 | **Testing** | No test runner, no tests, no Playwright/Vitest/Jest |
@@ -1787,3 +1768,36 @@ used. No location, price, rating, review, certification, or area-served property
 Known limitation: the site-wide footer still links to missing service-detail and legal routes, and
 other unrelated pages still use remote Unsplash images (one existing project URL returns 404).
 Those pre-existing issues are outside the `/services` scope.
+
+---
+
+## 14. Contact and coming-soon routes (source commit `0304d02`)
+
+### 14.1 `/contact`
+
+`src/app/contact/page.tsx` remains a Server Component and composes three focused Server
+Components under `src/components/contact/`:
+
+1. `ContactHero` — dark route introduction with the page's single H1.
+2. `ContactForm` — light semantic form with visible labels, required and autocomplete attributes,
+   48px fields, help text, native input types, a required carefully worded consent checkbox, and
+   project/building options aligned with the existing service offering.
+3. `ContactDetails` — sticky-at-desktop panel using only repository facts: `01 23 45 67 89`,
+   `contact@ventila-solutions.fr`, and `75001 Paris, France`; it links to `/services`.
+
+There is deliberately no `"use client"`, form action, API endpoint, provider, database, or personal
+data logging. The disabled submit control and two visible notices state that online sending is not
+available and that entered values are not transmitted or stored. A direct `mailto:` is the usable
+delivery path; it does not copy form values or claim successful delivery.
+
+The route has an absolute `/contact` canonical on
+`https://diakhite-air-proteger.vercel.app`, `index, follow`, `fr_FR` website Open Graph fields, and
+Twitter summary metadata. The desktop layout is a minmax form/sidebar grid and remains stacked
+below `lg`.
+
+### 14.2 Shared incomplete-route state
+
+`src/components/ui/ComingSoon.tsx` is a reusable Server Component for `/a-propos`,
+`/realisations`, and `/blog`. Each route supplies its own eyebrow, H1, and concise French
+description, while the shared state provides links to `/services`, `/contact`, and `/`. No fake
+history, portfolio, article, availability, location, guarantee, or timing content was added.
