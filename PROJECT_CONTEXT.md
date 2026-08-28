@@ -5,15 +5,15 @@
 
 | Field | Value |
 | --- | --- |
-| Commit documented | `0304d02fc181aa6ee1552af2cbbb35d97fb0dbe8` (`0304d02`) |
-| Commit subject | `content: add coming-soon states for incomplete pages` |
-| Commit date | 2026-08-28 17:31:59 +0000 |
+| Commit documented | `33239df627137643264039b4fcbe9af758447b7e` (`33239df`) |
+| Commit subject | `fix: respect reduced motion in process pagination` |
+| Commit date | 2026-08-28 17:42:41 +0000 |
 | Branch | `main` |
 | Working tree at time of writing | clean (no uncommitted changes) |
-| Documentation status | Context reflects source commit `0304d02`, immediately before this documentation commit |
-| Verified at this SHA | `next typegen`, `tsc --noEmit`, ESLint (zero warnings), and production build all pass |
+| Documentation status | Context reflects source commit `33239df`, immediately before this documentation commit |
+| Verified at this SHA | `next typegen`, `tsc --noEmit`, ESLint (zero warnings), responsive browser interaction checks, and HTTP `/` 200 all pass |
 
-> This context reflects source commit `0304d02` immediately before its own documentation commit. The source commit is already pushed; later source changes require re-verifying the affected sections.
+> This context reflects source commit `33239df` immediately before its own documentation commit. The source commit is already pushed; later source changes require re-verifying the affected sections.
 
 ---
 
@@ -23,7 +23,7 @@
 - Stack: **Next.js 16.3.2 App Router** + **React 19.2.8** + **TypeScript 5.9.3 (strict)** + **Tailwind CSS v4.3.3**. Package manager is **npm** (`package-lock.json`, lockfileVersion 3). Node **≥ 20.9.0**.
 - **This is Next.js 16, not 13/14/15.** Read section 2 before writing any code. Most pre-16 patterns you know are removed or renamed.
 - **Tailwind is v4.** There is no `tailwind.config.js` and there never should be. Tokens live in `@theme {}` inside `src/app/globals.css`. Never emit `@tailwind base;` / `@tailwind components;` / `@tailwind utilities;`.
-- **Everything is a Server Component except `src/components/layout/SiteShell.tsx` and `src/components/layout/MobileMenu.tsx`.** Do not add `"use client"` to anything else without a concrete interactivity need.
+- **Everything is a Server Component except the three focused interactive leaves:** `src/components/layout/SiteShell.tsx`, `src/components/layout/MobileMenu.tsx`, and `src/components/home/ProcessCarousel.tsx`. Do not widen these boundaries without a concrete interactivity need.
 - **Do NOT "simplify" `SiteShell.tsx` away, and do NOT move menu state into `Navbar`.** It exists for two hard technical reasons (section 8.1). Collapsing it re-breaks the mobile menu.
 - **Do NOT convert `MobileMenu.tsx`'s inline styles to Tailwind classes** as a drive-by cleanup. It is deliberate (section 8.2). It is acknowledged technical debt, but changing it requires re-verifying the stacking-context fix.
 - **All image paths must go through `src/data/images.ts`.** Never inline a URL or `/images/...` path in a component.
@@ -247,7 +247,8 @@ Environment notes:
     ├── components/
     │   ├── home/
     │   │   ├── Hero.tsx          SERVER. Full-bleed hero; renders <Process/> as last child.
-    │   │   ├── Process.tsx       SERVER. 4-step glass strip. Extracted at THIS commit.
+    │   │   ├── Process.tsx       SERVER. 4-step glass strip and centralized step content.
+    │   │   ├── ProcessCarousel.tsx **CLIENT**. Mobile scroll/dot synchronization only.
     │   │   ├── Services.tsx      SERVER. Light-background service cards (carousel → grid).
     │   │   ├── AboutPreview.tsx  SERVER. Text + stats + image, 1 col → 2 cols at lg.
     │   │   ├── Projects.tsx      SERVER. Portfolio cards, carousel → 2×2 → 12-col bento.
@@ -607,13 +608,22 @@ export default function Process()
 ```
 
 - Root: `<div className="relative z-10 site-container">` wrapping the glass panel `bg-navy-800/80 backdrop-blur-xl border border-white/10 rounded-2xl px-4 sm:px-6 py-4 sm:py-5`.
-- Three blocks: a desktop-only progress bar (`hidden md:flex`), the steps row, and mobile-only scroll dots (`flex md:hidden`).
-- Steps row is `scroll-snap-row md:grid-cols-4` with `role="list"` / `aria-label="Notre processus en 4 étapes"`; items are `scroll-snap-item w-[180px] sm:w-[200px] md:w-auto flex flex-col gap-2` with `role="listitem"`.
+- Two blocks: a desktop-only static progress bar (`hidden md:flex`) and `<ProcessCarousel>`, which owns the responsive steps row plus mobile dots.
+- `Process` remains a Server Component and keeps the `steps` array as the single content definition. It passes serializable title labels and server-rendered step children to the focused client leaf; `Hero` and `page.tsx` remain Server Components.
 - **`role="list"` + `role="listitem"` on `<div>`s** is intentional: `scroll-snap-row` sets `display: flex` (and `grid` at `md`), which strips the implicit list semantics from a real `<ul>`.
 - The step number is `md:hidden` inside each card (mobile) and shown in the desktop progress bar instead.
-- **Gotchas:** both the progress bar highlight (`i === 0 ? "text-brand-400" : "text-slate-600"`) and the scroll dots (`i === 0 ? "w-5 bg-brand-500" : "w-1.5 bg-white/20"`) are **hardcoded to index 0**. They are decorative, not wired to scroll position. The dots container is `aria-hidden="true"`. Making them live requires a client component.
+- The desktop progress-bar highlight remains intentionally static at step 01; it is not mobile carousel state.
 - Step icons hardcode `stroke="#60a5fa"` (= `--color-brand-400`) rather than using `currentColor`. Changing the brand palette will not update them.
 - Local helpers: `EvalIcon()`, `ConceptionIcon()`, `InstallIcon()`, `EntretienIcon()`.
+
+### 5.9.1 `src/components/home/ProcessCarousel.tsx` — Client Component
+
+- This is the smallest client boundary for Process interaction. It accepts `children: ReactNode` and `stepLabels: readonly string[]`; no homepage, Hero, or page-level client boundary was added.
+- `activeIndex` state initializes to `0` on both server and client and is the only source of truth for dot state.
+- A passive React `onScroll` handler schedules one `requestAnimationFrame` calculation. The calculation reads the actual scroll-container and card rectangles and selects the card center nearest the container center; it contains no hardcoded card widths.
+- `ResizeObserver` re-synchronizes after container/card geometry changes. Cleanup disconnects it and cancels any queued animation frame.
+- Each dot is a real 44×44px `<button>` with a small visual pill, a French `aria-label`, and `aria-current="step"` only when active. Activation computes the target from current DOM rectangles and calls `scrollTo`; reduced-motion users receive instant (`auto`) scrolling.
+- Active dots are blue and elongated, inactive dots gray, with a 200ms transition. `motion-reduce:transition-none` removes the transition property. The entire dot row stays `md:hidden`.
 
 ### 5.10 `src/components/home/Services.tsx` — Server Component
 
@@ -1445,14 +1455,14 @@ That placement is the design requirement, not an accident: being inside the hero
 
 ### 8.5 Server Components by default
 
-Only `src/components/layout/SiteShell.tsx` and `src/components/layout/MobileMenu.tsx` contain `"use client"`. Everything else — all 5 home sections, all 4 `ui/` components, `Navbar`, `Footer`, all 6 pages, the root layout, and everything in `data/` and `lib/` — is a Server Component.
+Only `src/components/layout/SiteShell.tsx`, `src/components/layout/MobileMenu.tsx`, and `src/components/home/ProcessCarousel.tsx` contain `"use client"`. `ProcessCarousel` is a focused leaf for mobile Process scrolling; the 5 home section owners, all 4 `ui/` components, `Navbar`, `Footer`, all 6 pages, the root layout, and everything in `data/` and `lib/` remain Server Components.
 
 Notes:
 
 - `Navbar.tsx` has an `onClick`, but no `"use client"`: the handler is the `onMenuToggle` **prop passed down from `SiteShell`**. Because `SiteShell` is a client component, `Navbar` is part of the client render tree at runtime without needing its own directive. **Adding a hook to `Navbar` will fail** — lift the state to `SiteShell`.
 - `children` passed through `SiteShell` stays a Server Component. Nesting inside a client component does not client-ify the subtree.
 - `SectionHeading`, `Button`, `Container`, `GlassCard` are all server-safe. `Button` renders a `<button>` with an optional `onClick`, so it is only usable interactively from within a client tree.
-- Practical consequence: **no `useState`, `useEffect`, `onChange`, `window`, or event handlers** anywhere outside `layout/`. When you need them, either add `"use client"` to a new leaf component (preferred — keeps the boundary small) or lift state into `SiteShell` (only for shell-level concerns).
+- Practical consequence: browser state and APIs stay inside an explicit focused client leaf. `ProcessCarousel` owns only Process scroll state; unrelated interaction belongs in another leaf, or in `SiteShell` only for shell-level concerns.
 
 ### 8.6 Other deliberate choices
 
@@ -1587,7 +1597,7 @@ Also unused at this commit: the `align="center"` branch of `SectionHeading`, the
 | Design system | `@theme` navy + brand palettes, responsive `:root` scale tokens, 8 `@utility` classes, fluid `clamp()` typography, branded scrollbar, global focus ring |
 | Mobile navigation | Viewport-level overlay with animated hamburger, synchronized 280ms enter/exit, Escape-to-close, dual `html`+`body` scroll lock, auto-close past `lg` |
 | Layout shell | Fixed `h-16` blurred header, sticky footer via flex, `SiteShell` client boundary correctly scoped |
-| Carousel→grid pattern | `scroll-snap-row` / `scroll-snap-item`, hidden scrollbars, mobile snap carousels becoming grids at `md` |
+| Carousel→grid pattern | `scroll-snap-row` / `scroll-snap-item`, hidden scrollbars, mobile snap carousels becoming grids at `md`; Process dots track and control all four snapped steps |
 | Image pipeline | `next/image` with `fill` + hand-tuned `sizes` per breakpoint everywhere, `priority` on the LCP hero, `remotePatterns` allowlist, centralised registry |
 | Basic metadata | Title template, description, keywords, robots; complete route metadata on `/services` and `/contact`; accurate title/description on coming-soon pages |
 | Contact foundation | Responsive labeled form, required semantics, disabled honest submission state, and repository phone/email/address with direct phone and mail links |
@@ -1601,7 +1611,7 @@ Also unused at this commit: the `align="center"` branch of `SectionHeading`, the
 | **SEO** | No `sitemap.ts`, no `robots.ts`, no `manifest.ts`, no `openGraph` / `twitter` metadata, no `opengraph-image`, no `metadataBase`, no JSON-LD structured data (`LocalBusiness` / `Service` would be the obvious schemas — see `node_modules/next/dist/docs/01-app/02-guides/json-ld.md`), no canonical URLs |
 | **Contact delivery** | No Server Action, email transport, storage, spam protection, or active online submit. The visible form foundation cannot send and says so; users can use the repository `mailto:` link |
 | **CMS / data source** | None. `data/*.ts` are hardcoded arrays. No fetching, no `use cache`, no revalidation, no DB |
-| **Animations** | No scroll reveal, no View Transitions, no `framer-motion`. The only transitions are CSS hover/blur states and the hamburger + overlay. `Process`'s progress bar and scroll dots are **hardcoded to index 0** and not wired to scroll position |
+| **Animations** | No scroll reveal, no View Transitions, no `framer-motion`. Motion is limited to CSS UI transitions, the hamburger/overlay, smooth Process dot navigation, and native scroll snap; Process respects `prefers-reduced-motion` |
 | **Sub-page content** | `/a-propos`, `/realisations`, and `/blog` intentionally remain concise shared coming-soon states; no fake editorial content |
 | **Detail routes** | No `/services/[slug]`, no `/realisations/[slug]` (10 broken links — section 9.6), no `/mentions-legales`, no `/politique-confidentialite` |
 | **Error/loading UI** | No `not-found.tsx`, `error.tsx`, `loading.tsx`, `global-error.tsx` |
@@ -1618,7 +1628,7 @@ Also unused at this commit: the `align="center"` branch of `SectionHeading`, the
 1. **French-language content.** All UI copy, `alt` text and `aria-label`s are in French. `<html lang="fr">`. Preserve accents and typographic details: `&nbsp;` before `?` and `!` (see `ContactCTA`: `Un projet&nbsp;? Parlons-en`), `·` as a separator, `→` in CTA labels, `œ` in "Mise en œuvre".
 2. **French route slugs.** `/a-propos` (not `/about`), `/realisations` (not `/projects`), `/services`, `/contact`, `/blog`. Data `id`s follow suit: `residentiel`, `industriel`, `entretien`. Keep new routes French.
 3. **kebab-case image filenames**, in a category subfolder: `public/images/<category>/<kebab-case-name>.<ext>` — e.g. `ventilation-residentielle.svg`, `maintenance-ventilation.svg`, `projet-01.svg`. Registry **keys** are camelCase (`project01`, `residential`, `maintenance`); note keys are English while filenames are French.
-4. **Server Components by default.** Add `"use client"` only when interactivity genuinely requires it, and add it to the smallest possible leaf. Only `layout/SiteShell.tsx` and `layout/MobileMenu.tsx` have it today. Do not add hooks to `Navbar` (section 8.5).
+4. **Server Components by default.** Add `"use client"` only when interactivity genuinely requires it, and add it to the smallest possible leaf. Current client entries are `layout/SiteShell.tsx`, `layout/MobileMenu.tsx`, and `home/ProcessCarousel.tsx`. Do not add hooks to `Navbar` (section 8.5).
 5. **`@/*` path alias → `src/*`.** Use `@/components/...`, `@/data/...`, `@/lib/...` for cross-directory imports. Relative imports are used only for true siblings (`./Navbar`, `./images`). Match the surrounding file.
 6. **All images through `src/data/images.ts`** (section 7.1). Never inline a URL or `/images/...` path. New remote hosts require a `next.config.ts` `remotePatterns` entry.
 7. **All spacing through the design tokens.** Use `site-container` / `<Container>`, `section-y`, `band-y`, `hero-title`, `section-title`, `lead` rather than re-guessing padding per component. To change rhythm globally, edit the `:root` tokens in `globals.css`.
