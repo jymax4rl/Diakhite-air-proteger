@@ -3,8 +3,13 @@
  * -----------------
  * Navbar header:   z-[60]  (stays above the overlay so logo is always readable)
  * MobileMenu:      z-[50]  (sits below navbar but above ALL page content)
- * Close button:    z-[70]  (above navbar, always reachable)
  * Page content:    z-auto  (normal flow)
+ *
+ * Because the header paints above this overlay, the overlay reserves 4rem of
+ * top padding for it and owns no top bar of its own: the navbar's animated
+ * hamburger IS the close control. An in-overlay close button could not work —
+ * z-index inside this element cannot escape the overlay's own z-50 stacking
+ * context, so it would sit under the header, invisible and unclickable.
  *
  * This works because MobileMenu is a SIBLING of <main> in the DOM, rendered
  * directly inside <body> via SiteShell — NOT a descendant of the <header>
@@ -18,7 +23,8 @@
  *
  * There is no separate backdrop element: this root IS the backdrop, covering the
  * full viewport with a near-opaque fill plus blur. Consequently there is no
- * "click outside" region — only the close button and the nav links dismiss it.
+ * "click outside" region — only the hamburger, the nav links and Escape dismiss
+ * it; clicking the panel background does nothing.
  */
 "use client";
 
@@ -46,14 +52,22 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
     return () => document.removeEventListener("keydown", handler);
   }, [isOpen, onClose]);
 
-  // Capture whatever inline `overflow` the body already had so closing restores
-  // it instead of blanket-clearing a value another component may own.
+  // Scroll lock. `globals.css` sets `overflow-x: hidden` on <html>, so the root
+  // element's overflow is no longer `visible` and <body>'s overflow does NOT
+  // propagate to the viewport — <html> is the scrolling element. Locking body
+  // alone therefore leaves the page scrollable behind the overlay, so lock both.
+  // Prior inline values are captured and restored rather than blanket-cleared,
+  // so a value another component owns survives the close.
   useEffect(() => {
     if (!isOpen) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const root = document.documentElement;
+    const { body } = document;
+    const previous = { root: root.style.overflow, body: body.style.overflow };
+    root.style.overflow = "hidden";
+    body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = previousOverflow;
+      root.style.overflow = previous.root;
+      body.style.overflow = previous.body;
     };
   }, [isOpen]);
 
@@ -87,91 +101,11 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
         pointerEvents: isOpen ? "auto" : "none",
         overflowX: "hidden",
         overflowY: "auto",
+        // Clear the fixed 4rem navbar, which paints above this overlay (z-60 vs
+        // z-50). `box-sizing: border-box` keeps the total height at 100dvh.
+        paddingTop: "4rem",
       }}
     >
-      {/* Top bar — logo + close */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0 1.25rem",
-          height: "4rem",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
-          flexShrink: 0,
-        }}
-      >
-        <Link
-          href="/"
-          onClick={onClose}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.625rem",
-            textDecoration: "none",
-          }}
-          aria-label="Ventila Solutions — Accueil"
-        >
-          <div
-            style={{
-              width: "2.25rem",
-              height: "2.25rem",
-              background: "#2563eb",
-              borderRadius: "0.5rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-            }}
-          >
-            <LogoIcon />
-          </div>
-          <div style={{ lineHeight: 1 }}>
-            <span
-              style={{
-                display: "block",
-                color: "white",
-                fontWeight: 700,
-                fontSize: "0.9375rem",
-              }}
-            >
-              Ventila
-            </span>
-            <span
-              style={{
-                display: "block",
-                color: "#60a5fa",
-                fontSize: "0.5625rem",
-                fontWeight: 700,
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-              }}
-            >
-              Solutions
-            </span>
-          </div>
-        </Link>
-        <button
-          onClick={onClose}
-          aria-label="Fermer le menu"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "2.5rem",
-            height: "2.5rem",
-            border: "1px solid rgba(255,255,255,0.15)",
-            borderRadius: "0.5rem",
-            background: "transparent",
-            color: "white",
-            cursor: "pointer",
-            zIndex: 70,
-          }}
-        >
-          <CloseIcon />
-        </button>
-      </div>
-
       {/* Nav links */}
       <nav
         aria-label="Navigation mobile"
@@ -265,31 +199,6 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
         </Link>
       </div>
     </div>
-  );
-}
-
-function LogoIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <path d="M10 3 C10 3 7.5 7 10 11 C12.5 7 10 3 10 3Z" fill="white" opacity="0.92" />
-      <path d="M3 10 C3 10 7 12.5 11 10 C7 7.5 3 10 3 10Z" fill="white" opacity="0.92" />
-      <path d="M17 10 C17 10 13 7.5 9 10 C13 12.5 17 10 17 10Z" fill="white" opacity="0.92" />
-      <path d="M10 17 C10 17 12.5 13 10 9 C7.5 13 10 17 10 17Z" fill="white" opacity="0.92" />
-      <circle cx="10" cy="10" r="2.5" fill="white" />
-    </svg>
-  );
-}
-
-function CloseIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-      <path
-        d="M1 1L13 13M13 1L1 13"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-    </svg>
   );
 }
 
