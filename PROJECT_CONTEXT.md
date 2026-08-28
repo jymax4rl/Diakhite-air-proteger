@@ -5,15 +5,15 @@
 
 | Field | Value |
 | --- | --- |
-| Commit documented | `12100d005faa5313a06bdc71ebac61a528459cb0` (`12100d0`) |
-| Commit subject | `feat: add legal notice and organization structured data` |
-| Commit date | 2026-08-28 17:46:47 +0000 |
+| Commit documented | `ea65ed04d84ca20d6be253dc47ad2baa0147fe6c` (`ea65ed0`) |
+| Commit subject | `fix: preserve legal form capitalization` |
+| Commit date | 2026-08-28 17:49:54 +0000 |
 | Branch | `main` |
 | Working tree at time of writing | clean (no uncommitted changes) |
-| Documentation status | Context reflects source commit `12100d0`, immediately before this documentation commit |
+| Documentation status | Context reflects source commit `ea65ed0`, immediately before this documentation commit |
 | Verified at this SHA | `next typegen`, `tsc --noEmit`, ESLint (zero warnings), production build, required-route HTTP checks, JSON-LD parsing, and responsive browser checks all pass |
 
-> This context reflects source commit `12100d0` immediately before its own documentation commit. The source commit is already pushed; later source changes require re-verifying the affected sections.
+> This context reflects source commit `ea65ed0` immediately before its own documentation commit. The source commit is already pushed; later source changes require re-verifying the affected sections.
 
 ---
 
