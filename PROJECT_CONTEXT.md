@@ -30,7 +30,7 @@ documentation Next.js correspondant à la version installée restent prioritaire
 - Les pages minces `/a-propos`, `/realisations` et `/blog` sont en `noindex,follow`.
 - `sitemap.ts` et `robots.ts` exposent uniquement le domaine officiel.
 - Le logo fourni par le propriétaire alimente le lockup partagé, le schema Organization et les
-  icônes d’application (`favicon.ico`, `icon.png`, `apple-icon.png`).
+  icônes d’application (`favicon.ico`, `icon.jpg`, `apple-icon.png`).
 
 ## 2. Règles Next.js 16
 
@@ -257,7 +257,7 @@ Toute image rendue passe par `src/data/images.ts`, y compris le logo public et s
 utilisée sur les surfaces sombres.
 
 Les icônes d’application font exception à ce registre : Next.js exige leur colocalisation dans
-`src/app`. `favicon.ico` fournit le fallback navigateur 48 px, `icon.png` la version 512 px et
+`src/app`. `favicon.ico` fournit le fallback navigateur multi-format, `icon.jpg` la version 512 px et
 `apple-icon.png` la version tactile 180 px. Ces trois fichiers utilisent le symbole maison et
 turbine fourni par le propriétaire. Next.js détecte automatiquement ces conventions et injecte
 leurs liens dans le `<head>`; ne pas les remplacer par des metadata manuelles.
@@ -355,7 +355,7 @@ Vérifications réalisées sur l’arbre source :
 - `npm run lint` : succès sur le source final;
 - `npx eslint src/ --max-warnings 0` : succès;
 - `npm run build` : succès, 19 pages statiques générées;
-- build : routes metadata `/favicon.ico`, `/icon.png` et `/apple-icon.png` générées;
+- build : routes metadata `/favicon.ico`, `/icon.jpg` et `/apple-icon.png` générées;
 - accueil, hub, six services, contact et mentions légales : HTTP 200;
 - slug de service invalide : HTTP 404;
 - sitemap et robots : HTTP 200;
