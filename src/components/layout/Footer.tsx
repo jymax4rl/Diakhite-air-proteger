@@ -45,7 +45,7 @@ export default function Footer() {
                 {site.company.registeredAddress.display}
               </p>
             </address>
-            <p className="mt-5 text-xs leading-5 text-slate-500">
+            <p className="mt-5 text-xs leading-5 text-slate-400">
               {site.company.legalName} · {site.company.legalForm}
               <br />
               SIREN {site.company.sirenDisplay} · {site.company.rcs}
@@ -92,7 +92,7 @@ export default function Footer() {
         </div>
 
         {/* ── Bottom bar ── */}
-        <div className="border-t border-white/6 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+        <div className="border-t border-white/6 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
           <p>
             © {new Date().getFullYear()} {site.brand.name}. Tous droits réservés.
           </p>

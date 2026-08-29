@@ -8,13 +8,13 @@ export default function ServicesCTA() {
       <Container>
         <div className="grid items-end gap-10 lg:grid-cols-12">
           <div className="lg:col-span-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.15em] text-blue-100">
+            <p className="text-sm font-semibold uppercase tracking-[0.15em] text-blue-50">
               Votre projet
             </p>
             <h2 id="services-cta-heading" className="section-title mt-3 max-w-3xl text-white">
               Parlons de vos réseaux CVC, hydrauliques et de plomberie
             </h2>
-            <p className="lead mt-5 max-w-2xl text-blue-100">
+            <p className="lead mt-5 max-w-2xl text-blue-50">
               Décrivez-nous le bâtiment, les équipements concernés et l’installation existante.
               Ces premiers éléments nous permettront de préparer l’échange.
             </p>

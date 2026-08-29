@@ -49,7 +49,7 @@ export default function Process() {
             <div key={s.num} className="flex items-center flex-1">
               <span
                 className={`text-[11px] font-bold tracking-wider ${
-                  i === 0 ? "text-brand-400" : "text-slate-600"
+                  i === 0 ? "text-brand-400" : "text-slate-300"
                 }`}
               >
                 {s.num}
@@ -76,7 +76,7 @@ export default function Process() {
               <p className="text-white text-sm font-semibold leading-snug">
                 {s.title}
               </p>
-              <p className="text-slate-400 text-xs sm:text-sm leading-snug">
+              <p className="text-slate-300 text-xs sm:text-sm leading-snug">
                 {s.desc}
               </p>
             </div>

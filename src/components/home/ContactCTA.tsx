@@ -19,7 +19,7 @@ export default function ContactCTA() {
               </p>
               <a
                 href={site.contact.phone.href}
-                className="inline-flex min-h-11 items-center text-sm text-blue-100 underline decoration-white/40 underline-offset-4 hover:text-white"
+                className="inline-flex min-h-11 items-center text-sm text-blue-50 underline decoration-white/40 underline-offset-4 hover:text-white"
               >
                 Appeler le {site.contact.phone.display}
               </a>

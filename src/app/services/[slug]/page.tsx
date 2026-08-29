@@ -204,7 +204,7 @@ export default async function ServiceDetailPage(
             <h2 id="detail-cta-heading" className="section-title">
               Présentez votre besoin
             </h2>
-            <p className="lead mt-4 max-w-2xl text-blue-100">
+            <p className="lead mt-4 max-w-2xl text-blue-50">
               Indiquez le service concerné, le bâtiment et l’installation existante.
             </p>
           </div>
