@@ -54,6 +54,29 @@ export default function ContactDetails() {
               </span>
             </span>
           </li>
+          <li>
+            <a
+              href={site.google.searchUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex min-h-14 items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 transition-colors hover:border-white/25 hover:bg-white/10 focus-visible:outline-brand-400"
+            >
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand-600 text-white">
+                <GoogleIcon />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  Fiche Google
+                </span>
+                <span className="mt-1 block text-sm font-semibold text-white sm:text-base">
+                  Voir sur Google
+                </span>
+                <span className="mt-1 block text-xs leading-5 text-slate-400">
+                  Recherche publique « {site.google.listedName} »
+                </span>
+              </span>
+            </a>
+          </li>
         </ul>
       </address>
 
@@ -99,6 +122,27 @@ function LocationIcon() {
         strokeLinejoin="round"
       />
       <circle cx="10" cy="8" r="2" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+function GoogleIcon() {
+  return (
+    <svg className="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path
+        d="M8 4.5H5.5A1.5 1.5 0 0 0 4 6v8.5A1.5 1.5 0 0 0 5.5 16H14a1.5 1.5 0 0 0 1.5-1.5V11"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10.5 4.5H16v5.5M16 4.5 9 11.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
