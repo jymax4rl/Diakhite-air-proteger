@@ -240,7 +240,8 @@ Environment notes:
     │   │                         JSON-LD, <SiteShell>{children}</SiteShell> + <Footer/>.
     │   ├── page.tsx              Home route `/`. SERVER. Composes the 5 home sections.
     │   ├── globals.css           THE design system. Tailwind v4 @theme tokens + @utility classes.
-    │   ├── favicon.ico           App-icon file convention (25931 bytes).
+    │   ├── favicon.ico           Brand app-icon fallback (16, 32, and 48px).
+    │   ├── icon.svg              Scalable brand app icon; blue field + white fan motif.
     │   ├── a-propos/page.tsx     SERVER. Polished shared coming-soon state.
     │   ├── blog/page.tsx         SERVER. Polished shared coming-soon state.
     │   ├── contact/page.tsx      SERVER. Metadata + contact-page composition.
