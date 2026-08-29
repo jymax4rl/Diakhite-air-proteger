@@ -345,7 +345,7 @@ Vérifications réalisées sur l’arbre source :
 - `npx tsc --noEmit` : succès;
 - `npm run lint` : succès sur le source final;
 - `npx eslint src/ --max-warnings 0` : succès;
-- `npm run build` : succès, 18 pages statiques générées;
+- `npm run build` : succès, 19 pages statiques générées;
 - build : routes metadata `/favicon.ico` et `/icon.svg` générées;
 - accueil, hub, six services, contact et mentions légales : HTTP 200;
 - slug de service invalide : HTTP 404;
