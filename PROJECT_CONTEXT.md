@@ -5,15 +5,15 @@
 
 | Field | Value |
 | --- | --- |
-| Commit documented | `bd6c1bc366dac0eda8078d5b93c2c7220314a28e` (`bd6c1bc`) |
-| Commit subject | `feat: add Hydraulique to CVC services offering` |
-| Commit date | 2026-08-28 19:42:12 +0000 |
-| Branch | `cursor/cvc-plumbing-services-95cc` |
+| Commit documented | `de2173b38c35b76e436cbc5c749bd98ee21509b9` (`de2173b`) |
+| Commit subject | `perf: optimize homepage LCP resource delivery` |
+| Commit date | 2026-08-29 09:07:52 +0000 |
+| Branch | `cursor/core-web-vitals-lcp-95cc` |
 | Working tree at time of writing | Source tree clean; context files are the documentation change |
-| Documentation status | Context reflects source commit `bd6c1bc`, immediately before this documentation commit |
-| Verified at this SHA | `next typegen`, `tsc --noEmit`, ESLint, production build, HTTP, image optimizer, responsive browser, metadata, schema, anchor, and navigation checks pass |
+| Documentation status | Context reflects source commit `de2173b`, immediately before this documentation commit |
+| Verified at this SHA | Production build, repeated Lighthouse, HTTP, image optimizer, responsive browser, metadata, schema, image loading, carousel, and navigation checks pass; final toolchain verification is recorded in section 16 |
 
-> This context reflects source commit `bd6c1bc` immediately before its own documentation commit. Later source changes require re-verifying the affected sections.
+> This context reflects source commit `de2173b` immediately before its own documentation commit. Later source changes require re-verifying the affected sections.
 
 ---
 
@@ -203,7 +203,7 @@ Environment notes:
 │                                 accurate, since the script is `eslint`, not `next lint`.
 ├── package.json                  Deps + 4 scripts. `lint` is bare `eslint`.
 ├── package-lock.json             npm lockfile, lockfileVersion 3.
-├── next.config.ts                ONLY setting: images.remotePatterns → images.unsplash.com.
+├── next.config.ts                Image device widths plus remotePatterns → images.unsplash.com.
 ├── postcss.config.mjs            Single plugin: @tailwindcss/postcss. (Tailwind v4 entry.)
 ├── eslint.config.mjs             Flat config: eslint-config-next core-web-vitals + typescript.
 ├── tsconfig.json                 strict; `@/*` → `./src/*`; includes .next/types + .next/dev/types.
@@ -328,7 +328,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) { ... }
 Key details:
 
 - **`LayoutProps<"/">` is used with no import.** See section 2.3. Do not add `import type { LayoutProps }`.
-- Fonts: `Geist` and `Geist_Mono` from `next/font/google`, `display: "swap"`, `subsets: ["latin"]`, exposed as CSS variables `--font-geist-sans` / `--font-geist-mono`. `globals.css` maps those into Tailwind via `@theme inline`.
+- Fonts: `Geist` and `Geist_Mono` from `next/font/google`, `display: "swap"`, `subsets: ["latin"]`, exposed as CSS variables `--font-geist-sans` / `--font-geist-mono`. `globals.css` maps those into Tailwind via `@theme inline`. Geist Sans retains its root preload; Geist Mono uses `preload: false` because no homepage element uses `font-mono`, while `/services` still loads it on demand for numbered labels.
 - DOM shape — memorize this, section 8 depends on it:
 
 ```tsx
@@ -595,7 +595,7 @@ No props. Static content; no interactivity.
 ```
 
 - **`85svh` below `md`, full `svh` from `md` up.** Rationale in the file: on a short viewport (320×568) the hero should be driven by its content rather than padded out to a full screen. `svh` (small viewport height) avoids mobile-browser URL-bar jump.
-- Background: absolutely positioned `-z-10` wrapper containing `<Image src={images.hero.ventilation} alt="Conduits de ventilation métalliques dans un intérieur moderne" fill sizes="100vw" className="object-cover" priority />`. The registry points this homepage-only image at a local progressive JPEG dominated by polished galvanized ductwork. **`priority` is set — this is the LCP image.** Keep it.
+- Background: absolutely positioned `-z-10` wrapper containing `<Image src={images.hero.ventilation} alt="Conduits de ventilation métalliques dans un intérieur moderne" fill sizes="100vw" className="object-cover" loading="eager" fetchPriority="high" />`. The registry points this homepage-only image at a local progressive JPEG dominated by polished galvanized ductwork. This is the mobile LCP image; it is immediately discoverable, never lazy, and receives a high-priority responsive preload without combining the `preload` prop with loading/priority hints.
 - Two stacked gradient overlays:
   - `bg-gradient-to-r from-navy-950/90 via-navy-950/70 to-navy-950/55 md:to-navy-950/30` — left-heavy for text legibility; the right stop stays darker below `md` because the copy spans the full width there.
   - `bg-gradient-to-b from-navy-950/40 via-transparent to-navy-950/60` — top/bottom fade.
@@ -1264,11 +1264,12 @@ Shape: `{ hero: { ventilation }, services: { residential, commercial, industrial
 
 - Never write `<Image src="https://..." />` or `<Image src="/images/..." />` in a component. Always `import { images } from "@/data/images"` (or reach it indirectly via `service.image` / `project.image`, which are themselves populated from this registry).
 - Why: swapping the whole site's imagery is then a one-file change. Commit `d5c2aa5` repointed only the homepage hero entry from Unsplash to the local generated HVAC photograph; `Hero` changed only its descriptive French alt text.
-- **Adding a remote host requires editing `next.config.ts`.** Only `images.unsplash.com` is allowlisted:
+- **Adding a remote host requires editing `next.config.ts`.** Only `images.unsplash.com` is allowlisted. The device-width list adds 480 and 1440 to Next's otherwise retained defaults so full-width and card images avoid the former 390→640 and 1440→1920 over-selection gaps without creating many cache variants:
 
 ```ts
 const nextConfig: NextConfig = {
   images: {
+    deviceSizes: [480, 640, 750, 828, 1080, 1200, 1440, 1920, 2048, 3840],
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
     ],
@@ -1638,7 +1639,7 @@ Also unused at this commit: the `align="center"` branch of `SectionHeading`, the
 | Mobile navigation | Viewport-level overlay with animated hamburger, synchronized 280ms enter/exit, Escape-to-close, dual `html`+`body` scroll lock, auto-close past `lg` |
 | Layout shell | Fixed `h-16` blurred header, sticky footer via flex, `SiteShell` client boundary correctly scoped |
 | Carousel→grid pattern | `scroll-snap-row` / `scroll-snap-item`, hidden scrollbars, mobile snap carousels becoming grids at `md`; Process dots track and control all four snapped steps |
-| Image pipeline | `next/image` with `fill` + hand-tuned `sizes` per breakpoint everywhere, `priority` on the local progressive-JPEG LCP hero, `remotePatterns` for remaining Unsplash assets, centralised registry |
+| Image pipeline | `next/image` with `fill` + hand-tuned `sizes` per breakpoint everywhere, eager/high-priority delivery for the local progressive-JPEG LCP hero, measured 480/1440 device-width additions, `remotePatterns` for remaining Unsplash assets, centralised registry |
 | Metadata and structured data | Root metadata base and one global Organization JSON-LD; complete route metadata on `/services`, `/contact`, and `/mentions-legales` |
 | Company/legal facts | Central `site.ts`, verified registered identity/address/identifiers, legal-notice route, and concise footer identity |
 | Contact foundation | Responsive labeled form, required semantics, disabled honest submission state, user-confirmed phone, unverified existing email, and registered-office address |
@@ -1917,3 +1918,42 @@ Validation at the source commit:
 - No hydration exception, JavaScript console error, or hero-resource failure was captured.
   Existing unrelated network 404 logs remain from broken service-detail prefetches and the known
   dead `project04` Unsplash URL documented in sections 9.6 and 13.5.
+
+---
+
+## 16. Homepage Core Web Vitals optimization (source commit `de2173b`)
+
+The mobile homepage LCP was measured before editing with Lighthouse 13.4.1 against the same local
+Next.js production server on port 4173. Three mobile runs gave a median Performance score of 94,
+FCP 910.5 ms, LCP 3040.6 ms, TBT 27 ms, and CLS 0. Lighthouse identified the hero `<img>` as the
+mobile LCP in every run. Its median available trace subparts were TTFB 5.3 ms, resource delay
+7.8 ms, resource duration 8.1 ms, and render delay 61.5 ms. These trace subparts are observed
+timings and do not sum to Lighthouse's throttling-model metric. Desktop LCP was the H1 at 618.8 ms.
+
+The old deprecated `priority` prop produced a responsive preload but Lighthouse observed its
+request priority as Low in two of three warm runs and failed the explicit priority-hint check.
+The hero now uses `loading="eager"` plus `fetchPriority="high"` and no `preload`/`priority` prop.
+React/Next emits one responsive early-discovery preload carrying `fetchpriority=high`; there is no
+duplicate manual preload. Five post-change mobile runs gave medians of Performance 94, FCP
+911.6 ms, LCP 3047.9 ms, TBT 30 ms, and CLS 0. The LCP image request was High priority in all five
+runs and all Lighthouse discovery checks passed, but the before/after median LCP difference is
+noise rather than a demonstrated speedup. Desktop LCP measured 520.0 ms in the post-change audit.
+
+`images.deviceSizes` retains Next's defaults and adds only 480 and 1440. At 375 CSS px / DPR 2 the
+hero correctly remains the 750 candidate (38,486-byte WebP body), so the mobile Lighthouse payload
+is unchanged. At 1440 / DPR 1 it now selects 1440 rather than 1920: 88,302 bytes instead of 97,108
+bytes (9.1% smaller). A low-DPR 390px viewport can select the new 480 candidate (19,678 bytes)
+instead of 640 (30,454 bytes). The source remains the same 1536×1024, 232,999-byte progressive JPEG;
+quality remains 75 and WebP remains the recommended Next default. AVIF was not enabled because its
+first-request encoding cost and extra cache variants were not justified by the measured payload.
+
+Geist Mono is still required by `/services`, so it was not removed. Setting only its font-loader
+preload to false removes its unused 23,408-byte high-priority homepage transfer; Geist Sans remains
+self-hosted and preloaded, and Mono remains available on demand where `font-mono` is rendered.
+There are no analytics, maps, widgets, browser font requests, or other third-party scripts.
+
+Responsive browser checks at 375, 768, and 1440 found no horizontal overflow, broken hero image,
+console/hydration errors, metadata/schema/heading regressions, or changed image-loading semantics.
+The mobile menu opened and closed correctly and Process step 3 became current after its dot was
+activated. Every non-hero homepage image retained `loading="lazy"`. Screenshots were visually
+inspected at all three widths; the design and crop remain intact.
