@@ -45,6 +45,18 @@ interface MobileMenuProps {
 
 export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
+  const wasOpenRef = useRef(false);
+
+  useEffect(() => {
+    if (wasOpenRef.current && !isOpen) {
+      const focusFrame = window.requestAnimationFrame(() => {
+        document.getElementById("mobile-menu-toggle")?.focus();
+      });
+      wasOpenRef.current = isOpen;
+      return () => window.cancelAnimationFrame(focusFrame);
+    }
+    wasOpenRef.current = isOpen;
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
