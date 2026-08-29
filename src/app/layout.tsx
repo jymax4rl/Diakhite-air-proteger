@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import SiteShell from "@/components/layout/SiteShell";
 import Footer from "@/components/layout/Footer";
+import { images } from "@/data/images";
 import { organizationId, site } from "@/data/site";
 import "./globals.css";
 
@@ -69,6 +70,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     name: site.brand.name,
     legalName: site.company.legalName,
     url: site.url,
+    logo: `${site.url}${images.logo.primary}`,
     telephone: site.contact.phone.e164,
     address: {
       "@type": "PostalAddress",

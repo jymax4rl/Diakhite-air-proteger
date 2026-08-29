@@ -16,4 +16,9 @@ export const images = {
   about: {
     main: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80&auto=format&fit=crop",
   },
+
+  logo: {
+    primary: "/images/logo/air-proteger-logo.jpg",
+    markLight: "/images/logo/air-proteger-mark-light.png",
+  },
 } as const;

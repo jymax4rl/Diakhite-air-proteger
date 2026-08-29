@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BrandLogo from "@/components/ui/BrandLogo";
 import Container from "@/components/ui/Container";
 import { services } from "@/data/services";
 import { site } from "@/data/site";
@@ -19,20 +20,10 @@ export default function Footer() {
           <div className="sm:col-span-2 lg:col-span-2">
             <Link
               href="/"
-              className="inline-flex items-center gap-2.5 mb-5"
+              className="mb-5 inline-flex items-center"
               aria-label={`${site.brand.name} — Accueil`}
             >
-              <div className="w-9 h-9 bg-brand-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                <LogoIcon />
-              </div>
-              <div className="leading-none">
-                <span className="block whitespace-nowrap text-[15px] font-bold text-white">
-                  {site.brand.logoPrimary}
-                </span>
-                <span className="block text-brand-400 text-[9px] font-bold tracking-[0.15em] uppercase">
-                  {site.brand.logoSecondary}
-                </span>
-              </div>
+              <BrandLogo />
             </Link>
 
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm mb-6">
@@ -116,17 +107,5 @@ export default function Footer() {
         </div>
       </Container>
     </footer>
-  );
-}
-
-function LogoIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <path d="M10 3 C10 3 7.5 7 10 11 C12.5 7 10 3 10 3Z" fill="white" opacity="0.92" />
-      <path d="M3 10 C3 10 7 12.5 11 10 C7 7.5 3 10 3 10Z" fill="white" opacity="0.92" />
-      <path d="M17 10 C17 10 13 7.5 9 10 C13 12.5 17 10 17 10Z" fill="white" opacity="0.92" />
-      <path d="M10 17 C10 17 12.5 13 10 9 C7.5 13 10 17 10 17Z" fill="white" opacity="0.92" />
-      <circle cx="10" cy="10" r="2.5" fill="white" />
-    </svg>
   );
 }

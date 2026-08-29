@@ -29,8 +29,8 @@ documentation Next.js correspondant à la version installée restent prioritaire
 - Tous les appels à devis pointent vers `/contact#demande`; aucune route `/devis` n’est créée.
 - Les pages minces `/a-propos`, `/realisations` et `/blog` sont en `noindex,follow`.
 - `sitemap.ts` et `robots.ts` exposent uniquement le domaine officiel.
-- `src/app/favicon.ico` et `src/app/icon.svg` fournissent les icônes de marque via les conventions
-  de fichiers metadata de Next.js.
+- Le logo fourni par le propriétaire alimente le lockup partagé, le schema Organization et les
+  icônes d’application (`favicon.ico`, `icon.png`, `apple-icon.png`).
 
 ## 2. Règles Next.js 16
 
@@ -253,13 +253,21 @@ défilement fluide, les animations et les transitions.
 
 ## 10. Images et performance
 
-Toute image rendue passe par `src/data/images.ts`.
+Toute image rendue passe par `src/data/images.ts`, y compris le logo public et sa variante blanche
+utilisée sur les surfaces sombres.
 
 Les icônes d’application font exception à ce registre : Next.js exige leur colocalisation dans
-`src/app`. `favicon.ico` contient les variantes 16, 32 et 48 px. `icon.svg` fournit la version
-vectorielle sur fond bleu avec motif de ventilation blanc. Next.js détecte automatiquement ces
-deux conventions et injecte leurs liens dans le `<head>`; ne pas les remplacer par des metadata
-manuelles.
+`src/app`. `favicon.ico` fournit le fallback navigateur 48 px, `icon.png` la version 512 px et
+`apple-icon.png` la version tactile 180 px. Ces trois fichiers utilisent le symbole maison et
+turbine fourni par le propriétaire. Next.js détecte automatiquement ces conventions et injecte
+leurs liens dans le `<head>`; ne pas les remplacer par des metadata manuelles.
+
+`src/components/ui/BrandLogo.tsx` est l’unique lockup visuel du header et du footer. Il affiche la
+variante blanche transparente `images.logo.markLight` sur le bleu de marque, puis les deux lignes
+de nom provenant de `site.brand`. Ne pas réintroduire des SVG `LogoIcon` dupliqués.
+
+Le schema Organization expose `images.logo.primary` comme logo public absolu. L’image Open Graph
+reste la photographie du hero : le logo n’est pas substitué à l’image éditoriale de partage.
 
 Images locales conservées :
 
@@ -294,6 +302,7 @@ ne pas revendiquer une amélioration LCP. La livraison prioritaire et le choix d
 - `scroll-snap-row` possède lui-même le basculement flex vers grid à 768 px.
 - Les Server Components restent la règle. Les feuilles clientes sont `SiteShell`, `MobileMenu` et
   `ProcessCarousel`.
+- `BrandLogo` centralise le symbole maison/turbine et le wordmark utilisés par `Navbar` et `Footer`.
 - Ne pas déplacer le menu dans le header et ne pas convertir ses styles inline sans revérifier
   empilement, sortie animée, focus et verrouillage du scroll.
 
@@ -346,7 +355,7 @@ Vérifications réalisées sur l’arbre source :
 - `npm run lint` : succès sur le source final;
 - `npx eslint src/ --max-warnings 0` : succès;
 - `npm run build` : succès, 19 pages statiques générées;
-- build : routes metadata `/favicon.ico` et `/icon.svg` générées;
+- build : routes metadata `/favicon.ico`, `/icon.png` et `/apple-icon.png` générées;
 - accueil, hub, six services, contact et mentions légales : HTTP 200;
 - slug de service invalide : HTTP 404;
 - sitemap et robots : HTTP 200;
