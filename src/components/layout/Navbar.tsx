@@ -46,6 +46,7 @@ export default function Navbar({ onMenuToggle, menuOpen }: NavbarProps) {
           >
             <BrandLogo
               compact
+              loading="eager"
               markClassName="transition-colors duration-200 group-hover:bg-brand-500"
             />
           </Link>

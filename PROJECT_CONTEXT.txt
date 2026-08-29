@@ -1,13 +1,14 @@
 # PROJECT_CONTEXT.md — site Diakhite Air Proteger
 
 **Audience :** assistant de développement découvrant le dépôt.
-**Objet :** état technique et fonctionnel fiable après l’activation des réalisations vidéo.
+**Objet :** état technique et fonctionnel fiable après le remplacement du visuel Unsplash
+d’accueil et le chargement immédiat du symbole de marque dans la barre de navigation.
 
 | Champ | Valeur |
 | --- | --- |
-| Branche | `cursor/cloudinary-project-video-95cc` |
-| Base de production | `origin/main` à `9101751` |
-| État documenté | `WORKTREE` après `d8c5a53` |
+| Branche | `cursor/homepage-verified-media-95cc` |
+| Base de production | `origin/main` à `1aa92ea` |
+| État documenté | `WORKTREE` |
 | Domaine officiel | `https://air-proteger.com` |
 | Marque publique | `Diakhite Air Proteger` |
 | Dénomination légale | `AIR PROTEGER` |
@@ -124,7 +125,8 @@ d’approche et les étapes éditoriales du hub.
 | `/robots.txt` | généré par `robots.ts` | technique |
 | `/sitemap.xml` | généré par `sitemap.ts` | technique |
 | `/favicon.ico` | fallback de marque 16, 32 et 48 px | technique |
-| `/icon.svg` | icône vectorielle de marque | technique |
+| `/icon.jpg` | icône d’application 512 px | technique |
+| `/apple-icon.png` | icône Apple 180 px | technique |
 
 Les anciens segments de service orientés types de bâtiment n’ont jamais été matérialisés et ne
 font l’objet d’aucune redirection. Aucun détail de réalisation fictif n’existe.
@@ -154,7 +156,10 @@ La section services affiche les six entrées canoniques et conserve le carrousel
 une grille à deux colonnes puis trois colonnes.
 
 `AboutPreview` ne publie aucune statistique, ancienneté, satisfaction, garantie ou bouton vidéo.
-Il explique sobrement les cinq disciplines, le CVC et le cycle d’intervention.
+Il explique sobrement les cinq disciplines, le CVC et le cycle d’intervention. L’illustration
+réutilise `images.servicePage.hydraulicNetwork` (photographie locale déjà au catalogue), chargée
+paresseusement. Aucune image Unsplash n’est servie. Le bouton renvoie vers `/services`, car
+`/a-propos` reste en préparation.
 
 `Projects` présente le poster local de la réalisation CVC validée et renvoie vers
 `/realisations#intervention-cvc-toiture`. La page d’accueil ne contient aucun élément `<video>` :
@@ -328,7 +333,11 @@ leurs liens dans le `<head>`; ne pas les remplacer par des metadata manuelles.
 
 `src/components/ui/BrandLogo.tsx` est l’unique lockup visuel du header et du footer. Il affiche la
 variante blanche transparente `images.logo.markLight` sur le bleu de marque, puis les deux lignes
-de nom provenant de `site.brand`. Ne pas réintroduire des SVG `LogoIcon` dupliqués.
+de nom provenant de `site.brand`. La barre de navigation passe `loading="eager"` : le symbole est
+au-dessus de la ligne de flottaison et ne doit pas attendre le chargement paresseux. Le pied de
+page conserve la valeur par défaut `lazy`. Ne pas ajouter `preload` ni `fetchPriority="high"` sur
+ce pictogramme de 28 px, afin de ne pas concurrencer l’image LCP du hero. Ne pas réintroduire des
+SVG `LogoIcon` dupliqués.
 
 Le schema Organization expose `images.logo.primary` comme logo public absolu. L’image Open Graph
 reste la photographie du hero : le logo n’est pas substitué à l’image éditoriale de partage.
@@ -345,10 +354,12 @@ Images locales conservées :
 - poster de la réalisation CVC en toiture.
 
 Les deux photos de galerie ne sont pas dupliquées localement : leurs masters publics assainis et
-leurs transformations optimisées sont servis par Cloudinary.
+leurs transformations optimisées sont servis par Cloudinary. `next.config.ts` n’autorise comme
+motif distant que `https://res.cloudinary.com/dyrjziqft/image/upload/**`. Le motif Unsplash a été
+retiré : plus aucune page ne le consomme.
 
-Les SVG de scaffold, anciens placeholders, images de projets fictifs et JPEG de services sans
-consommateur ont été supprimés après vérification de l’absence de références.
+Les SVG de scaffold, anciens placeholders, images distantes Unsplash, images de projets fictifs et
+JPEG de services sans consommateur ont été supprimés après vérification de l’absence de références.
 
 Le travail Core Web Vitals de la branche dédiée a été intégré :
 
@@ -371,6 +382,7 @@ ne pas revendiquer une amélioration LCP. La livraison prioritaire et le choix d
 - Les Server Components restent la règle. Les feuilles clientes sont `SiteShell`, `MobileMenu` et
   `ProcessCarousel`.
 - `BrandLogo` centralise le symbole maison/turbine et le wordmark utilisés par `Navbar` et `Footer`.
+  `Navbar` lui transmet `loading="eager"` ; `Footer` laisse le chargement paresseux.
 - Ne pas déplacer le menu dans le header et ne pas convertir ses styles inline sans revérifier
   empilement, sortie animée, focus et verrouillage du scroll.
 
