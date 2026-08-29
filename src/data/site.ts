@@ -36,6 +36,18 @@ export const site = {
       display: "10 avenue Normandie Niemen, 77290 Mitry-Mory",
     },
   },
+  /**
+   * Public Google Search permalink for the Knowledge Panel entity
+   * listed as “Air Proteger”. Session parameters (`mat`, `authuser`)
+   * were stripped. No public Maps place, category, hours, phone,
+   * website, photos, rating, or claimed status were confirmed on the
+   * listing — do not invent them here.
+   */
+  google: {
+    listedName: "Air Proteger",
+    searchUrl:
+      "https://www.google.com/search?q=Air+Proteger&stick=H4sIAAAAAAAA_-NgU1I1qEhMNkhMSUozMDUwT7EwMTa0MqgwtzBNMjJIMzYzTzMys0gxW8TK45hZpBBQlF-Smp5aBACxW_WzOAAAAA",
+  },
 } as const;
 
 export const organizationId = `${site.url}/#organization`;

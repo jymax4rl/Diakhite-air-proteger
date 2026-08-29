@@ -1,13 +1,13 @@
 # PROJECT_CONTEXT.md — site Diakhite Air Proteger
 
 **Audience :** assistant de développement découvrant le dépôt.
-**Objet :** état technique et fonctionnel fiable après l’activation des réalisations vidéo.
+**Objet :** état technique et fonctionnel fiable après le lien public vers la fiche Google.
 
 | Champ | Valeur |
 | --- | --- |
-| Branche | `cursor/cloudinary-project-video-95cc` |
-| Base de production | `origin/main` à `9101751` |
-| État documenté | `WORKTREE` après `d8c5a53` |
+| Branche | `cursor/google-business-profile-95cc` |
+| Base de production | `origin/main` à `1aa92ea` |
+| État documenté | `WORKTREE` |
 | Domaine officiel | `https://air-proteger.com` |
 | Marque publique | `Diakhite Air Proteger` |
 | Dénomination légale | `AIR PROTEGER` |
@@ -65,10 +65,16 @@ Lire la documentation versionnée dans `node_modules/next/dist/docs/` avant tout
 - RCS : `987 925 013 R.C.S. Meaux`;
 - TVA : `FR 94 987 925 013`;
 - code APE : `43.22B`;
-- siège : `10 avenue Normandie Niemen, 77290 Mitry-Mory`.
+- siège : `10 avenue Normandie Niemen, 77290 Mitry-Mory`;
+- fiche Google : nom listé `Air Proteger` et URL de recherche publique dans `site.google`
+  (paramètres de session `mat` / `authuser` exclus).
 
 Le siège est présenté comme adresse administrative. Il ne prouve ni accueil du public ni zone
 d’intervention. Ne jamais extrapoler une zone géographique à partir de cette adresse.
+
+La fiche Google n’a pas permis de confirmer un lieu Maps public, une catégorie, un téléphone,
+un site, des horaires, des photos, une note ou un statut revendiqué. Ne pas inventer ces
+champs. Ne pas pointer vers une recherche Maps générique : elle affiche d’autres établissements.
 
 `organizationId` vaut `${site.url}/#organization` et sert de référence stable aux schémas Service.
 
@@ -261,7 +267,9 @@ Aucun schéma ne contient zone desservie, prix, avis, note, certification ou qua
 - explique que les données saisies ne sont ni transmises ni enregistrées;
 - conserve un bouton désactivé.
 
-`ContactDetails` rend le téléphone très visible et qualifie le siège comme adresse administrative.
+`ContactDetails` rend le téléphone très visible, qualifie le siège comme adresse administrative
+et propose un lien discret « Voir sur Google » vers `site.google.searchUrl`. Le pied de page
+répète ce lien, sans horaires ni note.
 
 Avant activation du formulaire, il faut fournir :
 
@@ -280,6 +288,7 @@ Le lien public vers une politique inexistante a été supprimé. Aucun analytics
 - La page d’accueil a sa canonical et ses champs Open Graph/Twitter.
 - Les pages services, contact et mentions légales utilisent le domaine officiel.
 - Le layout publie exactement une `Organization` par page.
+- `sameAs` pointe uniquement vers l’URL de recherche Google nettoyée (`site.google.searchUrl`).
 - Le type retenu reste `Organization`; ne pas utiliser `LocalBusiness` sans locaux clients,
   horaires et zone de service confirmés.
 - Les pages détaillées publient un seul objet `Service` et un fil d’Ariane.
@@ -402,7 +411,9 @@ Ne pas inventer :
 - délai de réponse ou service d’urgence;
 - gratuité d’un devis;
 - marques ou modèles d’équipement;
-- avis, notes, tarifs ou horaires.
+- avis, notes, tarifs ou horaires;
+- fiche Maps, catégorie Google, horaires ou note d’avis tant qu’elles ne sont pas visibles
+  publiquement et tenues à jour dans `site.ts`.
 
 Travail restant dépendant d’informations externes :
 
@@ -412,7 +423,9 @@ Travail restant dépendant d’informations externes :
 - autres références et photos de réalisations validées;
 - présentation de l’entreprise;
 - contenus de blog;
-- certifications, assurances et avis uniquement après preuve.
+- certifications, assurances et avis uniquement après preuve;
+- compléter et revendiquer la fiche Google (site, téléphone, horaires, photos, catégorie)
+  depuis le compte propriétaire, puis n’ajouter au site que les faits alors visibles.
 
 ## 15. Validation de la réalisation vidéo
 

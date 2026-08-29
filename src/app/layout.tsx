@@ -92,6 +92,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         value: site.company.siret,
       },
     ],
+    sameAs: [site.google.searchUrl],
   };
 
   return (

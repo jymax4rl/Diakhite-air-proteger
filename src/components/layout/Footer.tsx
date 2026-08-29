@@ -44,6 +44,16 @@ export default function Footer() {
                 <span aria-hidden="true">⌖</span> Siège social :{" "}
                 {site.company.registeredAddress.display}
               </p>
+              <p>
+                <a
+                  href={site.google.searchUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  Voir sur Google
+                </a>
+              </p>
             </address>
             <p className="mt-5 text-xs leading-5 text-slate-400">
               {site.company.legalName} · {site.company.legalForm}
