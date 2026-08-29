@@ -1,13 +1,7 @@
 import Link from "next/link";
 import Container from "@/components/ui/Container";
+import { services } from "@/data/services";
 import { site } from "@/data/site";
-
-const services = [
-  { href: "/services/residentiel", label: "Ventilation Résidentielle" },
-  { href: "/services/commercial", label: "Ventilation Commerciale" },
-  { href: "/services/industriel", label: "Ventilation Industrielle" },
-  { href: "/services/entretien", label: "Entretien & Maintenance" },
-];
 
 const company = [
   { href: "/a-propos", label: "À propos" },
@@ -42,8 +36,8 @@ export default function Footer() {
             </Link>
 
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm mb-6">
-              Solutions d’installation, de maintenance et d’entretien des
-              systèmes de ventilation.
+              Ventilation, chauffage, climatisation, hydraulique, plomberie et
+              solutions CVC pour les bâtiments.
             </p>
 
             <address className="not-italic space-y-2 text-sm text-slate-400">
@@ -52,18 +46,13 @@ export default function Footer() {
                   href={site.contact.phone.href}
                   className="hover:text-white transition-colors"
                 >
-                  📞 {site.contact.phone.display}
+                  <span aria-hidden="true">☎</span> {site.contact.phone.display}
                 </a>
               </p>
               <p>
-                <a
-                  href={site.contact.email.href}
-                  className="hover:text-white transition-colors"
-                >
-                  ✉️ {site.contact.email.address}
-                </a>
+                <span aria-hidden="true">⌖</span> Siège social :{" "}
+                {site.company.registeredAddress.display}
               </p>
-              <p>📍 Siège social : {site.company.registeredAddress.display}</p>
             </address>
             <p className="mt-5 text-xs leading-5 text-slate-500">
               {site.company.legalName} · {site.company.legalForm}
@@ -78,13 +67,13 @@ export default function Footer() {
               Services
             </h3>
             <ul className="space-y-3">
-              {services.map((link) => (
-                <li key={link.href}>
+              {services.map((service) => (
+                <li key={service.href}>
                   <Link
-                    href={link.href}
+                    href={service.href}
                     className="text-slate-400 text-sm hover:text-white transition-colors leading-snug"
                   >
-                    {link.label}
+                    {service.shortTitle}
                   </Link>
                 </li>
               ))}
@@ -122,12 +111,6 @@ export default function Footer() {
               className="hover:text-slate-300 transition-colors"
             >
               Mentions légales
-            </Link>
-            <Link
-              href="/politique-confidentialite"
-              className="hover:text-slate-300 transition-colors"
-            >
-              Confidentialité
             </Link>
           </nav>
         </div>

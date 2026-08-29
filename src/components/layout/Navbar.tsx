@@ -80,7 +80,7 @@ export default function Navbar({ onMenuToggle, menuOpen }: NavbarProps) {
               <PhoneIcon className="w-3.5 h-3.5" />
               {site.contact.phone.display}
             </a>
-            <Button href="/contact" size="sm">
+            <Button href="/contact#demande" size="sm">
               Demander un devis →
             </Button>
           </div>
@@ -89,18 +89,19 @@ export default function Navbar({ onMenuToggle, menuOpen }: NavbarProps) {
           <div className="flex lg:hidden items-center gap-2.5">
             <a
               href={site.contact.phone.href}
-              className="flex items-center justify-center w-9 h-9 rounded-full bg-brand-600 text-white hover:bg-brand-500 transition-colors"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-600 text-white transition-colors hover:bg-brand-500"
               aria-label="Nous appeler"
             >
               <PhoneIcon className="w-4 h-4" />
             </a>
             <button
+              id="mobile-menu-toggle"
               type="button"
               onClick={onMenuToggle}
               aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
               aria-expanded={menuOpen}
               aria-controls="mobile-navigation"
-              className="relative w-9 h-9 rounded-lg border border-white/15 text-white hover:bg-white/10 transition-colors"
+              className="relative h-11 w-11 rounded-lg border border-white/15 text-white transition-colors hover:bg-white/10"
             >
               <span
                 aria-hidden="true"

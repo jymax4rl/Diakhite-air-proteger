@@ -103,9 +103,6 @@ export default function LegalNoticePage() {
               <a className="underline underline-offset-4" href={site.contact.phone.href}>
                 {site.contact.phone.display}
               </a>
-              <a className="underline underline-offset-4" href={site.contact.email.href}>
-                {site.contact.email.address}
-              </a>
             </address>
           </section>
         </div>
