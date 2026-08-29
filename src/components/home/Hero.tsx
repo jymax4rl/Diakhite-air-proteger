@@ -20,7 +20,8 @@ export default function Hero() {
           fill
           sizes="100vw"
           className="object-cover"
-          priority
+          loading="eager"
+          fetchPriority="high"
         />
         {/* Left-heavy gradient so text on the left is always readable. The copy
             spans the full width on phones, so the right-hand stop stays darker
