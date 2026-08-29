@@ -1957,3 +1957,6 @@ console/hydration errors, metadata/schema/heading regressions, or changed image-
 The mobile menu opened and closed correctly and Process step 3 became current after its dot was
 activated. Every non-hero homepage image retained `loading="lazy"`. Screenshots were visually
 inspected at all three widths; the design and crop remain intact.
+
+Final verification passed: `npx next typegen`, `npx tsc --noEmit`,
+`npx eslint src/ --max-warnings 0`, a clean `npm run build`, and `git diff --check`.
