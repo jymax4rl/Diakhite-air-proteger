@@ -4,7 +4,9 @@ import { site } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "À propos",
-  description: `La présentation de ${site.brand.name} est en préparation. Découvrez dès maintenant nos services de ventilation ou contactez-nous.`,
+  description: `La présentation de ${site.brand.name} est en préparation. Découvrez nos services pour les bâtiments ou contactez-nous.`,
+  alternates: { canonical: `${site.url}/a-propos` },
+  robots: { index: false, follow: true },
 };
 
 export default function AProposPage() {

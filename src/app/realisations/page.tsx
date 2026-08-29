@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import ComingSoon from "@/components/ui/ComingSoon";
+import { site } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Nos réalisations",
   description:
-    "La présentation de nos réalisations en ventilation est en préparation. Découvrez nos services ou échangeons sur votre projet.",
+    "La présentation de réalisations validées est en préparation. Découvrez nos services ou échangeons sur votre projet.",
+  alternates: { canonical: `${site.url}/realisations` },
+  robots: { index: false, follow: true },
 };
 
 export default function RealisationsPage() {

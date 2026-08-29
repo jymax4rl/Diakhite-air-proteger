@@ -4,17 +4,12 @@ export const site = {
     logoPrimary: "Diakhite Air",
     logoSecondary: "Proteger",
   },
-  url: "https://diakhite-air-proteger.vercel.app",
+  url: "https://air-proteger.com",
   contact: {
     phone: {
       display: "06 51 64 46 57",
       e164: "+33651644657",
       href: "tel:+33651644657",
-    },
-    email: {
-      address: "contact@ventila-solutions.fr",
-      href: "mailto:contact@ventila-solutions.fr",
-      verified: false,
     },
   },
   company: {

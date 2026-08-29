@@ -7,10 +7,10 @@ import { site } from "@/data/site";
 
 const origin = site.url;
 const canonicalUrl = `${origin}/contact`;
-const description = `Présentez votre projet de ventilation, VMC, extraction ou traitement de l’air à ${site.brand.name} et retrouvez nos coordonnées.`;
+const description = `Présentez votre besoin en ventilation, chauffage, climatisation, hydraulique, plomberie ou CVC à ${site.brand.name}, ou contactez-nous par téléphone.`;
 
 export const metadata: Metadata = {
-  title: "Contact — Parlons de votre projet de ventilation",
+  title: "Contact — Parlons de votre projet",
   description,
   alternates: {
     canonical: canonicalUrl,
@@ -24,12 +24,12 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     url: canonicalUrl,
     siteName: site.brand.name,
-    title: `Parlons de votre projet de ventilation | ${site.brand.name}`,
+    title: `Parlons de votre projet | ${site.brand.name}`,
     description,
   },
   twitter: {
     card: "summary",
-    title: `Parlons de votre projet de ventilation | ${site.brand.name}`,
+    title: `Parlons de votre projet | ${site.brand.name}`,
     description,
   },
 };

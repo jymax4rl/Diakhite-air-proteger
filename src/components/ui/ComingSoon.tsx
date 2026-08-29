@@ -35,7 +35,7 @@ export default function ComingSoon({ eyebrow, title, description }: ComingSoonPr
             <Button href="/services" size="lg" className="w-full sm:w-auto">
               Découvrir nos services
             </Button>
-            <Button href="/contact" variant="outline" size="lg" className="w-full sm:w-auto">
+            <Button href="/contact#demande" variant="outline" size="lg" className="w-full sm:w-auto">
               Nous contacter
             </Button>
           </div>
