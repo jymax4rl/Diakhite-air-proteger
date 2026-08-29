@@ -3,7 +3,13 @@ import { services } from "@/data/services";
 import { site } from "@/data/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["/", "/services", "/contact", "/mentions-legales"];
+  const routes = [
+    "/",
+    "/services",
+    "/realisations",
+    "/contact",
+    "/mentions-legales",
+  ];
 
   return [
     ...routes.map((route, index) => ({
