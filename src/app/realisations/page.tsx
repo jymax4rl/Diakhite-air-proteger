@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Container from "@/components/ui/Container";
-import { featuredProject } from "@/data/projects";
+import { featuredProject, galleryPhotos } from "@/data/projects";
 import { organizationId, site } from "@/data/site";
+
+const primaryGalleryPhoto = galleryPhotos[0];
 
 export const metadata: Metadata = {
   title: "Réalisations CVC et ventilation",
@@ -18,10 +20,10 @@ export const metadata: Metadata = {
       "Une intervention réelle autour d’un équipement CVC et de réseaux de ventilation en toiture.",
     images: [
       {
-        url: featuredProject.poster,
-        width: featuredProject.video.width,
-        height: featuredProject.video.height,
-        alt: featuredProject.posterAlt,
+        url: primaryGalleryPhoto.socialSrc,
+        width: primaryGalleryPhoto.width,
+        height: primaryGalleryPhoto.height,
+        alt: primaryGalleryPhoto.alt,
       },
     ],
   },
@@ -30,7 +32,7 @@ export const metadata: Metadata = {
     title: `Réalisations CVC et ventilation | ${site.brand.name}`,
     description:
       "Une intervention réelle autour d’un équipement CVC et de réseaux de ventilation en toiture.",
-    images: [featuredProject.poster],
+    images: [primaryGalleryPhoto.socialSrc],
   },
 };
 
@@ -175,6 +177,77 @@ export default function RealisationsPage() {
               </nav>
             </div>
           </article>
+        </Container>
+      </section>
+
+      <section
+        className="section-y bg-navy-800"
+        aria-labelledby="gallery-heading"
+      >
+        <Container>
+          <div className="max-w-3xl">
+            <p className="mb-3 text-sm font-semibold tracking-[0.15em] text-brand-400 uppercase">
+              Galerie
+            </p>
+            <h2 id="gallery-heading" className="section-title">
+              Aperçus d’interventions techniques
+            </h2>
+            <p className="lead mt-5 text-slate-300">
+              Ces photographies présentent des exemples distincts de réseaux de
+              ventilation et d’installations techniques. Elles ne sont pas
+              attribuées au chantier montré dans la vidéo.
+            </p>
+          </div>
+
+          <div className="mt-12 space-y-16 lg:mt-16 lg:space-y-24">
+            <figure className="grid items-center gap-7 lg:grid-cols-12 lg:gap-12">
+              <div className="relative aspect-video overflow-hidden rounded-3xl bg-navy-900 shadow-2xl shadow-black/25 lg:col-span-8">
+                <Image
+                  src={galleryPhotos[0].src}
+                  alt={galleryPhotos[0].alt}
+                  fill
+                  loading="lazy"
+                  sizes="(min-width: 1024px) 66vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
+              <figcaption className="lg:col-span-4">
+                <p className="text-xs font-semibold tracking-[0.15em] text-brand-400 uppercase">
+                  Réseau isolé
+                </p>
+                <h3 className="mt-3 text-2xl font-semibold text-white">
+                  {galleryPhotos[0].title}
+                </h3>
+                <p className="mt-4 leading-7 text-slate-300">
+                  {galleryPhotos[0].caption}
+                </p>
+              </figcaption>
+            </figure>
+
+            <figure className="grid items-center gap-7 lg:grid-cols-12 lg:gap-12">
+              <figcaption className="lg:col-span-5 lg:pl-8">
+                <p className="text-xs font-semibold tracking-[0.15em] text-brand-400 uppercase">
+                  Local technique
+                </p>
+                <h3 className="mt-3 text-2xl font-semibold text-white">
+                  {galleryPhotos[1].title}
+                </h3>
+                <p className="mt-4 max-w-lg leading-7 text-slate-300">
+                  {galleryPhotos[1].caption}
+                </p>
+              </figcaption>
+              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-navy-900 shadow-2xl shadow-black/25 lg:order-last lg:col-span-7">
+                <Image
+                  src={galleryPhotos[1].src}
+                  alt={galleryPhotos[1].alt}
+                  fill
+                  loading="lazy"
+                  sizes="(min-width: 1024px) 58vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
+            </figure>
+          </div>
         </Container>
       </section>
     </>

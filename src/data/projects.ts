@@ -24,6 +24,24 @@ function cloudinaryVideoUrl(source: CloudinaryVideoSource) {
   ].join("/");
 }
 
+interface CloudinaryImageSource {
+  publicId: string;
+  version: number;
+  transformation: string;
+  format?: "jpg";
+}
+
+function cloudinaryImageUrl(source: CloudinaryImageSource) {
+  return [
+    `https://res.cloudinary.com/${cloudinary.cloudName}`,
+    "image",
+    cloudinary.deliveryType,
+    source.transformation,
+    `v${source.version}`,
+    `${source.publicId}.${source.format ?? "jpg"}`,
+  ].join("/");
+}
+
 const roofInterventionSource = {
   publicId: "air-proteger/videos/intervention-cvc-ventilation-toiture",
   version: 1788007446,
@@ -80,3 +98,59 @@ export const projects = [
 ] as const satisfies readonly Project[];
 
 export const featuredProject = projects[0];
+
+export interface GalleryPhoto {
+  assetId: string;
+  publicId: string;
+  title: string;
+  alt: string;
+  caption: string;
+  src: string;
+  socialSrc: string;
+  width: number;
+  height: number;
+}
+
+const galleryPhotoSources = [
+  {
+    assetId: "6a71663670f245f14eeb687a2d0a9d42",
+    publicId: "air-proteger/realisations/reseaux-ventilation-plafond",
+    version: 1788008152,
+    title: "Réseaux de ventilation en plafond",
+    alt: "Réseaux de gaines de ventilation isolées installés sous un plafond technique",
+    caption:
+      "Vue d’ensemble de réseaux de ventilation isolés intégrés sous le plafond.",
+    crop: "c_fill,g_north,ar_16:9,w_1600",
+    width: 1600,
+    height: 900,
+  },
+  {
+    assetId: "f4f5a1d7567ba47165321b2d8abad505",
+    publicId:
+      "air-proteger/realisations/gaines-ventilation-local-technique",
+    version: 1788008178,
+    title: "Gaines de ventilation en local technique",
+    alt: "Réseau de gaines métalliques raccordé à une unité de ventilation dans un local technique",
+    caption:
+      "Installation de gaines métalliques et d’une unité de ventilation en local technique.",
+    crop: "c_fill,g_auto,ar_4:3,w_1600",
+    width: 1600,
+    height: 1200,
+  },
+] as const;
+
+export const galleryPhotos = galleryPhotoSources.map(
+  ({ crop, version, ...photo }) => ({
+    ...photo,
+    src: cloudinaryImageUrl({
+      publicId: photo.publicId,
+      version,
+      transformation: `${crop}/f_auto,q_auto:good`,
+    }),
+    socialSrc: cloudinaryImageUrl({
+      publicId: photo.publicId,
+      version,
+      transformation: `${crop}/f_jpg,q_auto:good`,
+    }),
+  })
+) satisfies readonly GalleryPhoto[];
