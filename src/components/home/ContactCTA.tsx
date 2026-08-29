@@ -1,5 +1,6 @@
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
+import { site } from "@/data/site";
 
 export default function ContactCTA() {
   return (
@@ -16,14 +17,19 @@ export default function ContactCTA() {
               <p className="text-white font-bold text-base sm:text-lg leading-snug">
                 Un projet&nbsp;? Parlons-en
               </p>
-              <p className="text-blue-100 text-sm">Réponse rapide garantie</p>
+              <a
+                href={site.contact.phone.href}
+                className="inline-flex min-h-11 items-center text-sm text-blue-100 underline decoration-white/40 underline-offset-4 hover:text-white"
+              >
+                Appeler le {site.contact.phone.display}
+              </a>
             </div>
           </div>
 
           {/* Right – CTA. Full width while stacked so it is easy to tap, then
               intrinsic width once it sits beside the message. */}
           <Button
-            href="/contact"
+            href="/contact#demande"
             variant="outline"
             className="border-white/50 text-white hover:bg-white/15 hover:border-white whitespace-nowrap flex-shrink-0 w-full sm:w-auto"
           >

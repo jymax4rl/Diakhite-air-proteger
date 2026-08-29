@@ -22,13 +22,13 @@ const steps = [
   {
     num: "02",
     title: "Conception",
-    desc: "Solution sur mesure",
+    desc: "Identification de la solution",
     icon: <ConceptionIcon />,
   },
   {
     num: "03",
     title: "Installation",
-    desc: "Mise en œuvre professionnelle",
+    desc: "Mise en œuvre de l’installation",
     icon: <InstallIcon />,
   },
   {
