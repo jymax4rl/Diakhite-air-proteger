@@ -2,10 +2,11 @@ import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 const focusPoints = [
-  "Renouvellement de l’air",
-  "Maîtrise de l’humidité",
-  "Qualité de l’air intérieur",
-  "Performance du bâtiment",
+  "Confort thermique",
+  "Qualité de l’air",
+  "Circulation des fluides",
+  "Eau & sanitaire",
+  "Maintenance accessible",
 ] as const;
 
 export default function ExpertiseIntro() {
@@ -18,20 +19,19 @@ export default function ExpertiseIntro() {
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <SectionHeading
-              eyebrow="Une expertise transversale"
-              title="Faire circuler le bon volume d’air, au bon endroit"
-              description="La ventilation participe directement au confort des occupants et au fonctionnement du bâtiment. Une solution cohérente organise l’entrée d’air neuf, l’extraction de l’air vicié et la diffusion dans chaque espace."
+              eyebrow="CVC · hydraulique · plomberie"
+              title="Coordonner les réseaux qui font fonctionner le bâtiment"
+              description="Les installations techniques partagent les mêmes volumes et répondent aux mêmes usages. Les considérer ensemble permet de construire une solution cohérente, accessible et adaptée au site."
               theme="light"
               headingId="expertise-intro-heading"
             />
           </div>
           <div className="lg:col-span-5 lg:border-l lg:border-slate-200 lg:pl-10">
             <p className="text-base leading-7 text-slate-600">
-              Nous abordons chaque projet par ses usages réels&nbsp;: production d’humidité,
-              occupation, volumes, sources de pollution, contraintes de réseau et objectifs
-              énergétiques. L’installation et la maintenance sont ensuite pensées comme un
-              ensemble, afin que les équipements restent accessibles et que le système conserve
-              son efficacité.
+              Nous abordons chaque projet par ses usages réels&nbsp;: occupation, volumes,
+              besoins thermiques, renouvellement d’air, circulation des fluides, points d’eau et
+              contraintes de réseau. La mise en œuvre, la maintenance et la rénovation sont
+              pensées dans une même continuité.
             </p>
             <ul className="mt-7 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
               {focusPoints.map((point) => (

@@ -21,10 +21,13 @@ export const images = {
   },
 
   servicePage: {
-    hero: "/images/services/solutions-ventilation-conduits-air.jpg",
+    hero: "/images/services/systemes-techniques-cvc-batiment.jpg",
+    airConditioning: "/images/services/unites-climatisation-batiment.jpg",
+    heating: "/images/services/chauffage-radiateur-batiment.jpg",
     professional: "/images/services/ventilation-professionnelle-bureaux.jpg",
-    industrial: "/images/services/ventilation-industrielle-plafond.jpg",
-    extraction: "/images/services/unites-ventilation-toiture.jpg",
+    hydraulicNetwork: "/images/services/reseaux-hydrauliques-cvc-batiment.jpg",
+    plumbingNetwork: "/images/services/reseau-plomberie-batiment.jpg",
+    plumbingFittings: "/images/services/reseau-plomberie-raccords.jpg",
     technicalIntervention: "/images/services/intervention-technique-equipement.jpg",
   },
 

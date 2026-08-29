@@ -12,8 +12,8 @@ export default function WhyChooseUs() {
           <div className="lg:col-span-5">
             <SectionHeading
               eyebrow="Notre approche"
-              title="La technique au service des usages"
-              description="Une ventilation performante ne se résume pas à un équipement. Elle dépend d’une lecture juste du bâtiment, d’une mise en œuvre soignée et d’un entretien possible dans la durée."
+              title="Un même regard sur tous vos équipements"
+              description="Une installation technique ne se résume pas à la somme de ses appareils. Elle dépend d’une lecture juste du bâtiment, de réseaux bien coordonnés et d’un entretien possible dans la durée."
               headingId="why-choose-us-heading"
             />
             <Link
