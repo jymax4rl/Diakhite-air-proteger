@@ -1,13 +1,8 @@
 import Link from "next/link";
+import BrandLogo from "@/components/ui/BrandLogo";
 import Container from "@/components/ui/Container";
+import { services } from "@/data/services";
 import { site } from "@/data/site";
-
-const services = [
-  { href: "/services/residentiel", label: "Ventilation Résidentielle" },
-  { href: "/services/commercial", label: "Ventilation Commerciale" },
-  { href: "/services/industriel", label: "Ventilation Industrielle" },
-  { href: "/services/entretien", label: "Entretien & Maintenance" },
-];
 
 const company = [
   { href: "/a-propos", label: "À propos" },
@@ -25,25 +20,15 @@ export default function Footer() {
           <div className="sm:col-span-2 lg:col-span-2">
             <Link
               href="/"
-              className="inline-flex items-center gap-2.5 mb-5"
+              className="mb-5 inline-flex items-center"
               aria-label={`${site.brand.name} — Accueil`}
             >
-              <div className="w-9 h-9 bg-brand-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                <LogoIcon />
-              </div>
-              <div className="leading-none">
-                <span className="block whitespace-nowrap text-[15px] font-bold text-white">
-                  {site.brand.logoPrimary}
-                </span>
-                <span className="block text-brand-400 text-[9px] font-bold tracking-[0.15em] uppercase">
-                  {site.brand.logoSecondary}
-                </span>
-              </div>
+              <BrandLogo />
             </Link>
 
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm mb-6">
-              Solutions d’installation, de maintenance et d’entretien des
-              systèmes de ventilation.
+              Ventilation, chauffage, climatisation, hydraulique, plomberie et
+              solutions CVC pour les bâtiments.
             </p>
 
             <address className="not-italic space-y-2 text-sm text-slate-400">
@@ -52,20 +37,15 @@ export default function Footer() {
                   href={site.contact.phone.href}
                   className="hover:text-white transition-colors"
                 >
-                  📞 {site.contact.phone.display}
+                  <span aria-hidden="true">☎</span> {site.contact.phone.display}
                 </a>
               </p>
               <p>
-                <a
-                  href={site.contact.email.href}
-                  className="hover:text-white transition-colors"
-                >
-                  ✉️ {site.contact.email.address}
-                </a>
+                <span aria-hidden="true">⌖</span> Siège social :{" "}
+                {site.company.registeredAddress.display}
               </p>
-              <p>📍 Siège social : {site.company.registeredAddress.display}</p>
             </address>
-            <p className="mt-5 text-xs leading-5 text-slate-500">
+            <p className="mt-5 text-xs leading-5 text-slate-400">
               {site.company.legalName} · {site.company.legalForm}
               <br />
               SIREN {site.company.sirenDisplay} · {site.company.rcs}
@@ -78,13 +58,13 @@ export default function Footer() {
               Services
             </h3>
             <ul className="space-y-3">
-              {services.map((link) => (
-                <li key={link.href}>
+              {services.map((service) => (
+                <li key={service.href}>
                   <Link
-                    href={link.href}
+                    href={service.href}
                     className="text-slate-400 text-sm hover:text-white transition-colors leading-snug"
                   >
-                    {link.label}
+                    {service.shortTitle}
                   </Link>
                 </li>
               ))}
@@ -112,7 +92,7 @@ export default function Footer() {
         </div>
 
         {/* ── Bottom bar ── */}
-        <div className="border-t border-white/6 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+        <div className="border-t border-white/6 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
           <p>
             © {new Date().getFullYear()} {site.brand.name}. Tous droits réservés.
           </p>
@@ -123,27 +103,9 @@ export default function Footer() {
             >
               Mentions légales
             </Link>
-            <Link
-              href="/politique-confidentialite"
-              className="hover:text-slate-300 transition-colors"
-            >
-              Confidentialité
-            </Link>
           </nav>
         </div>
       </Container>
     </footer>
-  );
-}
-
-function LogoIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <path d="M10 3 C10 3 7.5 7 10 11 C12.5 7 10 3 10 3Z" fill="white" opacity="0.92" />
-      <path d="M3 10 C3 10 7 12.5 11 10 C7 7.5 3 10 3 10Z" fill="white" opacity="0.92" />
-      <path d="M17 10 C17 10 13 7.5 9 10 C13 12.5 17 10 17 10Z" fill="white" opacity="0.92" />
-      <path d="M10 17 C10 17 12.5 13 10 9 C7.5 13 10 17 10 17Z" fill="white" opacity="0.92" />
-      <circle cx="10" cy="10" r="2.5" fill="white" />
-    </svg>
   );
 }

@@ -17,9 +17,9 @@ export default function Services() {
             eyebrow="Nos services"
             title={
               <>
-                Des solutions adaptées
+                Cinq disciplines
                 <br />
-                à chaque espace
+                et une approche CVC
               </>
             }
             theme="light"
@@ -34,12 +34,12 @@ export default function Services() {
           </Link>
         </div>
 
-        {/* ── Carousel on mobile, 2 columns at md, 4 at lg.
+        {/* ── Carousel on mobile, 2 columns at md, 3 at lg.
                One set of cards: `scroll-snap-row` switches itself from flex to
                grid at md, so the markup (and the images) are not duplicated. ── */}
-        <div className="scroll-snap-row md:grid-cols-2 lg:grid-cols-4">
+        <div className="scroll-snap-row md:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
-            <ServiceCard key={service.id} service={service} />
+            <ServiceCard key={service.slug} service={service} />
           ))}
         </div>
       </Container>
@@ -51,17 +51,17 @@ function ServiceCard({ service }: { service: Service }) {
   return (
     <Link
       href={service.href}
-      className="scroll-snap-item w-[240px] sm:w-[260px] md:w-auto group block relative overflow-hidden rounded-2xl bg-navy-800 aspect-[3/4] md:aspect-[4/5] lg:aspect-[3/4]"
+      className="scroll-snap-item w-[240px] sm:w-[260px] md:w-auto group block relative overflow-hidden rounded-2xl bg-navy-800 aspect-[3/4] md:aspect-[4/5] lg:aspect-[4/3]"
       aria-label={`${service.title} — ${service.description}`}
     >
       {/* Image — rendered widths: 240/260px in the carousel, ~47vw in the
           2-column tablet grid, ~305px max in the 4-column desktop grid. */}
       <Image
         src={service.image}
-        alt={`Service de ventilation ${service.title.toLowerCase()}`}
+        alt={service.imageAlt}
         fill
-        sizes="(max-width: 639px) 240px, (max-width: 767px) 260px, (max-width: 1023px) 47vw, 305px"
-        className="object-cover transition-transform duration-500 group-hover:scale-105"
+        sizes="(max-width: 639px) 240px, (max-width: 767px) 260px, (max-width: 1023px) 47vw, 416px"
+        className="object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none motion-reduce:transition-none"
       />
 
       {/* Gradient overlay — always present, intensifies on hover */}
@@ -94,7 +94,7 @@ function ServiceIcon({ type }: { type: Service["icon"] }) {
     "aria-hidden": true as const,
   };
 
-  if (type === "home") {
+  if (type === "air") {
     return (
       <svg {...props}>
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -102,7 +102,7 @@ function ServiceIcon({ type }: { type: Service["icon"] }) {
       </svg>
     );
   }
-  if (type === "building") {
+  if (type === "heating" || type === "cooling") {
     return (
       <svg {...props}>
         <rect x="4" y="2" width="16" height="20" rx="2" stroke="#60a5fa" strokeWidth="2"/>
@@ -110,7 +110,7 @@ function ServiceIcon({ type }: { type: Service["icon"] }) {
       </svg>
     );
   }
-  if (type === "factory") {
+  if (type === "hydraulic" || type === "cvc") {
     return (
       <svg {...props}>
         <path d="M2 20v-8l5-4v4l5-4v4l5-4v8" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

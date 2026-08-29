@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
-import { servicePageItems, type ServicePageItem } from "@/data/service-page";
+import { services, type Service } from "@/data/services";
 
-const featureServices = servicePageItems.filter((service) => service.treatment === "feature");
-const editorialServices = servicePageItems.filter((service) => service.treatment !== "feature");
+const featureServices = services.filter((service) => service.treatment === "feature");
+const editorialServices = services.filter((service) => service.treatment !== "feature");
 
 export default function ServicesEditorialGrid() {
   return (
@@ -14,8 +14,8 @@ export default function ServicesEditorialGrid() {
         <div className="flex flex-col gap-7 border-b border-slate-200 pb-10 md:flex-row md:items-end md:justify-between">
           <SectionHeading
             eyebrow="Nos services"
-            title="Cinq expertises, une lecture globale du bâtiment"
-            description="Chauffage, ventilation, climatisation, hydraulique et plomberie sont abordés à partir des usages, de l’installation existante et des contraintes propres à chaque site."
+            title="Cinq disciplines et une approche CVC coordonnée"
+            description="Ventilation, chauffage, climatisation, hydraulique et plomberie répondent à des besoins distincts. Les solutions CVC coordonnent les quatre disciplines techniques concernées sans les confondre."
             theme="light"
             headingId="services-heading"
           />
@@ -30,29 +30,27 @@ export default function ServicesEditorialGrid() {
         <div className="grid gap-px overflow-hidden border border-slate-200 bg-slate-200 md:grid-cols-2">
           {featureServices.map((service, index) => (
             <article
-              key={service.id}
-              id={service.id}
+              key={service.slug}
+              id={service.slug}
               className={
                 index === 0
                   ? "group scroll-mt-24 bg-navy-900 text-white"
                   : "group scroll-mt-24 bg-slate-50"
               }
             >
-              {service.image && service.imageAlt && (
-                <div className="relative aspect-[16/10] overflow-hidden bg-navy-800">
-                  <Image
-                    src={service.image}
-                    alt={service.imageAlt}
-                    fill
-                    sizes="(max-width: 767px) 100vw, (max-width: 1350px) 50vw, 640px"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:transition-none"
-                  />
-                  <div
-                    className="absolute inset-0 bg-gradient-to-t from-navy-950/45 to-transparent"
-                    aria-hidden="true"
-                  />
-                </div>
-              )}
+              <div className="relative aspect-[16/10] overflow-hidden bg-navy-800">
+                <Image
+                  src={service.image}
+                  alt={service.imageAlt}
+                  fill
+                  sizes="(max-width: 767px) 100vw, (max-width: 1350px) 50vw, 640px"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:transition-none"
+                />
+                <div
+                  className="absolute inset-0 bg-gradient-to-t from-navy-950/45 to-transparent"
+                  aria-hidden="true"
+                />
+              </div>
               <div className="p-6 sm:p-9">
                 <ServiceNumber index={index} dark={index === 0} />
                 <p
@@ -77,7 +75,7 @@ export default function ServicesEditorialGrid() {
                   {service.summary}
                 </p>
                 <ServiceDetails service={service} dark={index === 0} />
-                <ServiceLink title={service.title} dark={index === 0} />
+                <ServiceLink service={service} dark={index === 0} />
               </div>
             </article>
           ))}
@@ -86,12 +84,12 @@ export default function ServicesEditorialGrid() {
         <div className="mt-16 space-y-16 md:mt-24 md:space-y-24">
           {editorialServices.map((service) =>
             service.treatment === "spotlight" ? (
-              <HydraulicSpotlight key={service.id} service={service} />
+              <HydraulicSpotlight key={service.slug} service={service} />
             ) : (
               <SplitService
-                key={service.id}
+                key={service.slug}
                 service={service}
-                imageOnRight={service.id === "plomberie-sanitaire"}
+                imageOnRight={service.slug === "plomberie"}
               />
             ),
           )}
@@ -105,14 +103,14 @@ function SplitService({
   service,
   imageOnRight,
 }: {
-  service: ServicePageItem;
+  service: Service;
   imageOnRight: boolean;
 }) {
-  const index = servicePageItems.indexOf(service);
+  const index = services.findIndex((item) => item.slug === service.slug);
 
   return (
     <article
-      id={service.id}
+      id={service.slug}
       className="grid scroll-mt-24 items-center gap-8 lg:grid-cols-12 lg:gap-14"
     >
       <ServiceImage
@@ -127,12 +125,12 @@ function SplitService({
   );
 }
 
-function HydraulicSpotlight({ service }: { service: ServicePageItem }) {
-  const index = servicePageItems.indexOf(service);
+function HydraulicSpotlight({ service }: { service: Service }) {
+  const index = services.findIndex((item) => item.slug === service.slug);
 
   return (
     <article
-      id={service.id}
+      id={service.slug}
       className="grid scroll-mt-24 overflow-hidden bg-navy-900 lg:grid-cols-12"
     >
       <ServiceImage
@@ -144,10 +142,8 @@ function HydraulicSpotlight({ service }: { service: ServicePageItem }) {
       <div className="flex flex-col justify-center p-6 sm:p-10 lg:col-span-4 lg:p-12">
         <ServiceCopy service={service} dark />
         <nav aria-label="Expertises liées à l’hydraulique" className="mt-7 flex flex-wrap gap-3">
-          <RelatedServiceLink href="#chauffage">Chauffage</RelatedServiceLink>
-          <RelatedServiceLink href="#plomberie-sanitaire">
-            Plomberie & sanitaire
-          </RelatedServiceLink>
+          <RelatedServiceLink href="/services/chauffage">Chauffage</RelatedServiceLink>
+          <RelatedServiceLink href="/services/cvc">Solutions CVC</RelatedServiceLink>
         </nav>
       </div>
     </article>
@@ -160,7 +156,7 @@ function ServiceImage({
   className,
   imageSizes = "(max-width: 1023px) 100vw, (max-width: 1350px) 55vw, 740px",
 }: {
-  service: ServicePageItem;
+  service: Service;
   number: number;
   className?: string;
   imageSizes?: string;
@@ -169,15 +165,13 @@ function ServiceImage({
     <div
       className={`relative aspect-[4/3] overflow-hidden bg-navy-800 ${className ?? ""}`}
     >
-      {service.image && service.imageAlt && (
-        <Image
-          src={service.image}
-          alt={service.imageAlt}
-          fill
-          sizes={imageSizes}
-          className="object-cover transition-transform duration-500 hover:scale-[1.02] motion-reduce:transition-none"
-        />
-      )}
+      <Image
+        src={service.image}
+        alt={service.imageAlt}
+        fill
+        sizes={imageSizes}
+        className="object-cover transition-transform duration-500 hover:scale-[1.02] motion-reduce:transition-none"
+      />
       <span className="absolute bottom-0 left-0 bg-navy-950 px-4 py-3 text-xs font-semibold tracking-[0.12em] text-brand-400">
         {String(number).padStart(2, "0")}
       </span>
@@ -189,7 +183,7 @@ function ServiceCopy({
   service,
   dark = false,
 }: {
-  service: ServicePageItem;
+  service: Service;
   dark?: boolean;
 }) {
   return (
@@ -212,7 +206,7 @@ function ServiceCopy({
         {service.summary}
       </p>
       <ServiceDetails service={service} dark={dark} />
-      <ServiceLink title={service.title} dark={dark} />
+      <ServiceLink service={service} dark={dark} />
     </>
   );
 }
@@ -239,7 +233,7 @@ function ServiceNumber({ index, dark }: { index: number; dark: boolean }) {
   );
 }
 
-function ServiceDetails({ service, dark = false }: { service: ServicePageItem; dark?: boolean }) {
+function ServiceDetails({ service, dark = false }: { service: Service; dark?: boolean }) {
   return (
     <ul className={`mt-6 space-y-3 text-sm ${dark ? "text-slate-200" : "text-navy-800"}`}>
       {service.details.map((detail) => (
@@ -253,20 +247,20 @@ function ServiceDetails({ service, dark = false }: { service: ServicePageItem; d
 }
 
 function ServiceLink({
-  title,
+  service,
   dark = false,
 }: {
-  title: string;
+  service: Service;
   dark?: boolean;
 }) {
   return (
     <Link
-      href="/contact"
+      href={service.href}
       className={`mt-7 inline-flex min-h-11 items-center gap-2 text-sm font-semibold transition-colors motion-reduce:transition-none ${
         dark ? "text-brand-300 hover:text-white" : "text-brand-600 hover:text-brand-700"
       }`}
     >
-      Échanger sur {title.toLocaleLowerCase("fr")} <ArrowIcon />
+      Découvrir {service.title.toLocaleLowerCase("fr")} <ArrowIcon />
     </Link>
   );
 }

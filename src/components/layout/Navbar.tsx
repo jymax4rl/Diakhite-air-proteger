@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BrandLogo from "@/components/ui/BrandLogo";
 import Button from "@/components/ui/Button";
 import { site } from "@/data/site";
 
@@ -40,20 +41,13 @@ export default function Navbar({ onMenuToggle, menuOpen }: NavbarProps) {
           {/* ── Logo ── */}
           <Link
             href="/"
-            className="flex min-w-0 items-center gap-2 group flex-shrink-0 sm:gap-2.5"
+            className="group flex min-w-0 flex-shrink-0 items-center"
             aria-label={`${site.brand.name} — Accueil`}
           >
-            <div className="w-9 h-9 bg-brand-600 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-brand-500 transition-colors duration-200">
-              <LogoIcon />
-            </div>
-            <div className="min-w-0 leading-none">
-              <span className="block whitespace-nowrap text-[13px] font-bold tracking-tight text-white sm:text-[15px]">
-                {site.brand.logoPrimary}
-              </span>
-              <span className="block text-[8px] font-bold uppercase tracking-[0.14em] text-brand-400 sm:text-[9px] sm:tracking-[0.15em]">
-                {site.brand.logoSecondary}
-              </span>
-            </div>
+            <BrandLogo
+              compact
+              markClassName="transition-colors duration-200 group-hover:bg-brand-500"
+            />
           </Link>
 
           {/* ── Desktop links ── */}
@@ -80,7 +74,7 @@ export default function Navbar({ onMenuToggle, menuOpen }: NavbarProps) {
               <PhoneIcon className="w-3.5 h-3.5" />
               {site.contact.phone.display}
             </a>
-            <Button href="/contact" size="sm">
+            <Button href="/contact#demande" size="sm">
               Demander un devis →
             </Button>
           </div>
@@ -89,18 +83,19 @@ export default function Navbar({ onMenuToggle, menuOpen }: NavbarProps) {
           <div className="flex lg:hidden items-center gap-2.5">
             <a
               href={site.contact.phone.href}
-              className="flex items-center justify-center w-9 h-9 rounded-full bg-brand-600 text-white hover:bg-brand-500 transition-colors"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-600 text-white transition-colors hover:bg-brand-500"
               aria-label="Nous appeler"
             >
               <PhoneIcon className="w-4 h-4" />
             </a>
             <button
+              id="mobile-menu-toggle"
               type="button"
               onClick={onMenuToggle}
               aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
               aria-expanded={menuOpen}
               aria-controls="mobile-navigation"
-              className="relative w-9 h-9 rounded-lg border border-white/15 text-white hover:bg-white/10 transition-colors"
+              className="relative h-11 w-11 rounded-lg border border-white/15 text-white transition-colors hover:bg-white/10"
             >
               <span
                 aria-hidden="true"
@@ -125,24 +120,6 @@ export default function Navbar({ onMenuToggle, menuOpen }: NavbarProps) {
         </nav>
       </div>
     </header>
-  );
-}
-
-function LogoIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path d="M10 3 C10 3 7.5 7 10 11 C12.5 7 10 3 10 3Z" fill="white" opacity="0.92" />
-      <path d="M3 10 C3 10 7 12.5 11 10 C7 7.5 3 10 3 10Z" fill="white" opacity="0.92" />
-      <path d="M17 10 C17 10 13 7.5 9 10 C13 12.5 17 10 17 10Z" fill="white" opacity="0.92" />
-      <path d="M10 17 C10 17 12.5 13 10 9 C7.5 13 10 17 10 17Z" fill="white" opacity="0.92" />
-      <circle cx="10" cy="10" r="2.5" fill="white" />
-    </svg>
   );
 }
 

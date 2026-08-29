@@ -2,6 +2,7 @@ import Image from "next/image";
 import Button from "@/components/ui/Button";
 import Process from "@/components/home/Process";
 import { images } from "@/data/images";
+import { site } from "@/data/site";
 
 export default function Hero() {
   return (
@@ -20,7 +21,8 @@ export default function Hero() {
           fill
           sizes="100vw"
           className="object-cover"
-          priority
+          loading="eager"
+          fetchPriority="high"
         />
         {/* Left-heavy gradient so text on the left is always readable. The copy
             spans the full width on phones, so the right-hand stop stays darker
@@ -40,30 +42,28 @@ export default function Hero() {
               aria-hidden="false"
             >
               <span aria-hidden="true">✦</span>
-              Air sain, confort maximal
+              {site.brand.name}
             </p>
 
             {/* Main heading */}
             <h1 id="hero-heading" className="hero-title text-white mb-4 md:mb-7">
-              Solutions de{" "}
-              <span className="text-brand-500">ventilation</span>
-              {" "}performantes
+              <span className="text-brand-500">Ventilation</span>, plomberie et
+              CVC pour vos bâtiments
             </h1>
 
             {/* Sub-copy */}
             <p className="lead text-slate-300 mb-7 md:mb-10 max-w-lg">
-              Nous concevons, installons et entretenons des systèmes de
-              ventilation efficaces, économiques et durables.
+              Installation · Dépannage · Entretien · Maintenance
             </p>
 
             {/* CTAs — wrap to their own line rather than shrinking */}
             <div className="flex flex-wrap items-center gap-3">
-              <Button href="/services" size="lg">
-                Nos services →
+              <Button href="/contact#demande" size="lg">
+                Demander un devis →
               </Button>
-              <Button href="/contact" variant="outline" size="lg">
-                <DocumentIcon />
-                Devis gratuit
+              <Button href={site.contact.phone.href} variant="outline" size="lg">
+                <PhoneIcon />
+                Appeler maintenant
               </Button>
             </div>
           </div>
@@ -76,11 +76,13 @@ export default function Hero() {
   );
 }
 
-function DocumentIcon() {
+function PhoneIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M14 2v6h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path
+        d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"
+        fill="currentColor"
+      />
     </svg>
   );
 }

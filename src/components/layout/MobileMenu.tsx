@@ -28,7 +28,7 @@
  */
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { site } from "@/data/site";
 
@@ -44,13 +44,63 @@ interface MobileMenuProps {
 }
 
 export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) {
+  const menuRef = useRef<HTMLDivElement>(null);
+  const wasOpenRef = useRef(false);
+
+  useEffect(() => {
+    if (wasOpenRef.current && !isOpen) {
+      const focusFrame = window.requestAnimationFrame(() => {
+        document.getElementById("mobile-menu-toggle")?.focus();
+      });
+      wasOpenRef.current = isOpen;
+      return () => window.cancelAnimationFrame(focusFrame);
+    }
+    wasOpenRef.current = isOpen;
+  }, [isOpen]);
+
   useEffect(() => {
     if (!isOpen) return;
+    const menu = menuRef.current;
+    const previouslyFocused =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const getFocusable = () =>
+      Array.from(
+        menu?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ) ?? [],
+      );
+    const focusFrame = window.requestAnimationFrame(() => getFocusable()[0]?.focus());
+
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      const focusable = getFocusable();
+      if (focusable.length === 0) {
+        e.preventDefault();
+        menu?.focus();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.removeEventListener("keydown", handler);
+      previouslyFocused?.focus();
+    };
   }, [isOpen, onClose]);
 
   // Scroll lock. `globals.css` sets `overflow-x: hidden` on <html>, so the root
@@ -74,7 +124,9 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
 
   return (
     <div
+      ref={menuRef}
       id="mobile-navigation"
+      tabIndex={-1}
       role="dialog"
       aria-modal="true"
       aria-label="Menu de navigation"
@@ -182,7 +234,7 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
           <PhoneIcon /> {site.contact.phone.display}
         </a>
         <Link
-          href="/contact"
+          href="/contact#demande"
           onClick={onClose}
           style={{
             display: "flex",

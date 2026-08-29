@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { services } from "@/data/services";
 import { site } from "@/data/site";
 
 const fieldClassName =
@@ -6,7 +7,7 @@ const fieldClassName =
 
 export default function ContactForm() {
   return (
-    <section aria-labelledby="contact-form-heading">
+    <section id="demande" className="scroll-mt-24" aria-labelledby="contact-form-heading">
       <div className="mb-8">
         <p className="text-sm font-semibold uppercase tracking-[0.15em] text-brand-700">
           Votre demande
@@ -16,8 +17,11 @@ export default function ContactForm() {
         </h2>
         <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
           L’envoi en ligne n’est pas encore disponible. Ce formulaire présente les informations
-          utiles à préparer&nbsp;; pour nous écrire maintenant, utilisez l’adresse e-mail indiquée
-          dans la rubrique «&nbsp;Nos coordonnées&nbsp;».
+          utiles à préparer. Pour échanger maintenant, appelez le{" "}
+          <a className="font-semibold underline underline-offset-4" href={site.contact.phone.href}>
+            {site.contact.phone.display}
+          </a>
+          .
         </p>
       </div>
 
@@ -27,15 +31,8 @@ export default function ContactForm() {
           className="rounded-xl border border-brand-300 bg-brand-100 px-4 py-3 text-sm leading-6 text-navy-800"
         >
           Les informations saisies ci-dessous ne sont ni transmises ni enregistrées. L’envoi en
-          ligne sera activé lorsqu’un service de traitement sécurisé sera disponible. Pour
-          transmettre votre demande aujourd’hui, écrivez à{" "}
-          <a
-            href={site.contact.email.href}
-            className="font-semibold text-brand-700 underline decoration-brand-600/40 underline-offset-4"
-          >
-            {site.contact.email.address}
-          </a>
-          .
+          ligne sera activé lorsqu’un service de traitement sécurisé et les informations de
+          confidentialité nécessaires seront disponibles.
         </p>
 
         <div className="grid gap-6 sm:grid-cols-2">
@@ -77,6 +74,21 @@ export default function ContactForm() {
             />
           </Field>
 
+          <Field
+            label="Ville du projet"
+            htmlFor="city"
+            hint="Cette information décrit le projet et ne constitue pas une zone desservie."
+          >
+            <input
+              id="city"
+              name="city"
+              type="text"
+              autoComplete="address-level2"
+              aria-describedby="city-hint"
+              className={fieldClassName}
+            />
+          </Field>
+
           <Field label="Type de projet ou service" htmlFor="project-type">
             <select
               id="project-type"
@@ -85,13 +97,11 @@ export default function ContactForm() {
               className={fieldClassName}
             >
               <option value="">Sélectionner une option</option>
-              <option value="installation-vmc">Installation de VMC</option>
-              <option value="ventilation-professionnelle">Ventilation professionnelle</option>
-              <option value="ventilation-industrielle">Ventilation industrielle</option>
-              <option value="extraction-traitement-air">Extraction ou traitement de l’air</option>
-              <option value="desenfumage">Désenfumage</option>
-              <option value="maintenance-entretien">Maintenance ou entretien</option>
-              <option value="renovation">Rénovation d’une installation</option>
+              {services.map((service) => (
+                <option key={service.slug} value={service.slug}>
+                  {service.title}
+                </option>
+              ))}
               <option value="autre">Autre besoin</option>
             </select>
           </Field>

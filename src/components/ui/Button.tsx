@@ -21,7 +21,7 @@ interface ButtonProps {
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-brand-600 text-white hover:bg-brand-500 active:bg-brand-700 border border-brand-600 hover:border-brand-500",
+    "bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-700 border border-brand-600 hover:border-brand-700",
   outline:
     "bg-transparent text-white border border-white/30 hover:bg-white/10 hover:border-white/60",
   ghost: "bg-transparent text-current hover:bg-white/10 border border-transparent",

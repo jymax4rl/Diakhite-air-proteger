@@ -8,20 +8,20 @@ export default function ServicesCTA() {
       <Container>
         <div className="grid items-end gap-10 lg:grid-cols-12">
           <div className="lg:col-span-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.15em] text-blue-100">
+            <p className="text-sm font-semibold uppercase tracking-[0.15em] text-blue-50">
               Votre projet
             </p>
             <h2 id="services-cta-heading" className="section-title mt-3 max-w-3xl text-white">
               Parlons de vos réseaux CVC, hydrauliques et de plomberie
             </h2>
-            <p className="lead mt-5 max-w-2xl text-blue-100">
+            <p className="lead mt-5 max-w-2xl text-blue-50">
               Décrivez-nous le bâtiment, les équipements concernés et l’installation existante.
               Ces premiers éléments nous permettront de préparer l’échange.
             </p>
           </div>
           <div className="flex flex-col gap-3 lg:col-span-4 lg:items-stretch">
             <Button
-              href="/contact"
+              href="/contact#demande"
               size="lg"
               className="w-full border-white bg-white text-brand-700! hover:border-blue-50 hover:bg-blue-50 active:border-blue-100! active:bg-blue-100!"
             >
@@ -29,16 +29,10 @@ export default function ServicesCTA() {
             </Button>
             <a
               href={site.contact.phone.href}
-              className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/35 px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-white/10 motion-reduce:transition-none"
+              className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/35 px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-white/5 motion-reduce:transition-none"
               aria-label={`Appelez ${site.brand.name} au ${site.contact.phone.display}`}
             >
               <PhoneIcon /> {site.contact.phone.display}
-            </a>
-            <a
-              href={site.contact.email.href}
-              className="text-center text-sm text-blue-100 underline decoration-white/35 underline-offset-4 transition-colors hover:text-white motion-reduce:transition-none"
-            >
-              {site.contact.email.address}
             </a>
           </div>
         </div>

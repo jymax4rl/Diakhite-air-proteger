@@ -5,17 +5,17 @@ import ServicesEditorialGrid from "@/components/services/ServicesEditorialGrid";
 import ServicesHero from "@/components/services/ServicesHero";
 import ServicesProcess from "@/components/services/ServicesProcess";
 import WhyChooseUs from "@/components/services/WhyChooseUs";
-import { servicePageItems } from "@/data/service-page";
+import { services } from "@/data/services";
 import { organizationId, site } from "@/data/site";
 
 const origin = site.url;
 const canonicalUrl = `${origin}/services`;
 const heroImageUrl = `${origin}/images/services/systemes-techniques-cvc-batiment.jpg`;
 const description =
-  "Chauffage, ventilation, climatisation, hydraulique du bâtiment, plomberie et sanitaire : installation, rénovation et maintenance des réseaux techniques.";
+  "Ventilation, chauffage, climatisation, hydraulique, plomberie et solutions CVC : installation, dépannage, entretien et maintenance.";
 
 export const metadata: Metadata = {
-  title: "Services CVC, hydraulique et plomberie",
+  title: "Ventilation, plomberie, chauffage et CVC",
   description,
   alternates: {
     canonical: canonicalUrl,
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     url: canonicalUrl,
     siteName: site.brand.name,
-    title: `Services CVC, hydraulique et plomberie | ${site.brand.name}`,
+    title: `Ventilation, plomberie, chauffage et CVC | ${site.brand.name}`,
     description,
     images: [
       {
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `Services CVC, hydraulique et plomberie | ${site.brand.name}`,
+    title: `Ventilation, plomberie, chauffage et CVC | ${site.brand.name}`,
     description,
     images: [heroImageUrl],
   },
@@ -71,17 +71,17 @@ export default function ServicesPage() {
       },
       {
         "@type": "ItemList",
-        name: "Services CVC, hydraulique et plomberie",
+        name: "Ventilation, plomberie, chauffage et solutions CVC",
         url: canonicalUrl,
-        numberOfItems: servicePageItems.length,
-        itemListElement: servicePageItems.map((service, index) => ({
+        numberOfItems: services.length,
+        itemListElement: services.map((service, index) => ({
           "@type": "ListItem",
           position: index + 1,
           item: {
             "@type": "Service",
             name: service.title,
             description: service.summary,
-            url: `${canonicalUrl}#${service.id}`,
+            url: `${origin}${service.href}`,
             provider: {
               "@id": organizationId,
             },

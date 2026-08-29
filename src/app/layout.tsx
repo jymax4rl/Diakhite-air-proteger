@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import SiteShell from "@/components/layout/SiteShell";
 import Footer from "@/components/layout/Footer";
+import { images } from "@/data/images";
 import { organizationId, site } from "@/data/site";
 import "./globals.css";
 
@@ -15,27 +16,50 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.brand.name} — Solutions de ventilation performantes`,
+    default: `${site.brand.name} — Ventilation, plomberie et CVC`,
     template: `%s | ${site.brand.name}`,
   },
   description:
-    "Nous concevons, installons et entretenons des systèmes de ventilation efficaces, économiques et durables. Résidentiel, commercial et industriel.",
+    "Installation, dépannage, entretien et maintenance en ventilation, chauffage, climatisation, hydraulique, plomberie et CVC.",
   keywords: [
     "ventilation",
     "HVAC",
     "climatisation",
-    "installation ventilation",
-    "entretien ventilation",
-    "ventilation industrielle",
-    "ventilation commerciale",
+    "chauffage",
+    "hydraulique",
+    "plomberie",
     site.company.legalName,
   ],
   robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    siteName: site.brand.name,
+    title: `${site.brand.name} — Ventilation, plomberie et CVC`,
+    description:
+      "Installation, dépannage, entretien et maintenance des équipements et réseaux techniques du bâtiment.",
+    images: [
+      {
+        url: "/images/hero/conduits-ventilation-metalliques-professionnels.jpg",
+        width: 1536,
+        height: 1024,
+        alt: "Conduits de ventilation métalliques dans un bâtiment",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.brand.name} — Ventilation, plomberie et CVC`,
+    description:
+      "Installation, dépannage, entretien et maintenance des équipements et réseaux techniques du bâtiment.",
+    images: ["/images/hero/conduits-ventilation-metalliques-professionnels.jpg"],
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -46,6 +70,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     name: site.brand.name,
     legalName: site.company.legalName,
     url: site.url,
+    logo: `${site.url}${images.logo.primary}`,
     telephone: site.contact.phone.e164,
     address: {
       "@type": "PostalAddress",

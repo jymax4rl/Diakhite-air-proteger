@@ -12,11 +12,11 @@ export default function ContactHero() {
             Parlons de votre projet
           </p>
           <h1 id="contact-heading" className="section-title max-w-3xl text-white">
-            Échangeons sur vos besoins en ventilation
+            Échangeons sur votre projet technique
           </h1>
           <p className="lead mt-6 max-w-2xl text-slate-300">
-            Décrivez votre bâtiment, l’installation existante et vos objectifs. Ces premiers
-            éléments aideront à préparer un échange adapté à votre projet.
+            Ventilation, chauffage, climatisation, hydraulique, plomberie ou CVC&nbsp;: décrivez
+            votre bâtiment, l’installation existante et le besoin concerné.
           </p>
         </div>
       </Container>
