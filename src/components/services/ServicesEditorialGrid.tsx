@@ -106,7 +106,7 @@ function SplitService({
   service: Service;
   imageOnRight: boolean;
 }) {
-  const index = services.indexOf(service);
+  const index = services.findIndex((item) => item.slug === service.slug);
 
   return (
     <article
@@ -126,7 +126,7 @@ function SplitService({
 }
 
 function HydraulicSpotlight({ service }: { service: Service }) {
-  const index = services.indexOf(service);
+  const index = services.findIndex((item) => item.slug === service.slug);
 
   return (
     <article
