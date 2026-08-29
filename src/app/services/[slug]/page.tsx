@@ -212,7 +212,7 @@ export default async function ServiceDetailPage(
             href="/contact#demande"
             variant="outline"
             size="lg"
-            className="w-full border-white/60 sm:w-auto"
+            className="w-full border-white/60 hover:bg-white/5! sm:w-auto"
           >
             Accéder à la demande →
           </Button>

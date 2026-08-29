@@ -29,7 +29,7 @@ export default function ServicesCTA() {
             </Button>
             <a
               href={site.contact.phone.href}
-              className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/35 px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-white/10 motion-reduce:transition-none"
+              className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/35 px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-white/5 motion-reduce:transition-none"
               aria-label={`Appelez ${site.brand.name} au ${site.contact.phone.display}`}
             >
               <PhoneIcon /> {site.contact.phone.display}

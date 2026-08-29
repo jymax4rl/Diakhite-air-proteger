@@ -31,7 +31,7 @@ export default function ContactCTA() {
           <Button
             href="/contact#demande"
             variant="outline"
-            className="border-white/50 text-white hover:bg-white/15 hover:border-white whitespace-nowrap flex-shrink-0 w-full sm:w-auto"
+            className="border-white/50 text-white hover:bg-white/5 hover:border-white whitespace-nowrap flex-shrink-0 w-full sm:w-auto"
           >
             Demander un devis →
           </Button>
