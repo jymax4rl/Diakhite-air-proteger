@@ -7,7 +7,7 @@
 | --- | --- |
 | Branche | `cursor/cloudinary-project-video-95cc` |
 | Base de production | `origin/main` à `9101751` |
-| État documenté | `WORKTREE` après `da141ea` |
+| État documenté | `WORKTREE` après `d8c5a53` |
 | Domaine officiel | `https://air-proteger.com` |
 | Marque publique | `Diakhite Air Proteger` |
 | Dénomination légale | `AIR PROTEGER` |
@@ -27,7 +27,8 @@ documentation Next.js correspondant à la version installée restent prioritaire
 - Aucune adresse e-mail publique n’est configurée.
 - Le formulaire de contact ne transmet et ne stocke aucune donnée. Son bouton reste désactivé.
 - Tous les appels à devis pointent vers `/contact#demande`; aucune route `/devis` n’est créée.
-- `/realisations` présente une intervention CVC réelle avec une vidéo publique assainie.
+- `/realisations` présente une intervention CVC réelle avec une vidéo publique assainie et deux
+  aperçus photographiques distincts.
 - Les pages minces `/a-propos` et `/blog` restent en `noindex,follow`.
 - `sitemap.ts` et `robots.ts` exposent uniquement le domaine officiel.
 - Le logo fourni par le propriétaire alimente le lockup partagé, le schema Organization et les
@@ -159,7 +160,7 @@ Il explique sobrement les cinq disciplines, le CVC et le cycle d’intervention.
 `/realisations#intervention-cvc-toiture`. La page d’accueil ne contient aucun élément `<video>` :
 le poster est chargé paresseusement sous la ligne de flottaison.
 
-## 6. Réalisations et vidéo Cloudinary
+## 6. Réalisations et médias Cloudinary
 
 `src/data/projects.ts` est la source typée du projet publié. Elle centralise titre, description,
 texte alternatif, durée, date d’import confirmée, identifiant public Cloudinary et URL de livraison.
@@ -190,6 +191,33 @@ est conservé dans Cloudinary sous
 `air-proteger/private/intervention-cvc-toiture-original`, avec le type de livraison
 `authenticated`; son ancienne URL publique a été invalidée. Ne jamais remettre cet original en
 livraison publique ni copier ses métadonnées.
+
+`galleryPhotos` centralise séparément les deux photographies visibles, avec asset ID public,
+public ID sémantique, version, titre, alt, légende, dimensions et URLs Cloudinary. Ces images sont
+présentées comme aperçus d’interventions techniques distincts; aucune relation avec le chantier de
+la vidéo n’est affirmée.
+
+- `air-proteger/realisations/reseaux-ventilation-plafond` : master public assaini 1500 × 2000,
+  recadrage éditorial `c_fill,g_north,ar_16:9,w_1600`;
+- `air-proteger/realisations/gaines-ventilation-local-technique` : master public assaini
+  2000 × 1500, recadrage éditorial `c_fill,g_auto,ar_4:3,w_1600`.
+
+Les URLs visibles ajoutent `f_auto,q_auto:good`; `next/image` réserve les proportions, produit les
+tailles responsives et charge les deux images paresseusement. `next.config.ts` autorise uniquement
+`https://res.cloudinary.com/dyrjziqft/image/upload/**` pour ces images distantes. L’image 16:9 est
+également le visuel Open Graph/Twitter de `/realisations`; le `VideoObject` reste inchangé et aucun
+`ImageObject` redondant n’est publié.
+
+Les deux fichiers publics proviennent de copies transformées dont les métadonnées EXIF, XMP, GPS et
+de localisation ont été supprimées. Les originaux haute définition restent conservés avec le type
+`authenticated` sous :
+
+- `air-proteger/private/reseaux-ventilation-plafond-original`;
+- `air-proteger/private/gaines-ventilation-local-technique-original`.
+
+Les trois photos retenues par l’audit pour non-publication — `IMG_0120_rr9ots`,
+`IMG_0113_c6jyth` et `IMG_0131_e9wfim` — restent hors du code et n’ont pas été renommées,
+supprimées ou modifiées par cette intégration.
 
 ## 7. Hub et détails de services
 
@@ -316,6 +344,9 @@ Images locales conservées :
 - plomberie.
 - poster de la réalisation CVC en toiture.
 
+Les deux photos de galerie ne sont pas dupliquées localement : leurs masters publics assainis et
+leurs transformations optimisées sont servis par Cloudinary.
+
 Les SVG de scaffold, anciens placeholders, images de projets fictifs et JPEG de services sans
 consommateur ont été supprimés après vérification de l’absence de références.
 
@@ -411,5 +442,13 @@ Vérifications réalisées sur l’arbre source :
 - navigateur : `/realisations` vérifiée à 375, 390, 430, 768, 1440 et 1920 px sans overflow;
 - lecteur au repos sans requête vidéo, puis lecture réussie sur interaction, sans erreur console;
 - accueil : aucun `<video>` et aucune requête Cloudinary vidéo.
+- galerie : deux images publiques assainies, avec masters de 864 783 et 481 917 octets;
+- copies publiques et anciennes URLs versionnées : contenu identique et sans marqueur EXIF, XMP,
+  GPS ou localisation;
+- archives originales non signées : HTTP 401;
+- recadrages Cloudinary 1600 × 900 et 1600 × 1200 : HTTP 200;
+- galerie vérifiée à 375, 390, 430, 768, 1440 et 1920 px : proportions correctes, lazy loading,
+  aucun débordement, aucune image cassée et aucune erreur console;
+- accueil inchangé : aucune requête aux deux photos de galerie et aucune requête vidéo.
 
 Toujours refaire les validations affectées après une modification.

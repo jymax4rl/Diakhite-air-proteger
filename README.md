@@ -46,5 +46,5 @@ destination validée et les informations de confidentialité doivent être défi
 avant son activation. Aucune adresse e-mail publique n’est configurée.
 
 Les médias de réalisation sont décrits dans `src/data/projects.ts`. Le dépôt
-conserve uniquement leur poster léger ; les vidéos publiques assainies sont
-livrées et optimisées par Cloudinary.
+conserve uniquement le poster vidéo léger ; les vidéos et photographies
+publiques assainies sont livrées et optimisées par Cloudinary.
