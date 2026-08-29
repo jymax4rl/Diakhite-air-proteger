@@ -52,8 +52,8 @@ export default function AboutPreview() {
               ))}
             </div>
 
-            <Button href="/a-propos" variant="outline">
-              En savoir plus →
+            <Button href="/services" variant="outline">
+              Voir nos services →
             </Button>
           </div>
 
@@ -63,8 +63,8 @@ export default function AboutPreview() {
               {/* Full container width when stacked; half the content column
                   (448px at lg, 608px max) once side by side. */}
               <Image
-                src={images.about.main}
-                alt="Façade d’un bâtiment contemporain"
+                src={images.servicePage.hydraulicNetwork}
+                alt="Réseau hydraulique CVC composé de conduites isolées dans un local technique propre"
                 fill
                 sizes="(max-width: 1023px) 100vw, (max-width: 1279px) 46vw, 608px"
                 className="object-cover"

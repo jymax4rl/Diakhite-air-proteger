@@ -13,10 +13,6 @@ export const images = {
     plumbingFittings: "/images/services/reseau-plomberie-raccords.jpg",
   },
 
-  about: {
-    main: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80&auto=format&fit=crop",
-  },
-
   projects: {
     cvcRoof:
       "/images/realisations/intervention-cvc-ventilation-toiture.jpg",

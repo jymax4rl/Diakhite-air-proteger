@@ -7,6 +7,8 @@ interface BrandLogoProps {
   className?: string;
   markClassName?: string;
   compact?: boolean;
+  /** Navbar lockup is above the fold; keep footer instances lazy. */
+  loading?: "eager" | "lazy";
 }
 
 /**
@@ -19,6 +21,7 @@ export default function BrandLogo({
   className,
   markClassName,
   compact = false,
+  loading = "lazy",
 }: BrandLogoProps) {
   return (
     <span className={cn("inline-flex min-w-0 items-center gap-2.5", className)}>
@@ -33,6 +36,7 @@ export default function BrandLogo({
           alt=""
           width={28}
           height={28}
+          loading={loading}
           className="h-7 w-7 object-contain"
         />
       </span>
