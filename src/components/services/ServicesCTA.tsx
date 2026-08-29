@@ -21,7 +21,7 @@ export default function ServicesCTA() {
           </div>
           <div className="flex flex-col gap-3 lg:col-span-4 lg:items-stretch">
             <Button
-              href="/contact"
+              href="/contact#demande"
               size="lg"
               className="w-full border-white bg-white text-brand-700! hover:border-blue-50 hover:bg-blue-50 active:border-blue-100! active:bg-blue-100!"
             >
@@ -33,12 +33,6 @@ export default function ServicesCTA() {
               aria-label={`Appelez ${site.brand.name} au ${site.contact.phone.display}`}
             >
               <PhoneIcon /> {site.contact.phone.display}
-            </a>
-            <a
-              href={site.contact.email.href}
-              className="text-center text-sm text-blue-100 underline decoration-white/35 underline-offset-4 transition-colors hover:text-white motion-reduce:transition-none"
-            >
-              {site.contact.email.address}
             </a>
           </div>
         </div>

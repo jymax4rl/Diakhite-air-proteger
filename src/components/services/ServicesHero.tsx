@@ -42,18 +42,18 @@ export default function ServicesHero() {
 
         <div className="max-w-5xl py-12 md:py-16">
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-brand-400 sm:text-sm">
-            Cinq expertises techniques · un seul projet
+            Cinq disciplines · une approche CVC
           </p>
           <h1 id="services-hero-heading" className="hero-title max-w-4xl text-white">
-            Solutions de chauffage, ventilation, climatisation,{" "}
-            <span className="text-brand-400">hydraulique et plomberie</span>
+            Ventilation, chauffage, climatisation,{" "}
+            <span className="text-brand-400">hydraulique, plomberie et CVC</span>
           </h1>
           <p className="lead mt-6 max-w-2xl text-slate-200">
-            De l’étude à la maintenance, nous intervenons sur les installations techniques qui
-            assurent le confort et le fonctionnement de votre bâtiment.
+            Installation, dépannage, entretien et maintenance des équipements et réseaux
+            techniques de votre bâtiment.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <Button href="/contact" size="lg" className="w-full sm:w-auto">
+            <Button href="/contact#demande" size="lg" className="w-full sm:w-auto">
               Demander un devis <ArrowIcon />
             </Button>
             <Button
