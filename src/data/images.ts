@@ -17,6 +17,11 @@ export const images = {
     main: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80&auto=format&fit=crop",
   },
 
+  projects: {
+    cvcRoof:
+      "/images/realisations/intervention-cvc-ventilation-toiture.jpg",
+  },
+
   logo: {
     primary: "/images/logo/air-proteger-logo.jpg",
     markLight: "/images/logo/air-proteger-mark-light.png",
