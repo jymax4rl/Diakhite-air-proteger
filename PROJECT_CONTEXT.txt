@@ -6,8 +6,8 @@
 | Champ | Valeur |
 | --- | --- |
 | Branche | `cursor/phase1-commercial-repositioning-95cc` |
-| Base de production | `origin/main` à `fe2f385` |
-| État documenté | `WORKTREE` après l’implémentation Phase 1 |
+| Base de production | `origin/main` à `13bc732` (fusion de la PR favicon #5) |
+| État documenté | `WORKTREE` après fusion de `origin/main` dans Phase 1 |
 | Domaine officiel | `https://air-proteger.com` |
 | Marque publique | `Diakhite Air Proteger` |
 | Dénomination légale | `AIR PROTEGER` |
@@ -29,6 +29,8 @@ documentation Next.js correspondant à la version installée restent prioritaire
 - Tous les appels à devis pointent vers `/contact#demande`; aucune route `/devis` n’est créée.
 - Les pages minces `/a-propos`, `/realisations` et `/blog` sont en `noindex,follow`.
 - `sitemap.ts` et `robots.ts` exposent uniquement le domaine officiel.
+- `src/app/favicon.ico` et `src/app/icon.svg` fournissent les icônes de marque via les conventions
+  de fichiers metadata de Next.js.
 
 ## 2. Règles Next.js 16
 
@@ -119,6 +121,8 @@ d’approche et les étapes éditoriales du hub.
 | `/blog` | contenu en préparation | noindex, follow |
 | `/robots.txt` | généré par `robots.ts` | technique |
 | `/sitemap.xml` | généré par `sitemap.ts` | technique |
+| `/favicon.ico` | fallback de marque 16, 32 et 48 px | technique |
+| `/icon.svg` | icône vectorielle de marque | technique |
 
 Les anciens segments de service orientés types de bâtiment n’ont jamais été matérialisés et ne
 font l’objet d’aucune redirection. Aucun détail de réalisation fictif n’existe.
@@ -251,6 +255,12 @@ défilement fluide, les animations et les transitions.
 
 Toute image rendue passe par `src/data/images.ts`.
 
+Les icônes d’application font exception à ce registre : Next.js exige leur colocalisation dans
+`src/app`. `favicon.ico` contient les variantes 16, 32 et 48 px. `icon.svg` fournit la version
+vectorielle sur fond bleu avec motif de ventilation blanc. Next.js détecte automatiquement ces
+deux conventions et injecte leurs liens dans le `<head>`; ne pas les remplacer par des metadata
+manuelles.
+
 Images locales conservées :
 
 - hero principal;
@@ -336,6 +346,7 @@ Vérifications réalisées sur l’arbre source :
 - `npm run lint` : succès sur le source final;
 - `npx eslint src/ --max-warnings 0` : succès;
 - `npm run build` : succès, 18 pages statiques générées;
+- build : routes metadata `/favicon.ico` et `/icon.svg` générées;
 - accueil, hub, six services, contact et mentions légales : HTTP 200;
 - slug de service invalide : HTTP 404;
 - sitemap et robots : HTTP 200;
